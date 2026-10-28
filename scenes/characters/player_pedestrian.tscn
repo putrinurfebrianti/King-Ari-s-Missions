@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/player_pedestrian.gd" id="1_pedestrian"]
+
+[sub_resource type="CapsuleShape3D" id="shape_capsule"]
+radius = 0.4
+height = 1.7
+
+[sub_resource type="StandardMaterial3D" id="mat_shadow"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.06, 0.08, 0.12, 0.45)
+
+[sub_resource type="CylinderMesh" id="mesh_shadow"]
+material = SubResource("mat_shadow")
+top_radius = 0.38
+bottom_radius = 0.38
+height = 0.02
+
+[sub_resource type="StandardMaterial3D" id="mat_food_box"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.96, 0.75, 0.15, 1)
+
+[sub_resource type="BoxMesh" id="mesh_food_box"]
+material = SubResource("mat_food_box")
+size = Vector3(0.48, 0.25, 0.34)
+
+[node name="PlayerPedestrian" type="CharacterBody3D" groups=["pedestrian", "player"]]
+script = ExtResource("1_pedestrian")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("shape_capsule")
+
+[node name="ShadowDisc" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+mesh = SubResource("mesh_shadow")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
+billboard = 2
+
+[node name="FoodBoxVisual" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72, 0.32)
+visible = false
+
+[node name="BoxMesh" type="MeshInstance3D" parent="FoodBoxVisual"]
+mesh = SubResource("mesh_food_box")
+
+[node name="Label3D" type="Label3D" parent="FoodBoxVisual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+billboard = 1
+text = "🍱 Ransum MBG"
+font_size = 13
+outline_size = 3
+modulate = Color(1, 0.9, 0.3, 1)
+
+[node name="PromptLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15, 0)
+billboard = 1
+text = "🚗 [Tekan E]: Masuk ke Mobil"
+font_size = 17
+outline_size = 4
+modulate = Color(0.2, 0.95, 0.4, 1)
+outline_modulate = Color(0.04, 0.06, 0.1, 1)
+visible = false

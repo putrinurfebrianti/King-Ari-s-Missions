@@ -1,0 +1,890 @@
+[gd_scene format=3 uid="uid://c3i5uunbarltw"]
+
+[ext_resource type="Script" uid="uid://58gqinfj6c17" path="res://scripts/arcade_car.gd" id="1_car"]
+[ext_resource type="Script" uid="uid://b6nn5ygb2677m" path="res://scripts/camera_follow.gd" id="2_cam"]
+[ext_resource type="Script" uid="uid://dc3nrr0ubl5fa" path="res://scripts/delivery_zone.gd" id="3_zone"]
+[ext_resource type="Script" uid="uid://dme5q0ktfnap" path="res://scripts/hud.gd" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/characters/petugas_sppg.tscn" id="5_petugas"]
+[ext_resource type="PackedScene" path="res://scenes/entities/car_mbg_visual.tscn" id="6_car_visual"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tree_stylized.tscn" id="7_tree"]
+[ext_resource type="PackedScene" path="res://scenes/environment/street_lamp.tscn" id="8_lamp"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_sppg.tscn" id="9_sppg_bldg"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_school.tscn" id="10_school_bldg"]
+[ext_resource type="PackedScene" path="res://scenes/environment/pothole.tscn" id="11_pothole"]
+[ext_resource type="Script" uid="uid://bpjsoiyrbpkok" path="res://scripts/minimap.gd" id="12_minimap"]
+[ext_resource type="PackedScene" path="res://scenes/environment/central_fountain.tscn" id="13_fountain"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_police.tscn" id="14_police"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_fire_station.tscn" id="15_fire"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_house.tscn" id="16_house"]
+[ext_resource type="PackedScene" path="res://scenes/environment/flag_indonesia.tscn" id="17_flag"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_warung.tscn" id="18_warung"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tree_palm.tscn" id="19_palm"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tree_pine.tscn" id="20_pine"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tree_cypress.tscn" id="21_cypress"]
+[ext_resource type="PackedScene" path="res://scenes/characters/npc_warga_group.tscn" id="22_warga"]
+[ext_resource type="PackedScene" path="res://scenes/characters/npc_demonstran_crowd.tscn" id="23_demonstran"]
+[ext_resource type="PackedScene" path="res://scenes/characters/npc_sppg_kitchen.tscn" id="24_sppg_kitchen"]
+[ext_resource type="PackedScene" path="res://scenes/characters/npc_guru.tscn" id="25_guru"]
+[ext_resource type="PackedScene" path="res://scenes/entities/waypoint_arrow.tscn" id="26_arrow"]
+[ext_resource type="PackedScene" path="res://scenes/characters/player_pedestrian.tscn" id="27_pedestrian"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_spbu.tscn" id="28_spbu"]
+[ext_resource type="PackedScene" path="res://scenes/environment/road_blockade.tscn" id="29_blockade"]
+[ext_resource type="Script" path="res://scripts/weather_controller.gd" id="30_weather"]
+
+[sub_resource type="StandardMaterial3D" id="mat_rain"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.75, 0.85, 0.95, 0.5)
+
+[sub_resource type="BoxMesh" id="mesh_raindrop"]
+material = SubResource("mat_rain")
+size = Vector3(0.04, 0.6, 0.04)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
+sky_top_color = Color(0.35, 0.68, 0.95, 1)
+sky_horizon_color = Color(0.78, 0.88, 0.98, 1)
+ground_bottom_color = Color(0.24, 0.52, 0.22, 1)
+ground_horizon_color = Color(0.72, 0.84, 0.74, 1)
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("ProceduralSkyMaterial_1")
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 2
+ambient_light_color = Color(0.85, 0.9, 0.95, 1)
+ambient_light_energy = 0.78
+tonemap_mode = 3
+tonemap_exposure = 1.05
+glow_enabled = true
+glow_intensity = 0.75
+glow_strength = 0.95
+glow_bloom = 0.2
+
+[sub_resource type="BoxShape3D" id="shape_ground"]
+size = Vector3(180, 1, 140)
+
+[sub_resource type="StandardMaterial3D" id="mat_grass"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.26, 0.56, 0.24, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="mesh_grass"]
+material = SubResource("mat_grass")
+size = Vector3(180, 1, 140)
+
+[sub_resource type="StandardMaterial3D" id="mat_shoulder"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.74, 0.65, 0.5, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="mesh_shoulder_ew"]
+material = SubResource("mat_shoulder")
+size = Vector3(150, 0.22, 24)
+
+[sub_resource type="StandardMaterial3D" id="mat_asphalt"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.22, 0.24, 0.28, 1)
+roughness = 0.75
+
+[sub_resource type="BoxMesh" id="mesh_road_ew"]
+material = SubResource("mat_asphalt")
+size = Vector3(145, 0.25, 18)
+
+[sub_resource type="BoxMesh" id="mesh_road_ns"]
+material = SubResource("mat_asphalt")
+size = Vector3(18, 0.25, 115)
+
+[sub_resource type="CylinderMesh" id="mesh_roundabout_ring"]
+material = SubResource("mat_asphalt")
+top_radius = 24.0
+bottom_radius = 24.0
+height = 0.26
+
+[sub_resource type="StandardMaterial3D" id="mat_curb"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.75, 0.76, 0.78, 1)
+roughness = 0.6
+
+[sub_resource type="BoxMesh" id="mesh_curb_ew"]
+material = SubResource("mat_curb")
+size = Vector3(145, 0.45, 0.8)
+
+[sub_resource type="BoxMesh" id="mesh_curb_ns"]
+material = SubResource("mat_curb")
+size = Vector3(0.8, 0.45, 115)
+
+[sub_resource type="StandardMaterial3D" id="mat_guardrail"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.88, 0.9, 0.94, 1)
+metallic = 0.25
+roughness = 0.25
+
+[sub_resource type="BoxMesh" id="mesh_guardrail_ew"]
+material = SubResource("mat_guardrail")
+size = Vector3(145, 0.3, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="mat_line_white"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.94, 0.94, 0.96, 0.9)
+
+[sub_resource type="BoxMesh" id="mesh_zebra_strip"]
+material = SubResource("mat_line_white")
+size = Vector3(0.75, 0.28, 15)
+
+[sub_resource type="BoxShape3D" id="shape_car_collider"]
+size = Vector3(1.85, 1.5, 4)
+
+[sub_resource type="BoxShape3D" id="shape_zone"]
+size = Vector3(10, 2.5, 10)
+
+[sub_resource type="StandardMaterial3D" id="mat_sppg_zone"]
+transparency = 1
+albedo_color = Color(0.1, 0.88, 0.35, 0.35)
+
+[sub_resource type="BoxMesh" id="mesh_sppg_zone"]
+material = SubResource("mat_sppg_zone")
+size = Vector3(10, 0.1, 10)
+
+[sub_resource type="StandardMaterial3D" id="mat_school_zone"]
+transparency = 1
+albedo_color = Color(0.95, 0.55, 0.1, 0.4)
+
+[sub_resource type="BoxMesh" id="mesh_school_zone"]
+material = SubResource("mat_school_zone")
+size = Vector3(10, 0.1, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glass"]
+bg_color = Color(0.06, 0.1, 0.18, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.5, 0.85, 0.45)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.12, 0.14, 0.18, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(0.2, 0.9, 0.4, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.15, 0.45, 0.85, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
+bg_color = Color(0.08, 0.22, 0.14, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.95, 0.5, 0.7)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hint"]
+bg_color = Color(0.08, 0.12, 0.18, 0.75)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
+bg_color = Color(0.07, 0.1, 0.16, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.82, 0.2, 0.85)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 12
+
+[node name="Main" type="Node3D" unique_id=1702497775]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1208655850]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1554366527]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 32, 0)
+light_color = Color(1, 0.98, 0.94, 1)
+light_energy = 1.15
+shadow_enabled = true
+shadow_blur = 1.6
+directional_shadow_split_1 = 0.2
+directional_shadow_split_2 = 0.5
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1881186636]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1681436097]
+shape = SubResource("shape_ground")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=636356273]
+mesh = SubResource("mesh_grass")
+
+[node name="RoadNetwork" type="Node3D" parent="." unique_id=1166592416]
+
+[node name="SandShoulderEW" type="MeshInstance3D" parent="RoadNetwork" unique_id=255023825]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
+mesh = SubResource("mesh_shoulder_ew")
+
+[node name="RoadEW" type="MeshInstance3D" parent="RoadNetwork" unique_id=1594645282]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("mesh_road_ew")
+
+[node name="RoadNS" type="MeshInstance3D" parent="RoadNetwork" unique_id=1618850538]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("mesh_road_ns")
+
+[node name="RoundaboutRing" type="MeshInstance3D" parent="RoadNetwork" unique_id=1365470298]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+mesh = SubResource("mesh_roundabout_ring")
+
+[node name="CentralFountain" parent="RoadNetwork" unique_id=116295904 instance=ExtResource("13_fountain")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.66829216, -0.5543134, 0.7101543)
+
+[node name="CurbNorth" type="MeshInstance3D" parent="RoadNetwork" unique_id=781605185]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, -9.4)
+mesh = SubResource("mesh_curb_ew")
+
+[node name="CurbSouth" type="MeshInstance3D" parent="RoadNetwork" unique_id=1731707153]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 9.4)
+mesh = SubResource("mesh_curb_ew")
+
+[node name="CurbWest" type="MeshInstance3D" parent="RoadNetwork" unique_id=802240119]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.4, 0.22, 0)
+mesh = SubResource("mesh_curb_ns")
+
+[node name="CurbEast" type="MeshInstance3D" parent="RoadNetwork" unique_id=1540967629]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.4, 0.22, 0)
+mesh = SubResource("mesh_curb_ns")
+
+[node name="GuardrailSouth" type="MeshInstance3D" parent="RoadNetwork" unique_id=98248586]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 9.8)
+mesh = SubResource("mesh_guardrail_ew")
+
+[node name="ZebraWest" type="MeshInstance3D" parent="RoadNetwork" unique_id=2123366890]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0.14, 0)
+mesh = SubResource("mesh_zebra_strip")
+
+[node name="ZebraEast" type="MeshInstance3D" parent="RoadNetwork" unique_id=751783531]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0.14, 0)
+mesh = SubResource("mesh_zebra_strip")
+
+[node name="ZebraNorth" type="MeshInstance3D" parent="RoadNetwork" unique_id=56801528]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.14, -26)
+mesh = SubResource("mesh_zebra_strip")
+
+[node name="ZebraSouth" type="MeshInstance3D" parent="RoadNetwork" unique_id=1517454296]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.14, 26)
+mesh = SubResource("mesh_zebra_strip")
+
+[node name="Pothole1" parent="RoadNetwork" unique_id=1113965825 instance=ExtResource("11_pothole")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.13, 3.2)
+
+[node name="Pothole2" parent="RoadNetwork" unique_id=1086158447 instance=ExtResource("11_pothole")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.13, -3.2)
+
+[node name="CityBuildings" type="Node3D" parent="." unique_id=1067395580]
+
+[node name="BuildingSPPG" parent="CityBuildings" unique_id=315755139 instance=ExtResource("9_sppg_bldg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, -14)
+
+[node name="BuildingSchool" parent="CityBuildings" unique_id=974491949 instance=ExtResource("10_school_bldg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, -14)
+
+[node name="FlagSPPG" parent="CityBuildings" unique_id=532618677 instance=ExtResource("17_flag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58, 0, -6.5)
+
+[node name="FlagSchool" parent="CityBuildings" unique_id=63848990 instance=ExtResource("17_flag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47, 0, -4.5)
+
+[node name="WarungWest" parent="CityBuildings" unique_id=1994890596 instance=ExtResource("18_warung")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -15.5)
+
+[node name="WarungEast" parent="CityBuildings" unique_id=497453038 instance=ExtResource("18_warung")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -15.5)
+
+[node name="BuildingPolice" parent="CityBuildings" unique_id=1967548764 instance=ExtResource("14_police")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 22)
+
+[node name="BuildingFireStation" parent="CityBuildings" unique_id=572519537 instance=ExtResource("15_fire")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 22)
+
+[node name="House1" parent="CityBuildings" unique_id=2045131750 instance=ExtResource("16_house")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0, -22)
+
+[node name="House2" parent="CityBuildings" unique_id=1215091625 instance=ExtResource("16_house")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, -22)
+
+[node name="TreesAndProps" type="Node3D" parent="." unique_id=1342923249]
+
+[node name="PalmWarung1" parent="TreesAndProps" unique_id=628755982 instance=ExtResource("19_palm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -18)
+
+[node name="PalmWarung2" parent="TreesAndProps" unique_id=1132131617 instance=ExtResource("19_palm")]
+transform = Transform3D(0.9, 0, 0.43589, 0, 1, 0, -0.43589, 0, 0.9, -22, 0, -18.5)
+
+[node name="PalmWarung3" parent="TreesAndProps" unique_id=2104826304 instance=ExtResource("19_palm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -18)
+
+[node name="PalmWarung4" parent="TreesAndProps" unique_id=288483390 instance=ExtResource("19_palm")]
+transform = Transform3D(0.85, 0, -0.526783, 0, 1, 0, 0.526783, 0, 0.85, 22, 0, -18.5)
+
+[node name="Tree1" parent="TreesAndProps" unique_id=1414882022 instance=ExtResource("7_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 0, -13)
+
+[node name="Tree2" parent="TreesAndProps" unique_id=458776285 instance=ExtResource("7_tree")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 65, 0, -13)
+
+[node name="TreeSouth1" parent="TreesAndProps" unique_id=537228009 instance=ExtResource("7_tree")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -48, 0, 14)
+
+[node name="TreeSouth2" parent="TreesAndProps" unique_id=1375609722 instance=ExtResource("7_tree")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 48, 0, 14)
+
+[node name="Pine1" parent="TreesAndProps" unique_id=147206797 instance=ExtResource("20_pine")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -20, 0, 14)
+
+[node name="Pine2" parent="TreesAndProps" unique_id=1187970501 instance=ExtResource("20_pine")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 20, 0, 14)
+
+[node name="Cypress1" parent="TreesAndProps" unique_id=1821615572 instance=ExtResource("21_cypress")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0, -13.5)
+
+[node name="Cypress2" parent="TreesAndProps" unique_id=1384104240 instance=ExtResource("21_cypress")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 8.5, 0, -13.5)
+
+[node name="Cypress3" parent="TreesAndProps" unique_id=283665200 instance=ExtResource("21_cypress")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0, 13.5)
+
+[node name="Cypress4" parent="TreesAndProps" unique_id=529572320 instance=ExtResource("21_cypress")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 8.5, 0, 13.5)
+
+[node name="Lamp1" parent="TreesAndProps" unique_id=1591366900 instance=ExtResource("8_lamp")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -40, 0, 10.2)
+
+[node name="Lamp2" parent="TreesAndProps" unique_id=204086576 instance=ExtResource("8_lamp")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 40, 0, 10.2)
+
+[node name="Lamp3" parent="TreesAndProps" unique_id=1287916742 instance=ExtResource("8_lamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0, -35)
+
+[node name="Lamp4" parent="TreesAndProps" unique_id=1309890260 instance=ExtResource("8_lamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0, 35)
+
+[node name="PlayerCar" type="CharacterBody3D" parent="." unique_id=1312802250 groups=["player"]]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -50, 0.25, -2)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_car")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCar" unique_id=1118121069]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+shape = SubResource("shape_car_collider")
+
+[node name="CarMBGVisual" parent="PlayerCar" unique_id=564137087 instance=ExtResource("6_car_visual")]
+
+[node name="WaypointArrow" parent="." unique_id=873788340 node_paths=PackedStringArray("follow_target") instance=ExtResource("26_arrow")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0.25, -2)
+follow_target = NodePath("../PlayerCar")
+
+[node name="PlayerPedestrian" parent="." unique_id=1905246171 node_paths=PackedStringArray("car_target", "camera_node") instance=ExtResource("27_pedestrian")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0.25, -2)
+collision_layer = 4
+collision_mask = 1
+car_target = NodePath("../PlayerCar")
+camera_node = NodePath("../Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=318160541 node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -50, 17, 15)
+current = true
+fov = 50.0
+script = ExtResource("2_cam")
+target = NodePath("../PlayerCar")
+
+[node name="SPPG_Depot" type="Area3D" parent="." unique_id=1858171141]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0.15, -2)
+script = ExtResource("3_zone")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SPPG_Depot" unique_id=641056728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("shape_zone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SPPG_Depot" unique_id=1973552943]
+mesh = SubResource("mesh_sppg_zone")
+
+[node name="PetugasSPPG" parent="." unique_id=1782867329 instance=ExtResource("5_petugas")]
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, -44, 0.15, -6.5)
+
+[node name="School_1" type="Area3D" parent="." unique_id=1546555063]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.15, -2)
+script = ExtResource("3_zone")
+zone_type = 1
+school_index = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="School_1" unique_id=1137912979]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("shape_zone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="School_1" unique_id=781839458]
+mesh = SubResource("mesh_school_zone")
+
+[node name="Label3D" type="Label3D" parent="School_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
+text = "🏫 1. SDN 01 TENJO"
+font_size = 22
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+modulate = Color(1, 0.8, 0.1, 1)
+
+[node name="School_2" type="Area3D" parent="." unique_id=1546555064]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.15, 30)
+script = ExtResource("3_zone")
+zone_type = 1
+school_index = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="School_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("shape_zone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="School_2"]
+mesh = SubResource("mesh_school_zone")
+
+[node name="Label3D" type="Label3D" parent="School_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
+text = "🏫 2. SDN 02 HARAPAN"
+font_size = 22
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+modulate = Color(1, 0.8, 0.1, 1)
+
+[node name="School_3" type="Area3D" parent="." unique_id=1546555065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.15, 30)
+script = ExtResource("3_zone")
+zone_type = 1
+school_index = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="School_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("shape_zone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="School_3"]
+mesh = SubResource("mesh_school_zone")
+
+[node name="Label3D" type="Label3D" parent="School_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
+text = "🏫 3. SMPN 01 NUSA"
+font_size = 22
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+modulate = Color(1, 0.8, 0.1, 1)
+
+[node name="School_4" type="Area3D" parent="." unique_id=1546555066]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -42)
+script = ExtResource("3_zone")
+zone_type = 1
+school_index = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="School_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("shape_zone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="School_4"]
+mesh = SubResource("mesh_school_zone")
+
+[node name="Label3D" type="Label3D" parent="School_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
+text = "🏫 4. SDN 03 GARUDA"
+font_size = 22
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+modulate = Color(1, 0.8, 0.1, 1)
+
+[node name="School_5" type="Area3D" parent="." unique_id=1546555067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0.15, 12)
+script = ExtResource("3_zone")
+zone_type = 1
+school_index = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="School_5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("shape_zone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="School_5"]
+mesh = SubResource("mesh_school_zone")
+
+[node name="Label3D" type="Label3D" parent="School_5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
+text = "🏫 5. MADRASAH TENJO"
+font_size = 22
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+modulate = Color(1, 0.8, 0.1, 1)
+
+[node name="BuildingSPBU" parent="." instance=ExtResource("28_spbu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 16)
+
+[node name="RoadBlockade" parent="." instance=ExtResource("29_blockade")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 22)
+
+[node name="WeatherController" type="Node3D" parent="." node_paths=PackedStringArray("sun_light", "rain_particles", "target_follow")]
+script = ExtResource("30_weather")
+sun_light = NodePath("../DirectionalLight3D")
+rain_particles = NodePath("RainParticles")
+target_follow = NodePath("../PlayerCar")
+
+[node name="RainParticles" type="CPUParticles3D" parent="WeatherController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18, 0)
+emitting = false
+visible = false
+amount = 650
+lifetime = 1.0
+mesh = SubResource("mesh_raindrop")
+emission_shape = 3
+emission_box_extents = Vector3(35, 1, 35)
+direction = Vector3(-0.2, -1, -0.1)
+spread = 5.0
+initial_velocity_min = 26.0
+initial_velocity_max = 34.0
+
+[node name="WargaGroup" parent="." unique_id=1411904466 instance=ExtResource("22_warga")]
+
+[node name="DemonstranCrowd" parent="." unique_id=977557956 instance=ExtResource("23_demonstran")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 25)
+
+[node name="SPPGKitchenStaff" parent="." unique_id=1615406060 instance=ExtResource("24_sppg_kitchen")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0.15, -11)
+
+[node name="NPCGuruSDN" parent="." unique_id=1125325273 instance=ExtResource("25_guru")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.15, -5.5)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1682896991]
+script = ExtResource("4_hud")
+
+[node name="TopCenterCard" type="Panel" parent="HUD" unique_id=1352133806]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -230.0
+offset_top = 16.0
+offset_right = 230.0
+offset_bottom = 86.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+
+[node name="TimerLabel" type="Label" parent="HUD/TopCenterCard" unique_id=1473760926]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 6.0
+offset_bottom = 34.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 20
+text = "⏱️ Waktu: 01:30"
+horizontal_alignment = 1
+
+[node name="NavGuide" type="Label" parent="HUD/TopCenterCard" unique_id=538419321]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -34.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.35, 0.9, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 13
+text = "➔ Rute: Menuju SPPG (Zona Hijau)"
+horizontal_alignment = 1
+
+[node name="LeftDashboard" type="Panel" parent="HUD" unique_id=73582554]
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 274.0
+offset_bottom = 264.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+
+[node name="Avatar" type="TextureRect" parent="HUD/LeftDashboard" unique_id=803240693]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 62.0
+offset_bottom = 62.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="HUD/LeftDashboard" unique_id=1603558323]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 12.0
+offset_right = 240.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+text = "Fatur 'Si Kilat'"
+
+[node name="StatusBadge" type="Label" parent="HUD/LeftDashboard" unique_id=900237084]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 34.0
+offset_right = 240.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0.3, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 11
+text = "● Perwira Istana"
+
+[node name="FoodLabel" type="Label" parent="HUD/LeftDashboard" unique_id=1105383115]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 68.0
+offset_right = 236.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 13
+text = "🍱 Kondisi Ransum: 100%"
+
+[node name="FoodBar" type="ProgressBar" parent="HUD/LeftDashboard" unique_id=629688159]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 90.0
+offset_right = 236.0
+offset_bottom = 104.0
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+value = 100.0
+show_percentage = false
+
+[node name="SteerValLabel" type="Label" parent="HUD/LeftDashboard" unique_id=1658108659]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 114.0
+offset_right = 236.0
+offset_bottom = 132.0
+theme_override_font_sizes/font_size = 12
+text = "Sensitivitas Setir: 1.0x"
+
+[node name="SteerSlider" type="HSlider" parent="HUD/LeftDashboard" unique_id=2062263186]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 134.0
+offset_right = 236.0
+offset_bottom = 154.0
+min_value = 0.4
+max_value = 2.2
+step = 0.1
+value = 1.0
+
+[node name="WalkToggleButton" type="Button" parent="HUD/LeftDashboard" unique_id=449423726]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 168.0
+offset_right = 236.0
+offset_bottom = 206.0
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "🚶 Turun Mobil (Tekan E)"
+
+[node name="ToastBanner" type="Panel" parent="HUD" unique_id=297640333]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -260.0
+offset_top = 96.0
+offset_right = 260.0
+offset_bottom = 136.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_toast")
+
+[node name="ToastLabel" type="Label" parent="HUD/ToastBanner" unique_id=382362851]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9, 1, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "🚚 Ransum MBG Dimuat! Kawal makanan sampai tujuan!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Minimap" type="Control" parent="HUD" unique_id=208726728 node_paths=PackedStringArray("player")]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -240.0
+offset_top = 16.0
+offset_right = -20.0
+offset_bottom = 176.0
+grow_horizontal = 0
+script = ExtResource("12_minimap")
+player = NodePath("../../PlayerCar")
+
+[node name="CameraHint" type="Label" parent="HUD" unique_id=2145985564]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -440.0
+offset_top = -40.0
+offset_right = 440.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_hint")
+text = "🎮 WASD: Arah Gerak (W=Atas, S=Bawah, A=Kiri, D=Kanan) | Spasi: Rem | E: Turun/Naik Mobil | Tab: Ganti Mode Setir | R: Restart"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MissionModal" type="Panel" parent="HUD" unique_id=121463671]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -170.0
+offset_right = 260.0
+offset_bottom = 170.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="TitleLabel" type="Label" parent="HUD/MissionModal" unique_id=1114281687]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 18.0
+offset_bottom = 50.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 22
+text = "🎉 PENGIRIMAN SUKSES!"
+horizontal_alignment = 1
+
+[node name="StarsLabel" type="Label" parent="HUD/MissionModal" unique_id=2131869058]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 52.0
+offset_bottom = 86.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.1, 1)
+theme_override_font_sizes/font_size = 26
+text = "★★★"
+horizontal_alignment = 1
+
+[node name="DetailLabel" type="Label" parent="HUD/MissionModal" unique_id=742243731]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 88.0
+offset_right = -20.0
+offset_bottom = 120.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "Skor: 1250 | Hadiah: +450 Koin Kerajaan"
+horizontal_alignment = 1
+
+[node name="QuoteBox" type="Panel" parent="HUD/MissionModal" unique_id=922602054]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 130.0
+offset_right = -24.0
+offset_bottom = 220.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+
+[node name="QuoteLabel" type="Label" parent="HUD/MissionModal/QuoteBox" unique_id=1991917352]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.85, 0.95, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "👩‍🏫 Ibu Sri (SDN 01): 'Alhamdulillah! Makanannya tepat waktu & sangat higienis!'"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ButtonContainer" type="HBoxContainer" parent="HUD/MissionModal" unique_id=1785696517]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -68.0
+offset_right = -24.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 16
+
+[node name="RestartButton" type="Button" parent="HUD/MissionModal/ButtonContainer" unique_id=1765115536]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "🔄 Kirim Lagi (R)"
+
+[node name="MenuButton" type="Button" parent="HUD/MissionModal/ButtonContainer" unique_id=1955388949]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "🏠 Menu Utama"

@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_palm_trunk"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.48, 0.35, 0.24, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_palm_leaf_dark"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.18, 0.52, 0.2, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="mat_palm_leaf_light"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.28, 0.65, 0.25, 1)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="mesh_palm_trunk"]
+material = SubResource("mat_palm_trunk")
+top_radius = 0.18
+bottom_radius = 0.32
+height = 6.5
+
+[sub_resource type="BoxMesh" id="mesh_frond_main"]
+material = SubResource("mat_palm_leaf_dark")
+size = Vector3(0.5, 0.08, 3.2)
+
+[sub_resource type="BoxMesh" id="mesh_frond_side"]
+material = SubResource("mat_palm_leaf_light")
+size = Vector3(0.45, 0.08, 2.8)
+
+[node name="TreePalm" type="Node3D"]
+
+[node name="Trunk" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 0, 0, 1, 0.25, 3.2, 0)
+mesh = SubResource("mesh_palm_trunk")
+
+[node name="Frond1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0.5, 6.4, 1.2)
+mesh = SubResource("mesh_frond_main")
+
+[node name="Frond2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0.5, 6.4, -1.2)
+mesh = SubResource("mesh_frond_main")
+
+[node name="Frond3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0.5, 0.707107, 0, 0.866025, -0.5, -0.866025, 0.288675, 0.408248, 1.4, 6.4, 0.5)
+mesh = SubResource("mesh_frond_side")
+
+[node name="Frond4" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, -0.5, 0.707107, 0, 0.866025, 0.5, -0.866025, -0.288675, 0.408248, 1.4, 6.4, -0.5)
+mesh = SubResource("mesh_frond_side")
+
+[node name="Frond5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.5, 0.5, 0.707107, 0, 0.866025, -0.5, -0.866025, -0.288675, -0.408248, -0.4, 6.4, 0.5)
+mesh = SubResource("mesh_frond_side")
+
+[node name="Frond6" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.5, -0.5, 0.707107, 0, 0.866025, 0.5, -0.866025, 0.288675, -0.408248, -0.4, 6.4, -0.5)
+mesh = SubResource("mesh_frond_side")

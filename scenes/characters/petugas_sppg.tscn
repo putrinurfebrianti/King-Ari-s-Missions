@@ -1,0 +1,363 @@
+[gd_scene load_steps=39 format=3]
+
+[ext_resource type="Script" path="res://scripts/npc_petugas.gd" id="1_script"]
+
+[sub_resource type="StandardMaterial3D" id="mat_skin"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.96, 0.82, 0.72, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_hair"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.18, 0.14, 0.14, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_hairnet"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.2, 0.55, 0.92, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_hairnet_band"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.15, 0.46, 0.82, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_shirt"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.68, 0.82, 0.96, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_collar"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.11, 0.24, 0.58, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_apron"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.11, 0.24, 0.58, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_apron_pocket"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.14, 0.29, 0.65, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_badge_gold"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.96, 0.8, 0.18, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_badge_blue"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.08, 0.18, 0.45, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_pants"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.15, 0.18, 0.25, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_clogs"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_glove"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.98, 0.78, 0.15, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_bento"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.85, 0.55, 0.35, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_lid"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.96, 0.92, 0.85, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_dark"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.18, 0.15, 0.18, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_blush"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.95, 0.55, 0.6, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_shadow"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.3)
+
+[sub_resource type="CylinderMesh" id="mesh_shadow"]
+material = SubResource("mat_shadow")
+top_radius = 0.45
+bottom_radius = 0.45
+height = 0.02
+
+[sub_resource type="CapsuleMesh" id="mesh_leg"]
+material = SubResource("mat_pants")
+radius = 0.09
+height = 0.36
+
+[sub_resource type="BoxMesh" id="mesh_clogs"]
+material = SubResource("mat_clogs")
+size = Vector3(0.17, 0.13, 0.26)
+
+[sub_resource type="CapsuleMesh" id="mesh_body"]
+material = SubResource("mat_shirt")
+radius = 0.24
+height = 0.55
+
+[sub_resource type="BoxMesh" id="mesh_collar"]
+material = SubResource("mat_collar")
+size = Vector3(0.28, 0.08, 0.14)
+
+[sub_resource type="BoxMesh" id="mesh_apron_bib"]
+material = SubResource("mat_apron")
+size = Vector3(0.28, 0.28, 0.06)
+
+[sub_resource type="BoxMesh" id="mesh_apron_skirt"]
+material = SubResource("mat_apron")
+size = Vector3(0.36, 0.36, 0.08)
+
+[sub_resource type="BoxMesh" id="mesh_apron_pocket"]
+material = SubResource("mat_apron_pocket")
+size = Vector3(0.24, 0.14, 0.02)
+
+[sub_resource type="CylinderMesh" id="mesh_badge_ring"]
+material = SubResource("mat_badge_gold")
+top_radius = 0.055
+bottom_radius = 0.055
+height = 0.01
+
+[sub_resource type="CylinderMesh" id="mesh_badge_center"]
+material = SubResource("mat_badge_blue")
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.012
+
+[sub_resource type="SphereMesh" id="mesh_head"]
+material = SubResource("mat_skin")
+radius = 0.28
+height = 0.56
+
+[sub_resource type="CylinderMesh" id="mesh_hairnet_band"]
+material = SubResource("mat_hairnet_band")
+top_radius = 0.3
+bottom_radius = 0.28
+height = 0.08
+
+[sub_resource type="SphereMesh" id="mesh_hairnet_puff"]
+material = SubResource("mat_hairnet")
+radius = 0.33
+height = 0.44
+
+[sub_resource type="SphereMesh" id="mesh_eye"]
+material = SubResource("mat_dark")
+radius = 0.035
+height = 0.07
+
+[sub_resource type="SphereMesh" id="mesh_blush"]
+material = SubResource("mat_blush")
+radius = 0.04
+height = 0.03
+
+[sub_resource type="CapsuleMesh" id="mesh_arm"]
+material = SubResource("mat_shirt")
+radius = 0.07
+height = 0.32
+
+[sub_resource type="SphereMesh" id="mesh_glove"]
+material = SubResource("mat_glove")
+radius = 0.085
+height = 0.17
+
+[sub_resource type="BoxMesh" id="mesh_bento_box"]
+material = SubResource("mat_bento")
+size = Vector3(0.36, 0.22, 0.26)
+
+[sub_resource type="BoxMesh" id="mesh_bento_lid"]
+material = SubResource("mat_lid")
+size = Vector3(0.38, 0.05, 0.28)
+
+[sub_resource type="Animation" id="Animation_idle_wave"]
+resource_name = "idle_wave"
+length = 1.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:position:y")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.04, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visuals/RightArmPivot:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8, 1.2, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.2), Vector3(0, 0, -0.25), Vector3(0, 0, 0.2), Vector3(0, 0, -0.25), Vector3(0, 0, 0.2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sppg"]
+_data = {
+&"idle_wave": SubResource("Animation_idle_wave")
+}
+
+[node name="PetugasSPPG" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Shadow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+mesh = SubResource("mesh_shadow")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="LeftLeg" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 0.25, 0)
+mesh = SubResource("mesh_leg")
+
+[node name="LeftClogs" type="MeshInstance3D" parent="Visuals/LeftLeg"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, 0.03)
+mesh = SubResource("mesh_clogs")
+
+[node name="RightLeg" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12, 0.25, 0)
+mesh = SubResource("mesh_leg")
+
+[node name="RightClogs" type="MeshInstance3D" parent="Visuals/RightLeg"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, 0.03)
+mesh = SubResource("mesh_clogs")
+
+[node name="Body" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68, 0)
+mesh = SubResource("mesh_body")
+
+[node name="PoloCollar" type="MeshInstance3D" parent="Visuals/Body"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0.26, 0.02)
+mesh = SubResource("mesh_collar")
+
+[node name="ApronBib" type="MeshInstance3D" parent="Visuals/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09, 0.21)
+mesh = SubResource("mesh_apron_bib")
+
+[node name="BadgeRing" type="MeshInstance3D" parent="Visuals/Body/ApronBib"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.04, 0.032)
+mesh = SubResource("mesh_badge_ring")
+
+[node name="BadgeCenter" type="MeshInstance3D" parent="Visuals/Body/ApronBib/BadgeRing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0)
+mesh = SubResource("mesh_badge_center")
+
+[node name="ApronSkirt" type="MeshInstance3D" parent="Visuals/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0.21)
+mesh = SubResource("mesh_apron_skirt")
+
+[node name="ApronPocket" type="MeshInstance3D" parent="Visuals/Body/ApronSkirt"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, 0.045)
+mesh = SubResource("mesh_apron_pocket")
+
+[node name="Head" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22, 0)
+mesh = SubResource("mesh_head")
+
+[node name="HairnetBand" type="MeshInstance3D" parent="Visuals/Head"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, 0, 0.12, 0.02)
+mesh = SubResource("mesh_hairnet_band")
+
+[node name="HairnetPuff" type="MeshInstance3D" parent="Visuals/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, -0.04)
+mesh = SubResource("mesh_hairnet_puff")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="Visuals/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.02, 0.25)
+mesh = SubResource("mesh_eye")
+
+[node name="EyeRight" type="MeshInstance3D" parent="Visuals/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.02, 0.25)
+mesh = SubResource("mesh_eye")
+
+[node name="BlushLeft" type="MeshInstance3D" parent="Visuals/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, -0.05, 0.23)
+mesh = SubResource("mesh_blush")
+
+[node name="BlushRight" type="MeshInstance3D" parent="Visuals/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, -0.05, 0.23)
+mesh = SubResource("mesh_blush")
+
+[node name="LeftArm" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, -0.3, 0.72, 0.1)
+mesh = SubResource("mesh_arm")
+
+[node name="LeftGlove" type="MeshInstance3D" parent="Visuals/LeftArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18, 0)
+mesh = SubResource("mesh_glove")
+
+[node name="RightArmPivot" type="Node3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32, 0.85, 0)
+
+[node name="RightArm" type="MeshInstance3D" parent="Visuals/RightArmPivot"]
+transform = Transform3D(0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0, 1, 0.12, 0.1, 0)
+mesh = SubResource("mesh_arm")
+
+[node name="RightGlove" type="MeshInstance3D" parent="Visuals/RightArmPivot/RightArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
+mesh = SubResource("mesh_glove")
+
+[node name="BentoContainer" type="Node3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, 0.62, 0.28)
+
+[node name="Box" type="MeshInstance3D" parent="Visuals/BentoContainer"]
+mesh = SubResource("mesh_bento_box")
+
+[node name="Lid" type="MeshInstance3D" parent="Visuals/BentoContainer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13, 0)
+mesh = SubResource("mesh_bento_lid")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_sppg")
+}
+autoplay = "idle_wave"
+
+[node name="SpeechPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05, 0)
+
+[node name="SpeechLabel" type="Label3D" parent="SpeechPivot"]
+billboard = 1
+double_sided = false
+text = "Ransum Siap! 🍱"
+font_size = 32
+outline_size = 8
+outline_color = Color(0, 0, 0, 0.8)
+vertical_alignment = 1

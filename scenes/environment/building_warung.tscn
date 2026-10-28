@@ -1,0 +1,161 @@
+[gd_scene load_steps=22 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_terracotta_roof"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.84, 0.35, 0.22, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="mat_corrugated_zinc"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.76, 0.79, 0.82, 1)
+metallic = 0.35
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="mat_wall_cream"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.93, 0.84, 0.72, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="mat_wood_dark"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.36, 0.22, 0.14, 1)
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="mat_wood_furniture"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.58, 0.38, 0.22, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="mat_menu_board"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.12, 0.42, 0.78, 1)
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="mat_floor_concrete"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.75, 0.72, 0.68, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="mesh_porch_floor"]
+material = SubResource("mat_floor_concrete")
+size = Vector3(9.5, 0.25, 7.5)
+
+[sub_resource type="BoxMesh" id="mesh_main_wall"]
+material = SubResource("mat_wall_cream")
+size = Vector3(8.5, 3.2, 5.0)
+
+[sub_resource type="PrismMesh" id="mesh_lower_roof"]
+material = SubResource("mat_terracotta_roof")
+size = Vector3(9.8, 2.2, 7.8)
+
+[sub_resource type="BoxMesh" id="mesh_clerestory"]
+material = SubResource("mat_wall_cream")
+size = Vector3(5.5, 0.9, 4.2)
+
+[sub_resource type="PrismMesh" id="mesh_upper_roof"]
+material = SubResource("mat_terracotta_roof")
+size = Vector3(6.2, 2.0, 4.8)
+
+[sub_resource type="BoxMesh" id="mesh_zinc_canopy"]
+material = SubResource("mat_corrugated_zinc")
+size = Vector3(3.2, 0.1, 2.6)
+
+[sub_resource type="CylinderMesh" id="mesh_wood_post"]
+material = SubResource("mat_wood_dark")
+top_radius = 0.12
+bottom_radius = 0.12
+height = 2.6
+
+[sub_resource type="BoxMesh" id="mesh_table"]
+material = SubResource("mat_wood_furniture")
+size = Vector3(1.6, 0.75, 1.0)
+
+[sub_resource type="BoxMesh" id="mesh_stool"]
+material = SubResource("mat_wood_furniture")
+size = Vector3(0.45, 0.45, 0.45)
+
+[sub_resource type="BoxMesh" id="mesh_menu_panel"]
+material = SubResource("mat_menu_board")
+size = Vector3(2.4, 1.8, 0.05)
+
+[sub_resource type="BoxShape3D" id="shape_warung_col"]
+size = Vector3(9.6, 6.0, 7.6)
+
+[node name="BuildingWarung" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0, 0)
+shape = SubResource("shape_warung_col")
+
+[node name="PorchFloor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("mesh_porch_floor")
+
+[node name="BackWall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -1.0)
+mesh = SubResource("mesh_main_wall")
+
+[node name="PostFrontLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, 1.3, 3.2)
+mesh = SubResource("mesh_wood_post")
+
+[node name="PostFrontMid" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 1.3, 3.2)
+mesh = SubResource("mesh_wood_post")
+
+[node name="PostFrontRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 1.3, 3.2)
+mesh = SubResource("mesh_wood_post")
+
+[node name="LowerRoof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0.5)
+mesh = SubResource("mesh_lower_roof")
+
+[node name="Clerestory" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.8, 0)
+mesh = SubResource("mesh_clerestory")
+
+[node name="UpperRoof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.0, 0)
+mesh = SubResource("mesh_upper_roof")
+
+[node name="ZincCanopy" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -2.6, 2.7, 2.6)
+mesh = SubResource("mesh_zinc_canopy")
+
+[node name="DiningTable" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.5, 2.0)
+mesh = SubResource("mesh_table")
+
+[node name="Stool1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.35, 2.9)
+mesh = SubResource("mesh_stool")
+
+[node name="Stool2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.35, 2.0)
+mesh = SubResource("mesh_stool")
+
+[node name="Stool3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.35, 2.0)
+mesh = SubResource("mesh_stool")
+
+[node name="MenuBoard" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.6, 3.25)
+mesh = SubResource("mesh_menu_panel")
+
+[node name="MenuLabel" type="Label3D" parent="MenuBoard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.04)
+text = "WARUNG MBG
+• SOTO AYAM
+• NASI GIZI
+• ES TEH MANIS"
+font_size = 20
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)

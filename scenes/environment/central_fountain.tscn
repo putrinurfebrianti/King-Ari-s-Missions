@@ -1,0 +1,86 @@
+[gd_scene load_steps=12 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_grass_island"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.25, 0.65, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_flowers"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.95, 0.35, 0.45, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_stone_basin"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.85, 0.86, 0.88, 1)
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="mat_water"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.12, 0.72, 0.95, 0.82)
+transparency = 1
+roughness = 0.05
+emission_enabled = true
+emission = Color(0.08, 0.45, 0.75, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="CylinderMesh" id="mesh_grass_circle"]
+material = SubResource("mat_grass_island")
+top_radius = 8.5
+bottom_radius = 8.5
+height = 0.35
+
+[sub_resource type="CylinderMesh" id="mesh_outer_basin"]
+material = SubResource("mat_stone_basin")
+top_radius = 4.2
+bottom_radius = 4.4
+height = 0.8
+
+[sub_resource type="CylinderMesh" id="mesh_water_pool"]
+material = SubResource("mat_water")
+top_radius = 3.8
+bottom_radius = 3.8
+height = 0.75
+
+[sub_resource type="CylinderMesh" id="mesh_center_spire"]
+material = SubResource("mat_stone_basin")
+top_radius = 0.6
+bottom_radius = 0.9
+height = 2.4
+
+[sub_resource type="SphereMesh" id="mesh_water_spout"]
+material = SubResource("mat_water")
+radius = 1.0
+height = 1.6
+
+[sub_resource type="CylinderShape3D" id="shape_fountain_collision"]
+height = 2.5
+radius = 8.5
+
+[node name="CentralFountain" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("shape_fountain_collision")
+
+[node name="GrassCircle" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
+mesh = SubResource("mesh_grass_circle")
+
+[node name="OuterBasin" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+mesh = SubResource("mesh_outer_basin")
+
+[node name="WaterPool" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("mesh_water_pool")
+
+[node name="CenterSpire" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+mesh = SubResource("mesh_center_spire")
+
+[node name="WaterSpout" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, 0)
+mesh = SubResource("mesh_water_spout")

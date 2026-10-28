@@ -1,0 +1,188 @@
+[gd_scene load_steps=24 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_wall_white"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.96, 0.96, 0.98, 1)
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="mat_wall_cyan"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.1, 0.65, 0.9, 1)
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="mat_roof_blue"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.08, 0.22, 0.55, 1)
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="mat_canopy_blue"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.08, 0.55, 0.9, 1)
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="mat_paving"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.68, 0.7, 0.72, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_door_glass"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.18, 0.2, 0.22, 1)
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="mat_gold_badge"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.96, 0.78, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_green_unit"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.15, 0.45, 0.25, 1)
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="mesh_paving_yard"]
+material = SubResource("mat_paving")
+size = Vector3(18, 0.2, 14)
+
+[sub_resource type="BoxMesh" id="mesh_main_wall"]
+material = SubResource("mat_wall_white")
+size = Vector3(16, 4.2, 8)
+
+[sub_resource type="BoxMesh" id="mesh_skirt_cyan"]
+material = SubResource("mat_wall_cyan")
+size = Vector3(16.05, 1.1, 8.05)
+
+[sub_resource type="PrismMesh" id="mesh_roof"]
+material = SubResource("mat_roof_blue")
+size = Vector3(17, 3.2, 8.8)
+
+[sub_resource type="BoxMesh" id="mesh_canopy_beam"]
+material = SubResource("mat_canopy_blue")
+size = Vector3(14, 0.6, 3.5)
+
+[sub_resource type="BoxMesh" id="mesh_canopy_fascia"]
+material = SubResource("mat_canopy_blue")
+size = Vector3(14.2, 0.75, 0.15)
+
+[sub_resource type="CylinderMesh" id="mesh_bgn_logo_outer"]
+material = SubResource("mat_gold_badge")
+top_radius = 0.9
+bottom_radius = 0.9
+height = 0.05
+
+[sub_resource type="CylinderMesh" id="mesh_bgn_logo_inner"]
+material = SubResource("mat_roof_blue")
+top_radius = 0.75
+bottom_radius = 0.75
+height = 0.06
+
+[sub_resource type="BoxMesh" id="mesh_door"]
+material = SubResource("mat_door_glass")
+size = Vector3(1.6, 2.4, 0.1)
+
+[sub_resource type="BoxMesh" id="mesh_window"]
+material = SubResource("mat_door_glass")
+size = Vector3(1.2, 1.4, 0.1)
+
+[sub_resource type="BoxMesh" id="mesh_green_box"]
+material = SubResource("mat_green_unit")
+size = Vector3(1.4, 1.6, 0.9)
+
+[sub_resource type="BoxMesh" id="mesh_courtyard_wall"]
+material = SubResource("mat_wall_white")
+size = Vector3(0.3, 1.4, 13)
+
+[sub_resource type="BoxMesh" id="mesh_planter"]
+material = SubResource("mat_wall_cyan")
+size = Vector3(0.5, 0.4, 11)
+
+[sub_resource type="BoxShape3D" id="shape_building_collision"]
+size = Vector3(16.5, 7.5, 8.5)
+
+[node name="BuildingSPPG" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, -4)
+shape = SubResource("shape_building_collision")
+
+[node name="PavingYard" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 3)
+mesh = SubResource("mesh_paving_yard")
+
+[node name="MainBuilding" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -4)
+mesh = SubResource("mesh_main_wall")
+
+[node name="CyanSkirt" type="MeshInstance3D" parent="MainBuilding"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.55, 0)
+mesh = SubResource("mesh_skirt_cyan")
+
+[node name="RoofGable" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, -4)
+mesh = SubResource("mesh_roof")
+
+[node name="FrontCanopy" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 3.8, 0.2)
+mesh = SubResource("mesh_canopy_beam")
+
+[node name="CanopyFascia" type="MeshInstance3D" parent="FrontCanopy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.75)
+mesh = SubResource("mesh_canopy_fascia")
+
+[node name="SignLabel" type="Label3D" parent="FrontCanopy/CanopyFascia"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+text = "SATUAN PELAYANAN PEMENUHAN GIZI"
+font_size = 28
+outline_size = 6
+outline_color = Color(0.05, 0.12, 0.35, 1)
+
+[node name="BGNLogoOuter" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -5.2, 2.6, 0.05)
+mesh = SubResource("mesh_bgn_logo_outer")
+
+[node name="BGNLogoInner" type="MeshInstance3D" parent="BGNLogoOuter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+mesh = SubResource("mesh_bgn_logo_inner")
+
+[node name="LogoLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 2.6, 0.1)
+text = "BGN
+SPPG"
+font_size = 24
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[node name="DoorsCenter" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 1.2, 0.05)
+mesh = SubResource("mesh_door")
+
+[node name="Window1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 1.8, 0.05)
+mesh = SubResource("mesh_window")
+
+[node name="Window2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 1.8, 0.05)
+mesh = SubResource("mesh_window")
+
+[node name="GreenStorageUnit" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.8, 0.5)
+mesh = SubResource("mesh_green_box")
+
+[node name="SideWallLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.8, 0.7, 3.5)
+mesh = SubResource("mesh_courtyard_wall")
+
+[node name="PlanterLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.4, 0.2, 3.5)
+mesh = SubResource("mesh_planter")
+
+[node name="SideWallRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.8, 0.7, 3.5)
+mesh = SubResource("mesh_courtyard_wall")

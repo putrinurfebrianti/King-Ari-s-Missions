@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_trunk"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.44, 0.3, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_cypress_leaf_mid"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.24, 0.6, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_cypress_leaf_bright"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.38, 0.72, 0.32, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_grass"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.35, 0.7, 0.25, 1)
+
+[sub_resource type="CylinderMesh" id="mesh_trunk"]
+material = SubResource("mat_trunk")
+top_radius = 0.14
+bottom_radius = 0.22
+height = 1.2
+
+[sub_resource type="CapsuleMesh" id="mesh_column_body"]
+material = SubResource("mat_cypress_leaf_mid")
+radius = 0.85
+height = 4.8
+
+[sub_resource type="SphereMesh" id="mesh_column_top"]
+material = SubResource("mat_cypress_leaf_bright")
+radius = 0.65
+height = 1.4
+
+[sub_resource type="CylinderMesh" id="mesh_base_grass"]
+material = SubResource("mat_grass")
+top_radius = 0.8
+bottom_radius = 0.95
+height = 0.1
+
+[node name="TreeCypress" type="Node3D"]
+
+[node name="GrassBase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("mesh_base_grass")
+
+[node name="Trunk" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("mesh_trunk")
+
+[node name="FoliageColumn" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("mesh_column_body")
+
+[node name="FoliageTop" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 0)
+mesh = SubResource("mesh_column_top")

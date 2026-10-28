@@ -1,0 +1,62 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/npc_character_sprite.gd" id="1_sprite_script"]
+
+[node name="SPPGKitchenStaff" type="Node3D"]
+
+[node name="TitleLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+billboard = 1
+text = "🍳 Tim Dapur Sentral SPPG (Nutrisionis & Koki)"
+font_size = 19
+outline_size = 4
+modulate = Color(0.4, 0.85, 1, 1)
+
+[node name="ChefStirring" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 0)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/sppg_chef_stirring.png"
+pixel_size = 0.016
+sprite_y_offset = 0.85
+bob_amplitude = 0.03
+bob_speed = 3.2
+character_name = "Koki SPPG (Sup Sayur)"
+dialog_text = "Sup sayur & telur rebus matang sempurna!"
+
+[node name="Sprite3D" type="Sprite3D" parent="ChefStirring"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+billboard = 2
+
+[node name="ChefTray" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0, 0.3)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/sppg_chef_tray.png"
+pixel_size = 0.0155
+sprite_y_offset = 0.85
+bob_amplitude = 0.025
+bob_speed = 3.6
+character_name = "Petugas Distribusi"
+dialog_text = "Nasi & lauk bergizi hangat siap dimuat ke mobil!"
+is_walker = true
+walk_speed = 1.8
+patrol_waypoints = [Vector3(-46.0, 0.15, -11.0), Vector3(-43.0, 0.15, -7.5)]
+wait_duration = 2.0
+
+[node name="Sprite3D" type="Sprite3D" parent="ChefTray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+billboard = 2
+
+[node name="Supervisor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 0, 0)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/sppg_supervisor_clipboard.png"
+pixel_size = 0.016
+sprite_y_offset = 0.70
+bob_amplitude = 0.02
+bob_speed = 2.8
+character_name = "Supervisor QC Gizi"
+dialog_text = "Semua paket 100% higienis & lulus uji QC Gizi!"
+
+[node name="Sprite3D" type="Sprite3D" parent="Supervisor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+billboard = 2

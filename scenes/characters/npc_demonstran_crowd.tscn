@@ -1,0 +1,94 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/npc_character_sprite.gd" id="1_sprite_script"]
+
+[sub_resource type="StandardMaterial3D" id="mat_barricade_stripe"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.95, 0.45, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="mesh_barricade"]
+material = SubResource("mat_barricade_stripe")
+size = Vector3(4.5, 0.5, 0.2)
+
+[node name="DemonstranCrowd" type="Node3D"]
+
+[node name="HeaderLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
+text = "📢 Aksi Damai: Kawal Program MBG Tepat Sasaran!"
+font_size = 20
+outline_size = 4
+modulate = Color(1, 0.35, 0.35, 1)
+
+[node name="DemoBanner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 0)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/demonstran_banner.png"
+pixel_size = 0.017
+sprite_y_offset = 0.85
+bob_amplitude = 0.04
+bob_speed = 4.2
+character_name = "Demonstran Spanduk"
+dialog_text = "Kawal distribusi MBG transparan dan tepat sasaran!"
+is_walker = true
+walk_speed = 1.1
+patrol_waypoints = [Vector3(-2.8, 0.15, 27.0), Vector3(2.8, 0.15, 27.0)]
+wait_duration = 1.5
+
+[node name="Sprite3D" type="Sprite3D" parent="DemoBanner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+billboard = 2
+
+[node name="DemoSign" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0.3)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/demonstran_sign.png"
+pixel_size = 0.0155
+sprite_y_offset = 0.85
+bob_amplitude = 0.035
+bob_speed = 3.8
+character_name = "Demonstran Poster"
+dialog_text = "Pastikan kualitas makanan terbaik untuk anak negeri!"
+is_walker = true
+walk_speed = 1.0
+patrol_waypoints = [Vector3(-1.2, 0.15, 26.6), Vector3(1.2, 0.15, 26.6)]
+wait_duration = 2.0
+
+[node name="Sprite3D" type="Sprite3D" parent="DemoSign"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+billboard = 2
+
+[node name="DemoMega" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0.2)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/demonstran_megaphone.png"
+pixel_size = 0.0155
+sprite_y_offset = 0.85
+bob_amplitude = 0.045
+bob_speed = 4.5
+character_name = "Orator Megaphone"
+dialog_text = "Generasi sehat, Indonesia maju!"
+
+[node name="Sprite3D" type="Sprite3D" parent="DemoMega"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+billboard = 2
+
+[node name="DemoFlag" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0, 0)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/demonstran_flag.png"
+pixel_size = 0.017
+sprite_y_offset = 0.85
+bob_amplitude = 0.05
+bob_speed = 4.0
+character_name = "Demonstran Bendera"
+dialog_text = "Semangat para relawan gizi!"
+
+[node name="Sprite3D" type="Sprite3D" parent="DemoFlag"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+billboard = 2
+
+[node name="Barricade" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -0.6)
+mesh = SubResource("mesh_barricade")

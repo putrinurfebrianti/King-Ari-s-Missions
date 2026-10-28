@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_pole"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.65, 0.7, 0.75, 1)
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="mat_lamp_bulb"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(1, 1, 0.85, 1)
+emission_enabled = true
+emission = Color(1, 0.98, 0.8, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="CylinderMesh" id="mesh_vertical_pole"]
+material = SubResource("mat_pole")
+top_radius = 0.08
+bottom_radius = 0.12
+height = 6.0
+
+[sub_resource type="CylinderMesh" id="mesh_arm_pole"]
+material = SubResource("mat_pole")
+top_radius = 0.06
+bottom_radius = 0.07
+height = 2.4
+
+[sub_resource type="BoxMesh" id="mesh_lamp_head"]
+material = SubResource("mat_pole")
+size = Vector3(0.3, 0.15, 0.6)
+
+[sub_resource type="BoxMesh" id="mesh_bulb"]
+material = SubResource("mat_lamp_bulb")
+size = Vector3(0.24, 0.05, 0.45)
+
+[node name="StreetLamp" type="Node3D"]
+
+[node name="VerticalPole" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+mesh = SubResource("mesh_vertical_pole")
+
+[node name="ArmPole" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0.85, 6.4, 0)
+mesh = SubResource("mesh_arm_pole")
+
+[node name="LampHead" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 6.8, 0)
+mesh = SubResource("mesh_lamp_head")
+
+[node name="Bulb" type="MeshInstance3D" parent="LampHead"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
+mesh = SubResource("mesh_bulb")

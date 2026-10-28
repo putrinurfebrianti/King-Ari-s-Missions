@@ -1,0 +1,334 @@
+[gd_scene load_steps=30 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_body_white"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.97, 0.97, 0.99, 1)
+roughness = 0.2
+clearcoat_enabled = true
+clearcoat = 0.85
+clearcoat_roughness = 0.15
+
+[sub_resource type="StandardMaterial3D" id="mat_bumper_black"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="mat_glass"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.1, 0.18, 0.26, 0.95)
+metallic = 0.25
+roughness = 0.08
+
+[sub_resource type="StandardMaterial3D" id="mat_headlight"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(1, 1, 0.95, 1)
+emission_enabled = true
+emission = Color(1, 0.98, 0.88, 1)
+emission_energy_multiplier = 2.2
+
+[sub_resource type="StandardMaterial3D" id="mat_taillight"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.9, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(0.9, 0.1, 0.1, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="StandardMaterial3D" id="mat_tire"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_rim"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.78, 0.8, 0.84, 1)
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="mat_bgn_blue"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.1, 0.24, 0.58, 1)
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="mat_bgn_gold"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.95, 0.78, 0.18, 1)
+roughness = 0.5
+
+[sub_resource type="BoxMesh" id="mesh_cargo_box"]
+material = SubResource("mat_body_white")
+size = Vector3(1.88, 1.45, 2.5)
+
+[sub_resource type="BoxMesh" id="mesh_cab"]
+material = SubResource("mat_body_white")
+size = Vector3(1.86, 1.35, 1.4)
+
+[sub_resource type="BoxMesh" id="mesh_hood_slope"]
+material = SubResource("mat_body_white")
+size = Vector3(1.82, 0.5, 0.6)
+
+[sub_resource type="BoxMesh" id="mesh_bumper"]
+material = SubResource("mat_bumper_black")
+size = Vector3(1.9, 0.42, 0.38)
+
+[sub_resource type="BoxMesh" id="mesh_grille"]
+material = SubResource("mat_bumper_black")
+size = Vector3(0.9, 0.14, 0.05)
+
+[sub_resource type="BoxMesh" id="mesh_windshield"]
+material = SubResource("mat_glass")
+size = Vector3(1.68, 0.65, 0.05)
+
+[sub_resource type="BoxMesh" id="mesh_side_window"]
+material = SubResource("mat_glass")
+size = Vector3(0.04, 0.45, 0.75)
+
+[sub_resource type="BoxMesh" id="mesh_headlight"]
+material = SubResource("mat_headlight")
+size = Vector3(0.38, 0.22, 0.08)
+
+[sub_resource type="BoxMesh" id="mesh_taillight"]
+material = SubResource("mat_taillight")
+size = Vector3(0.12, 0.5, 0.05)
+
+[sub_resource type="CylinderMesh" id="mesh_tire"]
+material = SubResource("mat_tire")
+top_radius = 0.38
+bottom_radius = 0.38
+height = 0.22
+
+[sub_resource type="CylinderMesh" id="mesh_rim"]
+material = SubResource("mat_rim")
+top_radius = 0.24
+bottom_radius = 0.24
+height = 0.23
+
+[sub_resource type="BoxMesh" id="mesh_side_stripe"]
+material = SubResource("mat_bgn_blue")
+size = Vector3(0.02, 0.12, 2.4)
+
+[sub_resource type="BoxMesh" id="mesh_mirror"]
+material = SubResource("mat_bumper_black")
+size = Vector3(0.16, 0.24, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="mat_exhaust"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.2, 0.22, 0.25, 1)
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="mesh_exhaust_pipe"]
+material = SubResource("mat_exhaust")
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.25
+
+[sub_resource type="StandardMaterial3D" id="mat_smoke"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.9, 0.92, 0.96, 0.55)
+
+[sub_resource type="SphereMesh" id="mesh_smoke_puff"]
+material = SubResource("mat_smoke")
+radius = 0.15
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="mat_dust"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.85, 0.78, 0.65, 0.45)
+
+[sub_resource type="SphereMesh" id="mesh_dust_puff"]
+material = SubResource("mat_dust")
+radius = 0.14
+height = 0.28
+
+[sub_resource type="StandardMaterial3D" id="mat_spark"]
+shading_mode = 0
+albedo_color = Color(1, 0.85, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="mesh_spark"]
+material = SubResource("mat_spark")
+size = Vector3(0.12, 0.12, 0.12)
+
+[node name="CarMBGVisual" type="Node3D"]
+
+[node name="CargoVanBody" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0.65)
+mesh = SubResource("mesh_cargo_box")
+
+[node name="Cab" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1.0)
+mesh = SubResource("mesh_cab")
+
+[node name="HoodSlope" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.882948, 0.469472, 0, -0.469472, 0.882948, 0, 0.72, -1.72)
+mesh = SubResource("mesh_hood_slope")
+
+[node name="FrontBumper" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, -1.9)
+mesh = SubResource("mesh_bumper")
+
+[node name="FrontGrille" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -2.1)
+mesh = SubResource("mesh_grille")
+
+[node name="Windshield" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.25, -1.58)
+mesh = SubResource("mesh_windshield")
+
+[node name="SideWindowLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.94, 1.15, -0.95)
+mesh = SubResource("mesh_side_window")
+
+[node name="SideWindowRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94, 1.15, -0.95)
+mesh = SubResource("mesh_side_window")
+
+[node name="HeadlightLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.68, 0.65, -1.98)
+mesh = SubResource("mesh_headlight")
+
+[node name="HeadlightRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.68, 0.65, -1.98)
+mesh = SubResource("mesh_headlight")
+
+[node name="TaillightLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.88, 1.05, 1.91)
+mesh = SubResource("mesh_taillight")
+
+[node name="TaillightRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 1.05, 1.91)
+mesh = SubResource("mesh_taillight")
+
+[node name="SideStripeLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.85, 0.5)
+mesh = SubResource("mesh_side_stripe")
+
+[node name="SideStripeRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.95, 0.85, 0.5)
+mesh = SubResource("mesh_side_stripe")
+
+[node name="SideMirrorLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -1.08, 1.05, -1.45)
+mesh = SubResource("mesh_mirror")
+
+[node name="SideMirrorRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 1.08, 1.05, -1.45)
+mesh = SubResource("mesh_mirror")
+
+[node name="WheelFrontLeft" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.92, 0.38, -1.25)
+
+[node name="Tire" type="MeshInstance3D" parent="WheelFrontLeft"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_tire")
+
+[node name="Rim" type="MeshInstance3D" parent="WheelFrontLeft"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_rim")
+
+[node name="WheelFrontRight" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.92, 0.38, -1.25)
+
+[node name="Tire" type="MeshInstance3D" parent="WheelFrontRight"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_tire")
+
+[node name="Rim" type="MeshInstance3D" parent="WheelFrontRight"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_rim")
+
+[node name="WheelRearLeft" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.92, 0.38, 1.25)
+
+[node name="Tire" type="MeshInstance3D" parent="WheelRearLeft"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_tire")
+
+[node name="Rim" type="MeshInstance3D" parent="WheelRearLeft"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_rim")
+
+[node name="WheelRearRight" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.92, 0.38, 1.25)
+
+[node name="Tire" type="MeshInstance3D" parent="WheelRearRight"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_tire")
+
+[node name="Rim" type="MeshInstance3D" parent="WheelRearRight"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_rim")
+
+[node name="DriverSprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0.98, -0.92)
+billboard = 2
+
+[node name="ExhaustPipe" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.65, 0.28, 1.95)
+mesh = SubResource("mesh_exhaust_pipe")
+
+[node name="ExhaustSmoke" type="CPUParticles3D" parent="ExhaustPipe"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.14, 0)
+amount = 16
+lifetime = 0.65
+mesh = SubResource("mesh_smoke_puff")
+direction = Vector3(0, 0.35, 1)
+spread = 18.0
+gravity = Vector3(0, 1.2, 0)
+initial_velocity_min = 1.4
+initial_velocity_max = 2.8
+scale_amount_min = 0.4
+scale_amount_max = 1.2
+
+[node name="TireDustLeft" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.92, 0.08, 1.35)
+emitting = false
+amount = 14
+lifetime = 0.45
+mesh = SubResource("mesh_dust_puff")
+direction = Vector3(0, 0.5, 0.8)
+spread = 30.0
+gravity = Vector3(0, 0.6, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.2
+scale_amount_min = 0.3
+scale_amount_max = 0.8
+
+[node name="TireDustRight" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.92, 0.08, 1.35)
+emitting = false
+amount = 14
+lifetime = 0.45
+mesh = SubResource("mesh_dust_puff")
+direction = Vector3(0, 0.5, 0.8)
+spread = 30.0
+gravity = Vector3(0, 0.6, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.2
+scale_amount_min = 0.3
+scale_amount_max = 0.8
+
+[node name="ImpactSparks" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -2.0)
+emitting = false
+amount = 16
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("mesh_spark")
+direction = Vector3(0, 0.8, 0.4)
+spread = 60.0
+gravity = Vector3(0, -9.8, 0)
+initial_velocity_min = 3.5
+initial_velocity_max = 7.0
+scale_amount_min = 0.5
+scale_amount_max = 1.0

@@ -1,0 +1,25 @@
+# Godot 4+ cache and imported resources folder (WAJIB DIABAIKAN)
+.godot/
+
+# Godot crash logs
+*.translation
+mono_crash.*.json
+
+# Exported binaries & builds
+build/
+export/
+*.apk
+*.aab
+*.exe
+*.pck
+
+# OS / Editor temporary files
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+*.swp
+*.zip
+.agents/
+.idea/
+.vscode/

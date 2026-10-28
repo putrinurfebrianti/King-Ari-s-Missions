@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_pole"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.8, 0.82, 0.85, 1)
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="mat_red"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.9, 0.1, 0.1, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="mat_white"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.98, 0.98, 1.0, 1)
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="mesh_pole"]
+material = SubResource("mat_pole")
+top_radius = 0.05
+bottom_radius = 0.08
+height = 6.5
+
+[sub_resource type="BoxMesh" id="mesh_flag_red"]
+material = SubResource("mat_red")
+size = Vector3(1.6, 0.45, 0.02)
+
+[sub_resource type="BoxMesh" id="mesh_flag_white"]
+material = SubResource("mat_white")
+size = Vector3(1.6, 0.45, 0.02)
+
+[node name="FlagIndonesia" type="Node3D"]
+
+[node name="Pole" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.25, 0)
+mesh = SubResource("mesh_pole")
+
+[node name="FlagRed" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.8, 5.8, 0.1)
+mesh = SubResource("mesh_flag_red")
+
+[node name="FlagWhite" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.8, 5.35, 0.1)
+mesh = SubResource("mesh_flag_white")

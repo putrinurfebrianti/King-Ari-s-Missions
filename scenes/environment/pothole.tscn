@@ -1,0 +1,64 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="GDScript" id="GDScript_pothole"]
+script/source = "extends Area3D
+
+@export var damage_amount: float = 3.5
+@export var speed_threshold: float = 14.0
+
+var can_damage: bool = true
+
+func _ready() -> void:
+	body_entered.connect(_on_body_entered)
+
+func _on_body_entered(body: Node3D) -> void:
+	if not body.is_in_group(\"player\") or not can_damage:
+		return
+	var speed = 0.0
+	if \"current_speed\" in body:
+		speed = abs(body.current_speed)
+	if speed > 5.0 and body.has_method(\"trigger_pothole_bump\"):
+		body.trigger_pothole_bump()
+	if speed > speed_threshold:
+		can_damage = false
+		if GameManager:
+			GameManager.food_condition = max(0.0, GameManager.food_condition - damage_amount)
+			GameManager.food_changed.emit(GameManager.food_condition)
+			print(\"[MBG] Melindas lubang jalan kencang! Makanan: \", int(GameManager.food_condition), \"%\")
+			if GameManager.food_condition <= 0.0:
+				GameManager.fail_mission(\"Makanan hancur teraduk akibat melibas jalan berlubang!\")
+		await get_tree().create_timer(2.0).timeout
+		can_damage = true
+"
+
+[sub_resource type="StandardMaterial3D" id="mat_pothole"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.08, 0.09, 0.1, 1)
+roughness = 0.95
+
+[sub_resource type="CylinderMesh" id="mesh_pothole"]
+material = SubResource("mat_pothole")
+top_radius = 1.2
+bottom_radius = 1.0
+height = 0.06
+
+[sub_resource type="StandardMaterial3D" id="mat_warning_cone"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(1, 0.45, 0.1, 1)
+
+[sub_resource type="CylinderShape3D" id="shape_pothole"]
+height = 1.0
+radius = 1.3
+
+[node name="Pothole" type="Area3D"]
+script = SubResource("GDScript_pothole")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("shape_pothole")
+
+[node name="HoleMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13, 0)
+mesh = SubResource("mesh_pothole")

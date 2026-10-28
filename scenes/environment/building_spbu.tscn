@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://c7yam3spbu01"]
+
+[ext_resource type="Script" path="res://scripts/delivery_zone.gd" id="1_zone"]
+
+[sub_resource type="StandardMaterial3D" id="mat_spbu_roof"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.88, 0.12, 0.12, 1)
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="mesh_canopy"]
+material = SubResource("mat_spbu_roof")
+size = Vector3(12, 0.6, 9)
+
+[sub_resource type="StandardMaterial3D" id="mat_white_pillar"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.95, 0.95, 0.96, 1)
+
+[sub_resource type="CylinderMesh" id="mesh_pillar"]
+material = SubResource("mat_white_pillar")
+top_radius = 0.25
+bottom_radius = 0.25
+height = 4.2
+
+[sub_resource type="StandardMaterial3D" id="mat_pump_blue"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.1, 0.45, 0.85, 1)
+
+[sub_resource type="BoxMesh" id="mesh_pump"]
+material = SubResource("mat_pump_blue")
+size = Vector3(0.8, 1.6, 0.6)
+
+[sub_resource type="BoxShape3D" id="shape_spbu_zone"]
+size = Vector3(12, 3.5, 9)
+
+[node name="BuildingSPBU" type="Node3D"]
+
+[node name="CanopyRoof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 0)
+mesh = SubResource("mesh_canopy")
+
+[node name="SignBoard" type="Label3D" parent="CanopyRoof"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.55)
+text = "⛽ SPBU TENJO ISLAND"
+font_size = 28
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+modulate = Color(1, 0.95, 0.2, 1)
+
+[node name="Pillar1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 2.1, -3.2)
+mesh = SubResource("mesh_pillar")
+
+[node name="Pillar2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 2.1, -3.2)
+mesh = SubResource("mesh_pillar")
+
+[node name="Pillar3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 2.1, 3.2)
+mesh = SubResource("mesh_pillar")
+
+[node name="Pillar4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 2.1, 3.2)
+mesh = SubResource("mesh_pillar")
+
+[node name="Pump1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.8, 0)
+mesh = SubResource("mesh_pump")
+
+[node name="Pump2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.8, 0)
+mesh = SubResource("mesh_pump")
+
+[node name="SPBU_Zone" type="Area3D" parent="."]
+script = ExtResource("1_zone")
+zone_type = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SPBU_Zone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+shape = SubResource("shape_spbu_zone")

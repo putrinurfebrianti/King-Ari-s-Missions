@@ -1,0 +1,110 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/npc_character_sprite.gd" id="1_sprite_script"]
+
+[node name="WargaGroup" type="Node3D"]
+
+[node name="PakAgus" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5, 0.15, 17.0)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/warga_agus_standing.png"
+pixel_size = 0.010
+sprite_y_offset = 0.88
+bob_amplitude = 0.025
+bob_speed = 3.2
+character_name = "Pak Agus"
+dialog_text = "Semangat antar makan siang anak-anak, Mas Rama!"
+is_walker = true
+walk_speed = 1.6
+patrol_waypoints = [Vector3(-27, 0.15, 17), Vector3(-18, 0.15, 17)]
+wait_duration = 3.0
+
+[node name="Sprite3D" type="Sprite3D" parent="PakAgus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
+billboard = 2
+
+[node name="Label3D" type="Label3D" parent="PakAgus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0)
+billboard = 1
+text = "Pak Agus (Warga)"
+font_size = 18
+outline_size = 4
+modulate = Color(1, 0.9, 0.7, 1)
+
+[node name="BuSiti" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.0, 0.15, 17.0)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/warga_siti_standing.png"
+pixel_size = 0.0095
+sprite_y_offset = 0.85
+bob_amplitude = 0.025
+bob_speed = 3.0
+character_name = "Bu Siti"
+dialog_text = "Alhamdulillah menu MBG hari ini mantap & bergizi!"
+is_walker = false
+
+[node name="Sprite3D" type="Sprite3D" parent="BuSiti"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+billboard = 2
+
+[node name="Label3D" type="Label3D" parent="BuSiti"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, 0)
+billboard = 1
+text = "Bu Siti (Warung Makan)"
+font_size = 18
+outline_size = 4
+modulate = Color(1, 0.8, 0.9, 1)
+
+[node name="Budi" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0, 0.15, -7.0)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/warga_budi_standing.png"
+pixel_size = 0.009
+sprite_y_offset = 0.78
+bob_amplitude = 0.03
+bob_speed = 4.0
+character_name = "Budi (Siswa SD)"
+dialog_text = "Horeee! Makan siang bergizi datang!"
+is_walker = true
+walk_speed = 2.4
+patrol_waypoints = [Vector3(26, 0.15, -7), Vector3(26, 0.15, 7)]
+wait_duration = 2.0
+
+[node name="Sprite3D" type="Sprite3D" parent="Budi"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
+billboard = 2
+
+[node name="Label3D" type="Label3D" parent="Budi"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+billboard = 1
+text = "Budi (Siswa SD)"
+font_size = 18
+outline_size = 4
+modulate = Color(0.6, 1, 0.6, 1)
+
+[node name="Laras" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0, 0.15, -11.0)
+script = ExtResource("1_sprite_script")
+texture_path = "res://assets/textures/characters/warga_laras_standing.png"
+pixel_size = 0.0095
+sprite_y_offset = 0.85
+bob_amplitude = 0.025
+bob_speed = 3.4
+character_name = "Laras"
+dialog_text = "Hati-hati di jalan ya Pak Driver Rama!"
+is_walker = true
+walk_speed = 1.8
+patrol_waypoints = [Vector3(26, 0.15, -11), Vector3(36, 0.15, -11)]
+wait_duration = 2.5
+
+[node name="Sprite3D" type="Sprite3D" parent="Laras"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+billboard = 2
+
+[node name="Label3D" type="Label3D" parent="Laras"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, 0)
+billboard = 1
+text = "Laras (Warga)"
+font_size = 18
+outline_size = 4
+modulate = Color(0.9, 0.7, 1, 1)
