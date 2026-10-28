@@ -30,6 +30,11 @@
 [ext_resource type="PackedScene" path="res://scenes/environment/building_spbu.tscn" id="28_spbu"]
 [ext_resource type="PackedScene" path="res://scenes/environment/road_blockade.tscn" id="29_blockade"]
 [ext_resource type="Script" path="res://scripts/weather_controller.gd" id="30_weather"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_hospital.tscn" id="31_hosp"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_fastfood.tscn" id="32_ff"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_supermarket.tscn" id="33_smkt"]
+[ext_resource type="PackedScene" path="res://scenes/environment/construction_zone.tscn" id="34_const"]
+[ext_resource type="PackedScene" path="res://scenes/environment/canal_water.tscn" id="35_water"]
 
 [sub_resource type="StandardMaterial3D" id="mat_rain"]
 transparency = 1
@@ -98,6 +103,14 @@ size = Vector3(145, 0.25, 18)
 [sub_resource type="BoxMesh" id="mesh_road_ns"]
 material = SubResource("mat_asphalt")
 size = Vector3(18, 0.25, 115)
+
+[sub_resource type="BoxMesh" id="mesh_outer_road_ew"]
+material = SubResource("mat_asphalt")
+size = Vector3(124, 0.25, 14)
+
+[sub_resource type="BoxMesh" id="mesh_outer_road_ns"]
+material = SubResource("mat_asphalt")
+size = Vector3(14, 0.25, 94)
 
 [sub_resource type="CylinderMesh" id="mesh_roundabout_ring"]
 material = SubResource("mat_asphalt")
@@ -263,32 +276,28 @@ mesh = SubResource("mesh_road_ew")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
 mesh = SubResource("mesh_road_ns")
 
+[node name="RoadNorthEW" type="MeshInstance3D" parent="RoadNetwork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, -40)
+mesh = SubResource("mesh_outer_road_ew")
+
+[node name="RoadSouthEW" type="MeshInstance3D" parent="RoadNetwork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 40)
+mesh = SubResource("mesh_outer_road_ew")
+
+[node name="RoadWestNS" type="MeshInstance3D" parent="RoadNetwork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0.12, 0)
+mesh = SubResource("mesh_outer_road_ns")
+
+[node name="RoadEastNS" type="MeshInstance3D" parent="RoadNetwork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.12, 0)
+mesh = SubResource("mesh_outer_road_ns")
+
 [node name="RoundaboutRing" type="MeshInstance3D" parent="RoadNetwork" unique_id=1365470298]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
 mesh = SubResource("mesh_roundabout_ring")
 
 [node name="CentralFountain" parent="RoadNetwork" unique_id=116295904 instance=ExtResource("13_fountain")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.66829216, -0.5543134, 0.7101543)
-
-[node name="CurbNorth" type="MeshInstance3D" parent="RoadNetwork" unique_id=781605185]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, -9.4)
-mesh = SubResource("mesh_curb_ew")
-
-[node name="CurbSouth" type="MeshInstance3D" parent="RoadNetwork" unique_id=1731707153]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 9.4)
-mesh = SubResource("mesh_curb_ew")
-
-[node name="CurbWest" type="MeshInstance3D" parent="RoadNetwork" unique_id=802240119]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.4, 0.22, 0)
-mesh = SubResource("mesh_curb_ns")
-
-[node name="CurbEast" type="MeshInstance3D" parent="RoadNetwork" unique_id=1540967629]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.4, 0.22, 0)
-mesh = SubResource("mesh_curb_ns")
-
-[node name="GuardrailSouth" type="MeshInstance3D" parent="RoadNetwork" unique_id=98248586]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 9.8)
-mesh = SubResource("mesh_guardrail_ew")
 
 [node name="ZebraWest" type="MeshInstance3D" parent="RoadNetwork" unique_id=2123366890]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0.14, 0)
@@ -306,43 +315,74 @@ mesh = SubResource("mesh_zebra_strip")
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.14, 26)
 mesh = SubResource("mesh_zebra_strip")
 
+[node name="ZebraNW" type="MeshInstance3D" parent="RoadNetwork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0.14, -32)
+mesh = SubResource("mesh_zebra_strip")
+
+[node name="ZebraNE" type="MeshInstance3D" parent="RoadNetwork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.14, -32)
+mesh = SubResource("mesh_zebra_strip")
+
+[node name="ZebraSW" type="MeshInstance3D" parent="RoadNetwork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0.14, 32)
+mesh = SubResource("mesh_zebra_strip")
+
+[node name="ZebraSE" type="MeshInstance3D" parent="RoadNetwork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.14, 32)
+mesh = SubResource("mesh_zebra_strip")
+
 [node name="Pothole1" parent="RoadNetwork" unique_id=1113965825 instance=ExtResource("11_pothole")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.13, 3.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.13, 2.5)
 
 [node name="Pothole2" parent="RoadNetwork" unique_id=1086158447 instance=ExtResource("11_pothole")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.13, -3.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.13, -2.5)
+
+[node name="ConstructionZone" parent="RoadNetwork" instance=ExtResource("34_const")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.12, 0)
 
 [node name="CityBuildings" type="Node3D" parent="." unique_id=1067395580]
 
-[node name="BuildingSPPG" parent="CityBuildings" unique_id=315755139 instance=ExtResource("9_sppg_bldg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, -14)
+[node name="BuildingHospital" parent="CityBuildings" instance=ExtResource("31_hosp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -24)
 
 [node name="BuildingSchool" parent="CityBuildings" unique_id=974491949 instance=ExtResource("10_school_bldg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, -14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, -24)
 
-[node name="FlagSPPG" parent="CityBuildings" unique_id=532618677 instance=ExtResource("17_flag")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58, 0, -6.5)
-
-[node name="FlagSchool" parent="CityBuildings" unique_id=63848990 instance=ExtResource("17_flag")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47, 0, -4.5)
-
-[node name="WarungWest" parent="CityBuildings" unique_id=1994890596 instance=ExtResource("18_warung")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -15.5)
-
-[node name="WarungEast" parent="CityBuildings" unique_id=497453038 instance=ExtResource("18_warung")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -15.5)
+[node name="BuildingFastFood" parent="CityBuildings" instance=ExtResource("32_ff")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -14)
 
 [node name="BuildingPolice" parent="CityBuildings" unique_id=1967548764 instance=ExtResource("14_police")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 24)
 
 [node name="BuildingFireStation" parent="CityBuildings" unique_id=572519537 instance=ExtResource("15_fire")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 24)
+
+[node name="BuildingSupermarket" parent="CityBuildings" instance=ExtResource("33_smkt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 22)
+
+[node name="BuildingSPPG" parent="CityBuildings" unique_id=315755139 instance=ExtResource("9_sppg_bldg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 14)
+
+[node name="FlagSPPG" parent="CityBuildings" unique_id=532618677 instance=ExtResource("17_flag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58, 0, 8)
+
+[node name="FlagSchool" parent="CityBuildings" unique_id=63848990 instance=ExtResource("17_flag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -16)
+
+[node name="WarungWest" parent="CityBuildings" unique_id=1994890596 instance=ExtResource("18_warung")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 24)
+
+[node name="WarungEast" parent="CityBuildings" unique_id=497453038 instance=ExtResource("18_warung")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 14)
 
 [node name="House1" parent="CityBuildings" unique_id=2045131750 instance=ExtResource("16_house")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0, -22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0, -24)
 
 [node name="House2" parent="CityBuildings" unique_id=1215091625 instance=ExtResource("16_house")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, -22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -26)
+
+[node name="CanalWater" parent="CityBuildings" instance=ExtResource("35_water")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 0)
 
 [node name="TreesAndProps" type="Node3D" parent="." unique_id=1342923249]
 
@@ -445,7 +485,7 @@ mesh = SubResource("mesh_sppg_zone")
 transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, -44, 0.15, -6.5)
 
 [node name="School_1" type="Area3D" parent="." unique_id=1546555063]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.15, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.15, -24)
 script = ExtResource("3_zone")
 zone_type = 1
 school_index = 0
@@ -467,7 +507,7 @@ outline_color = Color(0, 0, 0, 1)
 modulate = Color(1, 0.8, 0.1, 1)
 
 [node name="School_2" type="Area3D" parent="." unique_id=1546555064]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.15, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.15, -24)
 script = ExtResource("3_zone")
 zone_type = 1
 school_index = 1
@@ -489,7 +529,7 @@ outline_color = Color(0, 0, 0, 1)
 modulate = Color(1, 0.8, 0.1, 1)
 
 [node name="School_3" type="Area3D" parent="." unique_id=1546555065]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.15, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -16)
 script = ExtResource("3_zone")
 zone_type = 1
 school_index = 2
@@ -511,7 +551,7 @@ outline_color = Color(0, 0, 0, 1)
 modulate = Color(1, 0.8, 0.1, 1)
 
 [node name="School_4" type="Area3D" parent="." unique_id=1546555066]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -42)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.15, 24)
 script = ExtResource("3_zone")
 zone_type = 1
 school_index = 3
@@ -533,7 +573,7 @@ outline_color = Color(0, 0, 0, 1)
 modulate = Color(1, 0.8, 0.1, 1)
 
 [node name="School_5" type="Area3D" parent="." unique_id=1546555067]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0.15, 12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.15, 24)
 script = ExtResource("3_zone")
 zone_type = 1
 school_index = 4
@@ -555,10 +595,10 @@ outline_color = Color(0, 0, 0, 1)
 modulate = Color(1, 0.8, 0.1, 1)
 
 [node name="BuildingSPBU" parent="." instance=ExtResource("28_spbu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 40)
 
 [node name="RoadBlockade" parent="." instance=ExtResource("29_blockade")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 40)
 
 [node name="WeatherController" type="Node3D" parent="." node_paths=PackedStringArray("sun_light", "rain_particles", "target_follow")]
 script = ExtResource("30_weather")
@@ -583,13 +623,13 @@ initial_velocity_max = 34.0
 [node name="WargaGroup" parent="." unique_id=1411904466 instance=ExtResource("22_warga")]
 
 [node name="DemonstranCrowd" parent="." unique_id=977557956 instance=ExtResource("23_demonstran")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.15, 43)
 
 [node name="SPPGKitchenStaff" parent="." unique_id=1615406060 instance=ExtResource("24_sppg_kitchen")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0.15, -11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0.15, 11)
 
 [node name="NPCGuruSDN" parent="." unique_id=1125325273 instance=ExtResource("25_guru")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.15, -5.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.15, -20)
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1682896991]
 script = ExtResource("4_hud")

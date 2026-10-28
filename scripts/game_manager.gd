@@ -37,35 +37,35 @@ var schools_data: Array[Dictionary] = [
 		"id": 0,
 		"name": "SDN 01 Tenjo",
 		"short_name": "SDN 01",
-		"pos": Vector3(52.0, 0.15, -2.0),
+		"pos": Vector3(32.0, 0.15, -24.0),
 		"delivered": false
 	},
 	{
 		"id": 1,
 		"name": "SDN 02 Harapan",
 		"short_name": "SDN 02",
-		"pos": Vector3(-28.0, 0.15, 30.0),
+		"pos": Vector3(-32.0, 0.15, -24.0),
 		"delivered": false
 	},
 	{
 		"id": 2,
 		"name": "SMPN 01 Nusa",
 		"short_name": "SMPN 01",
-		"pos": Vector3(36.0, 0.15, 30.0),
+		"pos": Vector3(48.0, 0.15, -16.0),
 		"delivered": false
 	},
 	{
 		"id": 3,
 		"name": "SDN 03 Garuda",
 		"short_name": "SDN 03",
-		"pos": Vector3(0.0, 0.15, -42.0),
+		"pos": Vector3(44.0, 0.15, 24.0),
 		"delivered": false
 	},
 	{
 		"id": 4,
 		"name": "Madrasah Tenjo",
 		"short_name": "Madrasah",
-		"pos": Vector3(58.0, 0.15, 12.0),
+		"pos": Vector3(-30.0, 0.15, 24.0),
 		"delivered": false
 	}
 ]

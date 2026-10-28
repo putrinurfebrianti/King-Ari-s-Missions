@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://cffastfood101mbg"]
+
+[sub_resource type="BoxShape3D" id="shape_col"]
+size = Vector3(10, 7, 9)
+
+[sub_resource type="StandardMaterial3D" id="mat_ff_wall"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.92, 0.28, 0.22, 1)
+
+[sub_resource type="BoxMesh" id="mesh_ff_body"]
+material = SubResource("mat_ff_wall")
+size = Vector3(9.5, 4.5, 8.5)
+
+[sub_resource type="StandardMaterial3D" id="mat_ff_roof"]
+diffuse_mode = 3
+albedo_color = Color(0.98, 0.78, 0.18, 1)
+
+[sub_resource type="BoxMesh" id="mesh_ff_roof"]
+material = SubResource("mat_ff_roof")
+size = Vector3(10.2, 0.6, 9.2)
+
+[sub_resource type="StandardMaterial3D" id="mat_bun"]
+diffuse_mode = 3
+albedo_color = Color(0.86, 0.58, 0.25, 1)
+
+[sub_resource type="CylinderMesh" id="mesh_burger_bun"]
+material = SubResource("mat_bun")
+top_radius = 1.6
+bottom_radius = 1.8
+height = 0.55
+
+[sub_resource type="StandardMaterial3D" id="mat_patty"]
+albedo_color = Color(0.38, 0.18, 0.12, 1)
+
+[sub_resource type="CylinderMesh" id="mesh_burger_patty"]
+material = SubResource("mat_patty")
+top_radius = 1.75
+bottom_radius = 1.75
+height = 0.35
+
+[sub_resource type="StandardMaterial3D" id="mat_cheese"]
+emission_enabled = true
+emission = Color(0.98, 0.8, 0.1, 1)
+emission_energy_multiplier = 0.2
+albedo_color = Color(0.98, 0.85, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="mesh_cheese"]
+material = SubResource("mat_cheese")
+size = Vector3(2.6, 0.12, 2.6)
+
+[sub_resource type="StandardMaterial3D" id="mat_lettuce"]
+albedo_color = Color(0.28, 0.75, 0.22, 1)
+
+[sub_resource type="CylinderMesh" id="mesh_lettuce"]
+material = SubResource("mat_lettuce")
+top_radius = 1.85
+bottom_radius = 1.85
+height = 0.15
+
+[sub_resource type="StandardMaterial3D" id="mat_glass"]
+albedo_color = Color(0.85, 0.95, 1.0, 0.75)
+roughness = 0.1
+
+[sub_resource type="BoxMesh" id="mesh_glass"]
+material = SubResource("mat_glass")
+size = Vector3(7.5, 2.2, 0.1)
+
+[node name="BuildingFastFood" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+shape = SubResource("shape_col")
+
+[node name="BuildingBody" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, 0)
+mesh = SubResource("mesh_ff_body")
+
+[node name="Roof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.6, 0)
+mesh = SubResource("mesh_ff_roof")
+
+[node name="FrontGlass" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 4.3)
+mesh = SubResource("mesh_glass")
+
+[node name="BigBurgerSign" type="Node3D" parent="."]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 5.8, 0)
+
+[node name="BunBottom" type="MeshInstance3D" parent="BigBurgerSign"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("mesh_burger_bun")
+
+[node name="Patty" type="MeshInstance3D" parent="BigBurgerSign"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+mesh = SubResource("mesh_burger_patty")
+
+[node name="Cheese" type="MeshInstance3D" parent="BigBurgerSign"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.85, 0)
+mesh = SubResource("mesh_cheese")
+
+[node name="Lettuce" type="MeshInstance3D" parent="BigBurgerSign"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+mesh = SubResource("mesh_lettuce")
+
+[node name="BunTop" type="MeshInstance3D" parent="BigBurgerSign"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("mesh_burger_bun")

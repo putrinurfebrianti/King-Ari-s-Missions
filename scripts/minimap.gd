@@ -1,14 +1,14 @@
 extends Control
 
 @export var player: Node3D
-@export var sppg_pos: Vector3 = Vector3(-50.0, 0.15, -2.0)
-@export var spbu_pos: Vector3 = Vector3(-16.0, 0.15, 16.0)
-@export var blockade_pos: Vector3 = Vector3(0.0, 0.15, 22.0)
+@export var sppg_pos: Vector3 = Vector3(-50.0, 0.15, 0.0)
+@export var spbu_pos: Vector3 = Vector3(18.0, 0.15, 40.0)
+@export var blockade_pos: Vector3 = Vector3(-18.0, 0.15, 40.0)
 
-var world_min_x: float = -70.0
-var world_max_x: float = 70.0
-var world_min_z: float = -50.0
-var world_max_z: float = 50.0
+var world_min_x: float = -75.0
+var world_max_x: float = 75.0
+var world_min_z: float = -55.0
+var world_max_z: float = 55.0
 
 var pulse_time: float = 0.0
 
@@ -27,26 +27,77 @@ func _draw() -> void:
 	# Label header minimap
 	draw_string(ThemeDB.fallback_font, Vector2(10, 16), "🗺️ PETA TENJO ISLAND", HORIZONTAL_ALIGNMENT_LEFT, -1, 10, Color(0.9, 0.95, 1.0))
 
-	# 1. Gambar Jalan Barat - Timur (RoadEW)
-	var ew_start = world_to_map(Vector3(-65, 0, 0))
-	var ew_end = world_to_map(Vector3(65, 0, 0))
-	draw_line(ew_start, ew_end, Color(0.25, 0.28, 0.32, 1.0), 10.0)
-	draw_line(ew_start, ew_end, Color(0.85, 0.85, 0.85, 0.4), 1.0)
+	# 0. Laut Pesisir Timur (Canal / Coast)
+	var coast_top = world_to_map(Vector3(66, 0, -50))
+	var coast_bot = world_to_map(Vector3(66, 0, 50))
+	var water_rect = Rect2(coast_top.x, 0, w - coast_top.x, h)
+	draw_rect(water_rect, Color(0.12, 0.42, 0.68, 0.75), true)
+	draw_string(ThemeDB.fallback_font, Vector2(w - 32, h / 2.0), "🌊", HORIZONTAL_ALIGNMENT_CENTER, -1, 12, Color(0.8, 0.95, 1.0))
 
-	# 2. Gambar Jalan Utara - Selatan (RoadNS)
-	var ns_start = world_to_map(Vector3(0, 0, -45))
-	var ns_end = world_to_map(Vector3(0, 0, 45))
-	draw_line(ns_start, ns_end, Color(0.25, 0.28, 0.32, 1.0), 10.0)
-	draw_line(ns_start, ns_end, Color(0.85, 0.85, 0.85, 0.4), 1.0)
+	# 1. Gambar Jalan Grid (Outer Loop & Center Cross)
+	var road_color = Color(0.25, 0.28, 0.32, 1.0)
+	var dash_color = Color(0.85, 0.85, 0.85, 0.35)
 
-	# 3. Bundaran Tengah (Roundabout)
+	# Jalan Utara (North EW)
+	var n_start = world_to_map(Vector3(-55, 0, -40))
+	var n_end = world_to_map(Vector3(55, 0, -40))
+	draw_line(n_start, n_end, road_color, 7.0)
+	draw_line(n_start, n_end, dash_color, 1.0)
+
+	# Jalan Selatan (South EW)
+	var s_start = world_to_map(Vector3(-55, 0, 40))
+	var s_end = world_to_map(Vector3(55, 0, 40))
+	draw_line(s_start, s_end, road_color, 7.0)
+	draw_line(s_start, s_end, dash_color, 1.0)
+
+	# Jalan Barat (West NS)
+	var w_start = world_to_map(Vector3(-52, 0, -40))
+	var w_end = world_to_map(Vector3(-52, 0, 40))
+	draw_line(w_start, w_end, road_color, 7.0)
+	draw_line(w_start, w_end, dash_color, 1.0)
+
+	# Jalan Timur (East NS)
+	var e_start = world_to_map(Vector3(52, 0, -40))
+	var e_end = world_to_map(Vector3(52, 0, 40))
+	draw_line(e_start, e_end, road_color, 7.0)
+	draw_line(e_start, e_end, dash_color, 1.0)
+
+	# Jalan Pusat Barat - Timur (Center EW)
+	var ew_start = world_to_map(Vector3(-55, 0, 0))
+	var ew_end = world_to_map(Vector3(55, 0, 0))
+	draw_line(ew_start, ew_end, road_color, 9.0)
+	draw_line(ew_start, ew_end, dash_color, 1.0)
+
+	# Jalan Pusat Utara - Selatan (Center NS)
+	var ns_start = world_to_map(Vector3(0, 0, -40))
+	var ns_end = world_to_map(Vector3(0, 0, 40))
+	draw_line(ns_start, ns_end, road_color, 9.0)
+	draw_line(ns_start, ns_end, dash_color, 1.0)
+
+	# 2. Bundaran Tengah (Roundabout & Air Mancur)
 	var center_map = world_to_map(Vector3(0, 0, 0))
 	var r_outer = (world_to_map(Vector3(12, 0, 0)).x - center_map.x)
-	draw_arc(center_map, r_outer, 0, TAU, 28, Color(0.25, 0.28, 0.32, 1.0), 10.0)
-	draw_circle(center_map, r_outer - 3.5, Color(0.18, 0.55, 0.25, 1.0))
-	draw_circle(center_map, 3.0, Color(0.2, 0.7, 0.95, 1.0))
+	draw_arc(center_map, r_outer, 0, TAU, 28, road_color, 9.0)
+	draw_circle(center_map, r_outer - 3.0, Color(0.18, 0.55, 0.25, 1.0))
+	draw_circle(center_map, 3.2, Color(0.2, 0.7, 0.95, 1.0))
 
-	# 4. Marker Blokade Demonstrasi Warga (Jalan Utama Selatan)
+	# 3. Landmark Ikon Kota (Sesuai Denah)
+	var hosp_pos = world_to_map(Vector3(-30, 0, -24))
+	draw_string(ThemeDB.fallback_font, hosp_pos + Vector2(-6, 3), "🏥", HORIZONTAL_ALIGNMENT_CENTER, -1, 10)
+
+	var ff_pos = world_to_map(Vector3(46, 0, -14))
+	draw_string(ThemeDB.fallback_font, ff_pos + Vector2(-6, 3), "🍔", HORIZONTAL_ALIGNMENT_CENTER, -1, 10)
+
+	var pol_pos = world_to_map(Vector3(-30, 0, 24))
+	draw_string(ThemeDB.fallback_font, pol_pos + Vector2(-6, 3), "🚓", HORIZONTAL_ALIGNMENT_CENTER, -1, 10)
+
+	var fire_pos = world_to_map(Vector3(24, 0, 24))
+	draw_string(ThemeDB.fallback_font, fire_pos + Vector2(-6, 3), "🚒", HORIZONTAL_ALIGNMENT_CENTER, -1, 10)
+
+	var smkt_pos = world_to_map(Vector3(44, 0, 22))
+	draw_string(ThemeDB.fallback_font, smkt_pos + Vector2(-6, 3), "🛒", HORIZONTAL_ALIGNMENT_CENTER, -1, 10)
+
+	# 4. Marker Blokade Demonstrasi Warga
 	var block_map = world_to_map(blockade_pos)
 	draw_rect(Rect2(block_map.x - 7, block_map.y - 3, 14, 6), Color(0.9, 0.15, 0.15, 0.95), true)
 	draw_string(ThemeDB.fallback_font, block_map + Vector2(-12, -5), "⛔ Blokade", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Color(1.0, 0.3, 0.3))
