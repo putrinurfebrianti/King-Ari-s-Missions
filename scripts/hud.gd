@@ -91,6 +91,7 @@ func _ready() -> void:
 	if nav_guide:
 		nav_guide.text = "➔ Rute: Muat Ransum MBG di Dapur SPPG (Zona Hijau)"
 		
+	_on_time_changed(GameManager.time_left)
 	show_toast("👑 Titah Raja: Masuk ke SPPG untuk memuat MBG dan mulai pengiriman ke 5 Sekolah!", 4.5)
 
 func _setup_extra_dashboard_ui() -> void:
