@@ -72,12 +72,37 @@ func _ready() -> void:
 		var veh_spd: float = veh.get("speed_mult", 1.0)
 		var veh_acc: float = veh.get("accel_mult", 1.0)
 		
-		max_speed *= (drv_spd * veh_spd)
-		acceleration *= (drv_acc * veh_acc)
-		turn_speed *= drv_steer
+		# Terapkan bonus dari Bengkel Upgrade Kendaraan
+		var engine_bonus = 1.0 + (gm.vehicle_upgrades.get("engine", 0) * 0.10)
+		var turbo_bonus = 1.0 + (gm.vehicle_upgrades.get("turbo", 0) * 0.15)
+		var handling_bonus = 1.0 + (gm.vehicle_upgrades.get("handling", 0) * 0.15)
+
+		max_speed *= (drv_spd * veh_spd * engine_bonus)
+		acceleration *= (drv_acc * veh_acc * turbo_bonus)
+		turn_speed *= (drv_steer * handling_bonus)
 		print("[Car] Stats Aktif -> MaxSpeed: %.1f | Accel: %.1f | Steer: %.2f | Driver: %s | Mobil: %s" % [
 			max_speed, acceleration, turn_speed, drv.get("name", "Driver"), veh.get("name", "Mobil")
 		])
+
+		# Lampu Sorot Depan (Headlights) untuk Season Malam
+		var hl = Node3D.new()
+		hl.name = "Headlights"
+		var spot_l = SpotLight3D.new()
+		spot_l.position = Vector3(-0.6, 0.6, 2.0)
+		spot_l.spot_range = 28.0
+		spot_l.spot_angle = 35.0
+		spot_l.light_energy = 3.5
+		spot_l.light_color = Color(1.0, 0.95, 0.8)
+		hl.add_child(spot_l)
+		var spot_r = SpotLight3D.new()
+		spot_r.position = Vector3(0.6, 0.6, 2.0)
+		spot_r.spot_range = 28.0
+		spot_r.spot_angle = 35.0
+		spot_r.light_energy = 3.5
+		spot_r.light_color = Color(1.0, 0.95, 0.8)
+		hl.add_child(spot_r)
+		hl.visible = (gm.current_season == gm.Season.MALAM)
+		add_child(hl)
 
 	if visual_root:
 		wheel_fl = visual_root.get_node_or_null("WheelFrontLeft")
@@ -108,6 +133,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				ped.exit_car()
 				return
 		
+		# Tombol H: Bunyikan Klakson Mobil (GDD Bab 7.1)
+		if event.keycode == KEY_H and is_player_controlling:
+			trigger_horn()
+
 		# Tombol TAB: Tukar Mode Kendali (Arah Layar vs Simulator Klasik)
 		if event.keycode == KEY_TAB and is_player_controlling:
 			toggle_control_mode()
@@ -120,6 +149,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif event.keycode == KEY_BRACKETRIGHT:
 				steer_sensitivity = clamp(steer_sensitivity + 0.1, 0.4, 2.2)
 				print("[MBG] Sensitivitas Kemudi: ", snapped(steer_sensitivity, 0.1), "x")
+
+func trigger_horn() -> void:
+	var am = get_node_or_null("/root/AudioManager")
+	if am and am.has_method("play_horn"):
+		am.play_horn()
+	_show_hud_toast("📢 KLAKSON: Titah Pengawal MBG lewat!")
 
 func toggle_control_mode() -> void:
 	if control_mode == ControlMode.SCREEN_DIRECT:

@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://cplyrhous101mbg"]
+
+[ext_resource type="Script" path="res://scripts/building_player_house.gd" id="1_house"]
+
+[sub_resource type="BoxShape3D" id="shape_col"]
+size = Vector3(10, 7, 10)
+
+[sub_resource type="StandardMaterial3D" id="mat_wall_cream"]
+diffuse_mode = 3
+albedo_color = Color(0.96, 0.92, 0.82, 1)
+
+[sub_resource type="BoxMesh" id="mesh_first_floor"]
+material = SubResource("mat_wall_cream")
+size = Vector3(9, 3.5, 8.5)
+
+[sub_resource type="StandardMaterial3D" id="mat_wall_blue"]
+diffuse_mode = 3
+albedo_color = Color(0.35, 0.6, 0.85, 1)
+
+[sub_resource type="BoxMesh" id="mesh_second_floor"]
+material = SubResource("mat_wall_blue")
+size = Vector3(7.5, 3.0, 7.5)
+
+[sub_resource type="StandardMaterial3D" id="mat_roof_terracotta"]
+diffuse_mode = 3
+albedo_color = Color(0.88, 0.35, 0.18, 1)
+
+[sub_resource type="PrismMesh" id="mesh_roof"]
+material = SubResource("mat_roof_terracotta")
+left_to_right = 0.5
+size = Vector3(8.5, 2.5, 8.5)
+
+[sub_resource type="StandardMaterial3D" id="mat_door_wood"]
+albedo_color = Color(0.48, 0.28, 0.15, 1)
+
+[sub_resource type="BoxMesh" id="mesh_door"]
+material = SubResource("mat_door_wood")
+size = Vector3(1.4, 2.4, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="mat_gold_flag"]
+albedo_color = Color(1.0, 0.85, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="mesh_flag"]
+material = SubResource("mat_gold_flag")
+size = Vector3(1.8, 1.2, 0.05)
+
+[node name="BuildingPlayerHouse" type="StaticBody3D"]
+script = ExtResource("1_house")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+shape = SubResource("shape_col")
+
+[node name="FirstFloor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+mesh = SubResource("mesh_first_floor")
+
+[node name="SecondFloor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.0, 0)
+mesh = SubResource("mesh_second_floor")
+
+[node name="Roof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.75, 0)
+mesh = SubResource("mesh_roof")
+
+[node name="FrontDoor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 4.3)
+mesh = SubResource("mesh_door")
+
+[node name="SignBoard" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 5.6)
+
+[node name="SignLabel" type="Label3D" parent="SignBoard"]
+billboard = 1
+text = "🏡 RUMAH DIJUAL: 2.500 KOIN\n[Dekati & Tekan B untuk Beli]"
+font_size = 22
+outline_size = 6
+outline_modulate = Color(0, 0, 0, 1)
+modulate = Color(1, 0.85, 0.2, 1)
+
+[node name="RoofFlag" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.2, 0)
+visible = false
+mesh = SubResource("mesh_flag")

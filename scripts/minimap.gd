@@ -12,6 +12,29 @@ var world_max_z: float = 55.0
 
 var pulse_time: float = 0.0
 
+var is_fullscreen_map: bool = false
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_M:
+			toggle_map_size()
+
+func toggle_map_size() -> void:
+	is_fullscreen_map = not is_fullscreen_map
+	if is_fullscreen_map:
+		set_anchors_preset(Control.PRESET_CENTER)
+		offset_left = -340
+		offset_top = -240
+		offset_right = 340
+		offset_bottom = 240
+	else:
+		set_anchors_preset(Control.PRESET_TOP_RIGHT)
+		offset_left = -240
+		offset_top = 16
+		offset_right = -20
+		offset_bottom = 176
+	queue_redraw()
+
 func _process(delta: float) -> void:
 	pulse_time += delta * 4.0
 	queue_redraw()
@@ -96,6 +119,12 @@ func _draw() -> void:
 
 	var smkt_pos = world_to_map(Vector3(44, 0, 22))
 	draw_string(ThemeDB.fallback_font, smkt_pos + Vector2(-6, 3), "🛒", HORIZONTAL_ALIGNMENT_CENTER, -1, 10)
+
+	var grave_pos = world_to_map(Vector3(-16, 0, -26))
+	draw_string(ThemeDB.fallback_font, grave_pos + Vector2(-6, 3), "🪦", HORIZONTAL_ALIGNMENT_CENTER, -1, 10)
+
+	var house_pos = world_to_map(Vector3(-44, 0, -14))
+	draw_string(ThemeDB.fallback_font, house_pos + Vector2(-6, 3), "🏠", HORIZONTAL_ALIGNMENT_CENTER, -1, 10)
 
 	# 4. Marker Blokade Demonstrasi Warga
 	var block_map = world_to_map(blockade_pos)

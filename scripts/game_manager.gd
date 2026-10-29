@@ -9,27 +9,78 @@ signal mission_completed(stars: int, final_score: int, earned_coins: int)
 signal mission_failed(reason: String)
 signal coins_changed(new_coins: int)
 signal season_changed(season: int)
+signal house_purchased()
+signal pothole_repaired(pothole_pos: Vector3)
+signal vehicle_upgraded(part_name: String, new_level: int)
 
 enum State { AT_SPPG, DELIVERING, FINISHED, FAILED }
 var current_state: State = State.AT_SPPG
 
-enum Season { KEMARAU, HUJAN }
+enum Season { KEMARAU, HUJAN, MALAM }
 var current_season: Season = Season.KEMARAU
 
 var food_condition: float = 100.0
-var time_left: float = 300.0 # 5 Menit sesuai GDD Titah Pertama Raja Ari
+var time_left: float = 300.0 # 5 Menit (05:00) sesuai GDD Titah Pertama Raja Ari
 var total_time: float = 300.0
 
 # Sistem Bahan Bakar (GDD Bab 5.4 & 10.2: 40 Liter Kapasitas)
 var max_fuel: float = 40.0
 var current_fuel: float = 40.0
 var is_refueling: bool = false
+var fuel_price_per_liter: float = 2.0 # 2 Koin per Liter di SPBU Tenjo
+var fuel_buy_accumulator: float = 0.0
 
-# Sistem Koin & Metagame (Upah 5 koin per sekolah)
-var coins: int = 50
+# Kondisi Awal Pemain: Uang Rp 5.000 (5000 Koin) + Bensin 40L + Mobil Basic
+var coins: int = 5000
+var tax_rate: float = 0.11 # Potongan Pajak Kas Kerajaan Otomatis 11%
+var total_tax_paid: int = 0
+
 var selected_driver_id: String = "fatur"
 var selected_vehicle_id: String = "van_standard"
 var owned_vehicles: Array[String] = ["van_standard"]
+
+# Sistem Real Estate (Beli Rumah di Tenjo Island)
+var owns_house: bool = false
+var house_price: int = 2500
+
+# Sistem Upgrade Kendaraan (Bengkel)
+var vehicle_upgrades: Dictionary = {
+	"engine": 0,    # Max 3: Top Speed +10% per level (300 koin)
+	"turbo": 0,     # Max 3: Akselerasi +15% per level (350 koin)
+	"handling": 0,  # Max 3: Kemudi & Rem +15% per level (250 koin)
+	"armor": 0      # Max 3: Ketahanan Makanan +20% per level (400 koin)
+}
+
+var upgrade_costs: Dictionary = {
+	"engine": 300,
+	"turbo": 350,
+	"handling": 250,
+	"armor": 400
+}
+
+# Sistem Perkakas Perbaikan Jalan
+var tools_catalog: Dictionary = {
+	"sekop": {
+		"name": "Sekop Taktis Kerajaan",
+		"price": 250,
+		"desc": "Alat pengeruk material jalan amblas untuk membuka jalan darurat."
+	},
+	"aspal": {
+		"name": "Ember Aspal Cepat Kering",
+		"price": 400,
+		"desc": "Aspal instan bermutu tinggi untuk menambal jalan berlubang secara permanen."
+	},
+	"kit_perbaikan": {
+		"name": "Kit Perbaikan Jalan Lengkap",
+		"price": 750,
+		"desc": "Paket perkakas komplit (sekop + aspal + dongkrak) untuk meratakan rintangan."
+	}
+}
+var owned_tools: Dictionary = {
+	"sekop": false,
+	"aspal": false,
+	"kit_perbaikan": false
+}
 
 # Database 5 Sekolah Tujuan Distribusi MBG (GDD Bab 4.2 & 12.2)
 var schools_data: Array[Dictionary] = [
@@ -110,11 +161,11 @@ var driver_profiles: Dictionary = {
 	}
 }
 
-# Database Armada Mobil MBG Resmi
+# 5 Pilihan Mobil Upgrade (GDD Bab 10.1 & Task User)
 var vehicle_catalog: Dictionary = {
 	"van_standard": {
 		"id": "van_standard",
-		"name": "Van MBG Dinas Kerajaan",
+		"name": "1. Van MBG Dinas Kerajaan",
 		"price": 0,
 		"thumb_path": "res://assets/textures/ui/vehicle_van.png",
 		"desc": "Kendaraan dinas MBG standar berpelat resmi istana. Seimbang dan handal untuk pemula.",
@@ -124,23 +175,43 @@ var vehicle_catalog: Dictionary = {
 	},
 	"pickup_express": {
 		"id": "pickup_express",
-		"name": "Pick-Up MBG Patroli Cepat",
-		"price": 80,
+		"name": "2. Pick-Up MBG Patroli Cepat",
+		"price": 1200,
 		"thumb_path": "res://assets/textures/ui/vehicle_pickup.png",
 		"desc": "Armada pick-up MBG resmi bertenaga turbo (+25% akselerasi) untuk menembus rute terjal.",
 		"speed_mult": 1.15,
 		"accel_mult": 1.25,
 		"durability_mult": 0.9
 	},
+	"sedan_vvip": {
+		"id": "sedan_vvip",
+		"name": "3. Sedan Listrik Pengawal VVIP",
+		"price": 2000,
+		"thumb_path": "res://assets/textures/ui/vehicle_van.png",
+		"desc": "Mobil sedan listrik prototipe kerajaan dengan kecepatan tertinggi dan handling ekstra presisi.",
+		"speed_mult": 1.30,
+		"accel_mult": 1.15,
+		"durability_mult": 1.1
+	},
+	"minibus_fleet": {
+		"id": "minibus_fleet",
+		"name": "4. Minibus MBG Ransum Jumbo",
+		"price": 3200,
+		"thumb_path": "res://assets/textures/ui/vehicle_truck.png",
+		"desc": "Minibus kapasitas besar berperedam kejut mutakhir (+40% ketahanan makanan).",
+		"speed_mult": 1.05,
+		"accel_mult": 1.05,
+		"durability_mult": 1.4
+	},
 	"truck_heavy": {
 		"id": "truck_heavy",
-		"name": "Truk MBG Armor Heavy-Duty",
-		"price": 180,
+		"name": "5. Truk MBG Armor Heavy-Duty",
+		"price": 4500,
 		"thumb_path": "res://assets/textures/ui/vehicle_truck.png",
-		"desc": "Armada boks berpelindung baja anti-guncangan (+50% ketahanan ransum) mandat istana.",
+		"desc": "Armada boks berpelindung baja anti-guncangan (+60% ketahanan ransum) mandat khusus Raja Ari.",
 		"speed_mult": 1.10,
 		"accel_mult": 0.95,
-		"durability_mult": 1.5
+		"durability_mult": 1.6
 	}
 }
 
@@ -155,14 +226,14 @@ func _process(delta: float) -> void:
 			time_left = 0.0
 			fail_mission("Waktu habis (05:00)! Bel sekolah telah berbunyi sebelum seluruh makanan terkirim.")
 			
-		# Konsumsi bahan bakar saat kendaraan berjalan
+		# Pengisian bahan bakar berbayar di SPBU
 		if is_refueling:
 			refuel(delta)
 
 func reset_game() -> void:
 	current_state = State.AT_SPPG
 	food_condition = 100.0
-	time_left = 300.0 # 5 menit
+	time_left = 300.0 # 5 menit (05:00)
 	current_fuel = max_fuel
 	is_refueling = false
 	current_school_idx = 0
@@ -174,6 +245,7 @@ func reset_game() -> void:
 	food_changed.emit(food_condition)
 	time_changed.emit(time_left)
 	fuel_changed.emit(current_fuel, max_fuel)
+	coins_changed.emit(coins)
 
 func set_season(new_season: Season) -> void:
 	current_season = new_season
@@ -182,6 +254,8 @@ func set_season(new_season: Season) -> void:
 func toggle_season() -> void:
 	if current_season == Season.KEMARAU:
 		set_season(Season.HUJAN)
+	elif current_season == Season.HUJAN:
+		set_season(Season.MALAM)
 	else:
 		set_season(Season.KEMARAU)
 
@@ -212,6 +286,52 @@ func buy_vehicle(vehicle_id: String) -> bool:
 		owned_vehicles.append(vehicle_id)
 		selected_vehicle_id = vehicle_id
 		coins_changed.emit(coins)
+		return true
+	return false
+
+# Sistem Upgrade Kendaraan (Bengkel)
+func upgrade_vehicle_part(part_name: String) -> bool:
+	if not vehicle_upgrades.has(part_name):
+		return false
+	var cur_lvl = vehicle_upgrades[part_name]
+	if cur_lvl >= 3:
+		return false # Sudah maksimal
+		
+	var cost = upgrade_costs.get(part_name, 300)
+	if coins >= cost:
+		coins -= cost
+		vehicle_upgrades[part_name] += 1
+		coins_changed.emit(coins)
+		vehicle_upgraded.emit(part_name, vehicle_upgrades[part_name])
+		return true
+	return false
+
+# Sistem Toko Perkakas
+func buy_tool(tool_id: String) -> bool:
+	if not tools_catalog.has(tool_id):
+		return false
+	if owned_tools.get(tool_id, false):
+		return true
+	var price = tools_catalog[tool_id]["price"]
+	if coins >= price:
+		coins -= price
+		owned_tools[tool_id] = true
+		coins_changed.emit(coins)
+		return true
+	return false
+
+func has_any_repair_tool() -> bool:
+	return owned_tools.get("sekop", false) or owned_tools.get("aspal", false) or owned_tools.get("kit_perbaikan", false)
+
+# Sistem Real Estate (Beli Rumah)
+func buy_house() -> bool:
+	if owns_house:
+		return true
+	if coins >= house_price:
+		coins -= house_price
+		owns_house = true
+		coins_changed.emit(coins)
+		house_purchased.emit()
 		return true
 	return false
 
@@ -250,37 +370,59 @@ func consume_fuel(amount: float) -> void:
 	if current_fuel <= 0.0:
 		fail_mission("Kendaraan kehabisan bahan bakar di tengah jalan! Kunjungi SPBU untuk isi bensin.")
 
-# Pengisian bahan bakar di SPBU
+# Pengisian bahan bakar berbayar di SPBU (2 koin per liter)
 func refuel(delta: float) -> void:
-	if current_fuel < max_fuel:
-		current_fuel = min(max_fuel, current_fuel + 18.0 * delta)
-		fuel_changed.emit(current_fuel, max_fuel)
+	if current_fuel >= max_fuel:
+		return
+	if coins <= 0:
+		is_refueling = false
+		return
+		
+	var liters_to_add = 18.0 * delta
+	var space = max_fuel - current_fuel
+	liters_to_add = min(liters_to_add, space)
+	
+	fuel_buy_accumulator += liters_to_add * fuel_price_per_liter
+	if fuel_buy_accumulator >= 1.0:
+		var coins_to_deduct = int(fuel_buy_accumulator)
+		if coins >= coins_to_deduct:
+			coins -= coins_to_deduct
+			fuel_buy_accumulator -= coins_to_deduct
+			coins_changed.emit(coins)
+			current_fuel = min(max_fuel, current_fuel + liters_to_add)
+			fuel_changed.emit(current_fuel, max_fuel)
+		else:
+			is_refueling = false
 
 func set_refueling(active: bool) -> void:
 	is_refueling = active
 
-# Pengiriman ke sekolah (GDD Bab 11.2: Upah 5 Koin per Sekolah)
+# Pengiriman ke sekolah dengan POTONGAN PAJAK OTOMATIS 11%
 func deliver_to_school(school_idx: int) -> void:
 	if current_state != State.DELIVERING:
 		return
 	if school_idx != current_school_idx:
-		return # Harus sesuai urutan rute atau sekolah aktif
+		return
 	
 	schools_data[school_idx]["delivered"] = true
 	schools_delivered_count += 1
-	var earned = 5 # Upah 5 koin per sekolah sesuai GDD Bab 11.2
-	coins += earned
+	
+	# Sistem Upah & Pajak 11% (GDD Bab 11.2 & 11.3)
+	var gross_earned = 5 # Upah kotor 5 koin per sekolah
+	var tax_amount = int(round(gross_earned * tax_rate)) # 11% -> 1 koin kas kerajaan
+	var net_earned = gross_earned - tax_amount # 4 koin masuk dompet pengawal
+	
+	total_tax_paid += tax_amount
+	coins += net_earned
 	coins_changed.emit(coins)
 	
 	var school_name = schools_data[school_idx]["name"]
-	print("[KingAri] Berhasil menyerahkan MBG ke %s! Upah: +%d Koin." % [school_name, earned])
-	school_delivered.emit(school_idx, school_name, schools_delivered_count, total_schools, earned)
+	print("[KingAri] Penyerahan MBG ke %s! Upah Kotor: +%d Koin | Pajak 11%%: -%d Koin | Bersih: +%d Koin" % [school_name, gross_earned, tax_amount, net_earned])
+	school_delivered.emit(school_idx, school_name, schools_delivered_count, total_schools, net_earned)
 	
 	if schools_delivered_count >= total_schools:
-		# Seluruh 5 sekolah berhasil dikirimi makanan!
 		finish_level_1()
 	else:
-		# Lanjut ke sekolah berikutnya
 		current_school_idx += 1
 
 func finish_level_1() -> void:
@@ -296,8 +438,8 @@ func finish_level_1() -> void:
 	coins += final_bonus
 	coins_changed.emit(coins)
 	
-	print("[KingAri] LEVEL 1 SELESAI! Seluruh 5 Sekolah Sukses Dikirimkan. Bintang: ", stars)
-	mission_completed.emit(stars, score, 25 + final_bonus)
+	print("[KingAri] LEVEL 1 SELESAI! Bintang: ", stars, " | Kas Pengawal: ", coins)
+	mission_completed.emit(stars, score, 20 + final_bonus)
 
 func apply_impact(speed: float) -> void:
 	if current_state != State.DELIVERING:
@@ -308,8 +450,11 @@ func apply_impact(speed: float) -> void:
 	var driver_decay = drv.get("decay_mult", 1.0)
 	var veh_durability = veh.get("durability_mult", 1.0)
 	
+	# Bonus perlindungan dari upgrade armor bengkel
+	var armor_bonus = 1.0 + (vehicle_upgrades["armor"] * 0.20)
+	
 	var base_damage = clamp((speed / 24.0) * 5.0, 2.5, 7.0)
-	var final_damage = base_damage * (driver_decay / veh_durability)
+	var final_damage = base_damage * (driver_decay / (veh_durability * armor_bonus))
 	
 	food_condition = max(0.0, food_condition - final_damage)
 	food_changed.emit(food_condition)

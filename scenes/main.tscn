@@ -35,6 +35,9 @@
 [ext_resource type="PackedScene" path="res://scenes/environment/building_supermarket.tscn" id="33_smkt"]
 [ext_resource type="PackedScene" path="res://scenes/environment/construction_zone.tscn" id="34_const"]
 [ext_resource type="PackedScene" path="res://scenes/environment/canal_water.tscn" id="35_water"]
+[ext_resource type="PackedScene" path="res://scenes/environment/graveyard_area.tscn" id="36_grave"]
+[ext_resource type="PackedScene" path="res://scenes/environment/building_player_house.tscn" id="37_player_house"]
+[ext_resource type="PackedScene" path="res://scenes/characters/npc_students_group.tscn" id="38_students"]
 
 [sub_resource type="StandardMaterial3D" id="mat_rain"]
 transparency = 1
@@ -384,6 +387,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -26)
 [node name="CanalWater" parent="CityBuildings" instance=ExtResource("35_water")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 0)
 
+[node name="BuildingPlayerHouse" parent="CityBuildings" instance=ExtResource("37_player_house")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0, -14)
+
+[node name="GraveyardArea" parent="CityBuildings" instance=ExtResource("36_grave")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -26)
+
+[node name="StudentsSDN1" parent="." instance=ExtResource("38_students")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.15, -20)
+
+[node name="StudentsSMP1" parent="." instance=ExtResource("38_students")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -12)
+
 [node name="TreesAndProps" type="Node3D" parent="." unique_id=1342923249]
 
 [node name="PalmWarung1" parent="TreesAndProps" unique_id=628755982 instance=ExtResource("19_palm")]
@@ -630,6 +645,42 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0.15, 11)
 
 [node name="NPCGuruSDN" parent="." unique_id=1125325273 instance=ExtResource("25_guru")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.15, -20)
+
+[node name="BuildingHospital" parent="." instance=ExtResource("31_hosp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -24)
+
+[node name="BuildingFastFood" parent="." instance=ExtResource("32_ff")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -14)
+
+[node name="BuildingSupermarket" parent="." instance=ExtResource("33_smkt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 22)
+
+[node name="ConstructionZone" parent="." instance=ExtResource("34_const")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 24)
+
+[node name="CanalWater" parent="." instance=ExtResource("35_water")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 0)
+
+[node name="GraveyardArea" parent="." instance=ExtResource("36_grave")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -26)
+
+[node name="BuildingPlayerHouse" parent="." instance=ExtResource("37_player_house")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 42)
+
+[node name="StudentsSDN1" parent="." instance=ExtResource("38_students")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.15, -24)
+
+[node name="StudentsSDN2" parent="." instance=ExtResource("38_students")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 0.15, -24)
+
+[node name="StudentsSMPN1" parent="." instance=ExtResource("38_students")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -12)
+
+[node name="StudentsSDN3" parent="." instance=ExtResource("38_students")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.15, 28)
+
+[node name="StudentsMadrasah" parent="." instance=ExtResource("38_students")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.15, 28)
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1682896991]
 script = ExtResource("4_hud")
