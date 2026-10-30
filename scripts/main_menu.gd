@@ -457,33 +457,14 @@ func _create_setting_modal() -> Panel:
 	)
 	p.add_child(master_slider)
 
-	var bgm_lbl = Label.new()
-	bgm_lbl.text = "Volume Musik BGM: %d%%" % int(AudioManager.bgm_volume * 100)
-	bgm_lbl.set_position(Vector2(30, 106))
-	bgm_lbl.add_theme_font_size_override("font_size", 11)
-	p.add_child(bgm_lbl)
-
-	var bgm_slider = HSlider.new()
-	bgm_slider.set_position(Vector2(210, 106))
-	bgm_slider.set_size(Vector2(240, 20))
-	bgm_slider.min_value = 0.0
-	bgm_slider.max_value = 1.0
-	bgm_slider.step = 0.05
-	bgm_slider.value = AudioManager.bgm_volume
-	bgm_slider.value_changed.connect(func(v):
-		AudioManager.set_bgm_volume(v)
-		bgm_lbl.text = "Volume Musik BGM: %d%%" % int(v * 100)
-	)
-	p.add_child(bgm_slider)
-
 	var sfx_lbl = Label.new()
-	sfx_lbl.text = "Volume SFX & Klakson: %d%%" % int(AudioManager.sfx_volume * 100)
-	sfx_lbl.set_position(Vector2(30, 138))
+	sfx_lbl.text = "Volume efek suara kiriman: %d%%" % int(AudioManager.sfx_volume * 100)
+	sfx_lbl.set_position(Vector2(30, 106))
 	sfx_lbl.add_theme_font_size_override("font_size", 11)
 	p.add_child(sfx_lbl)
 
 	var sfx_slider = HSlider.new()
-	sfx_slider.set_position(Vector2(210, 138))
+	sfx_slider.set_position(Vector2(210, 106))
 	sfx_slider.set_size(Vector2(240, 20))
 	sfx_slider.min_value = 0.0
 	sfx_slider.max_value = 1.0
@@ -491,13 +472,13 @@ func _create_setting_modal() -> Panel:
 	sfx_slider.value = AudioManager.sfx_volume
 	sfx_slider.value_changed.connect(func(v):
 		AudioManager.set_sfx_volume(v)
-		sfx_lbl.text = "Volume SFX & Klakson: %d%%" % int(v * 100)
+		sfx_lbl.text = "Volume efek suara kiriman: %d%%" % int(v * 100)
 	)
 	p.add_child(sfx_slider)
 
 	var mute_btn = Button.new()
 	mute_btn.text = "🔊 Mute: OFF" if not AudioManager.is_muted else "🔇 Mute: ON"
-	mute_btn.set_position(Vector2(465, 88))
+	mute_btn.set_position(Vector2(465, 74))
 	mute_btn.set_size(Vector2(130, 36))
 	mute_btn.add_theme_font_size_override("font_size", 10)
 	mute_btn.pressed.connect(func():
@@ -530,16 +511,6 @@ func _create_setting_modal() -> Panel:
 			fs_btn.text = "🪟 Mode Jendela (Windowed)"
 	)
 	p.add_child(fs_btn)
-
-	var test_horn_btn = Button.new()
-	test_horn_btn.text = "📢 Uji Coba Klakson [H]"
-	test_horn_btn.set_position(Vector2(320, 215))
-	test_horn_btn.set_size(Vector2(250, 34))
-	test_horn_btn.add_theme_font_size_override("font_size", 11)
-	test_horn_btn.pressed.connect(func():
-		AudioManager.play_horn()
-	)
-	p.add_child(test_horn_btn)
 
 	var close_btn = Button.new()
 	close_btn.text = "✓ Simpan & Tutup [ESC]"

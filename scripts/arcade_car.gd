@@ -163,9 +163,19 @@ func _setup_vehicle_audio() -> void:
 		add_child(audio_player)
 		vehicle_audio[sound_name] = audio_player
 
+	apply_audio_settings()
+
 	var reward_player := _get_audio_player("reward")
 	if reward_player:
 		reward_player.finished.connect(_play_pending_mission_complete_sound)
+
+func apply_audio_settings() -> void:
+	var audio_manager = get_node_or_null("/root/AudioManager")
+	if not audio_manager:
+		return
+	var volume_db: float = audio_manager.get_vehicle_audio_volume_db()
+	for audio_player in vehicle_audio.values():
+		audio_player.volume_db = volume_db
 
 func _get_audio_player(sound_name: String) -> AudioStreamPlayer3D:
 	return vehicle_audio.get(sound_name) as AudioStreamPlayer3D
@@ -234,10 +244,6 @@ func _unhandled_input(event: InputEvent) -> void:
 				print("[MBG] Sensitivitas Kemudi: ", snapped(steer_sensitivity, 0.1), "x")
 
 func trigger_horn() -> void:
-	var am = get_node_or_null("/root/AudioManager")
-	if am and am.has_method("play_horn"):
-		am.play_horn()
-
 	# Efek Balon Suara 3D Melayang di atas mobil
 	_spawn_horn_bubble()
 	_show_hud_toast("📢 KLAKSON MBG: Jalanan terbuka untuk Pengawal Raja!")

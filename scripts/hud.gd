@@ -311,27 +311,22 @@ func _start_race_countdown() -> void:
 	num_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.1))
 	cd_panel.add_child(num_label)
 
-	AudioManager.play_countdown_beep(false)
-
 	var t = create_tween()
 	t.tween_interval(1.0)
 	t.tween_callback(func():
 		num_label.text = "2"
 		num_label.add_theme_color_override("font_color", Color(1.0, 0.65, 0.1))
-		AudioManager.play_countdown_beep(false)
 	)
 	t.tween_interval(1.0)
 	t.tween_callback(func():
 		num_label.text = "1"
 		num_label.add_theme_color_override("font_color", Color(1.0, 0.45, 0.1))
-		AudioManager.play_countdown_beep(false)
 	)
 	t.tween_interval(1.0)
 	t.tween_callback(func():
 		num_label.text = "BERANGKAT! 🚀"
 		num_label.add_theme_font_size_override("font_size", 42)
 		num_label.add_theme_color_override("font_color", Color(0.2, 1.0, 0.5))
-		AudioManager.play_countdown_beep(true)
 		show_toast("🚀 TITAH RAJA DIMULAI! Kawal makanan ke 5 Sekolah sebelum waktu habis (05:00)!", 4.0)
 	)
 	t.tween_interval(0.8)
@@ -506,33 +501,14 @@ func _build_setting_modal() -> Panel:
 	)
 	p.add_child(master_slider)
 
-	var bgm_lbl = Label.new()
-	bgm_lbl.text = "Volume Musik BGM: %d%%" % int(AudioManager.bgm_volume * 100)
-	bgm_lbl.set_position(Vector2(30, 102))
-	bgm_lbl.add_theme_font_size_override("font_size", 11)
-	p.add_child(bgm_lbl)
-
-	var bgm_slider = HSlider.new()
-	bgm_slider.set_position(Vector2(210, 102))
-	bgm_slider.set_size(Vector2(240, 20))
-	bgm_slider.min_value = 0.0
-	bgm_slider.max_value = 1.0
-	bgm_slider.step = 0.05
-	bgm_slider.value = AudioManager.bgm_volume
-	bgm_slider.value_changed.connect(func(v):
-		AudioManager.set_bgm_volume(v)
-		bgm_lbl.text = "Volume Musik BGM: %d%%" % int(v * 100)
-	)
-	p.add_child(bgm_slider)
-
 	var sfx_lbl = Label.new()
-	sfx_lbl.text = "Volume SFX & Klakson: %d%%" % int(AudioManager.sfx_volume * 100)
-	sfx_lbl.set_position(Vector2(30, 132))
+	sfx_lbl.text = "Volume efek suara kiriman: %d%%" % int(AudioManager.sfx_volume * 100)
+	sfx_lbl.set_position(Vector2(30, 102))
 	sfx_lbl.add_theme_font_size_override("font_size", 11)
 	p.add_child(sfx_lbl)
 
 	var sfx_slider = HSlider.new()
-	sfx_slider.set_position(Vector2(210, 132))
+	sfx_slider.set_position(Vector2(210, 102))
 	sfx_slider.set_size(Vector2(240, 20))
 	sfx_slider.min_value = 0.0
 	sfx_slider.max_value = 1.0
@@ -540,13 +516,13 @@ func _build_setting_modal() -> Panel:
 	sfx_slider.value = AudioManager.sfx_volume
 	sfx_slider.value_changed.connect(func(v):
 		AudioManager.set_sfx_volume(v)
-		sfx_lbl.text = "Volume SFX & Klakson: %d%%" % int(v * 100)
+		sfx_lbl.text = "Volume efek suara kiriman: %d%%" % int(v * 100)
 	)
 	p.add_child(sfx_slider)
 
 	var mute_btn = Button.new()
 	mute_btn.text = "🔊 Mute: OFF" if not AudioManager.is_muted else "🔇 Mute: ON"
-	mute_btn.set_position(Vector2(465, 84))
+	mute_btn.set_position(Vector2(465, 74))
 	mute_btn.set_size(Vector2(130, 36))
 	mute_btn.add_theme_font_size_override("font_size", 10)
 	mute_btn.pressed.connect(func():
@@ -620,16 +596,6 @@ func _build_setting_modal() -> Panel:
 			fs_btn.text = "🪟 Mode Jendela (Windowed)"
 	)
 	p.add_child(fs_btn)
-
-	var test_horn_btn = Button.new()
-	test_horn_btn.text = "📢 Uji Coba Klakson [H]"
-	test_horn_btn.set_position(Vector2(320, 266))
-	test_horn_btn.set_size(Vector2(250, 34))
-	test_horn_btn.add_theme_font_size_override("font_size", 11)
-	test_horn_btn.pressed.connect(func():
-		AudioManager.play_horn()
-	)
-	p.add_child(test_horn_btn)
 
 	var close_btn = Button.new()
 	close_btn.text = "✓ Simpan & Tutup [ESC]"
@@ -933,10 +899,7 @@ func _on_honk_pressed() -> void:
 	if player_car and player_car.has_method("trigger_horn"):
 		player_car.trigger_horn()
 	else:
-		var am = get_node_or_null("/root/AudioManager")
-		if am and am.has_method("play_horn"):
-			am.play_horn()
-		show_toast("📢 KLAKSON MBG DIBUNYIKAN!", 1.5)
+		show_toast("Pengemudi belum berada di dalam mobil.", 1.5)
 
 func _on_map_toggle_pressed() -> void:
 	var minimap = get_node_or_null("Minimap")
@@ -1113,9 +1076,6 @@ func _check_proximity_prompts() -> void:
 			prompt_label.text = "⛽ SPBU TENJO (2 Koin/L) | Tahan [B] untuk isi bensin!"
 			if Input.is_key_pressed(KEY_B):
 				GameManager.refuel(get_process_delta_time())
-				var am = get_node_or_null("/root/AudioManager")
-				if am and am.has_method("play_coin_sfx") and randf() < 0.2:
-					am.play_coin_sfx()
 		else:
 			prompt_label.text = "⛽ SPBU TENJO: Tangki bensin sudah PENUH (40.0 Liter)!"
 		return

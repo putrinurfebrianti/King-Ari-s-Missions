@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cgravyard101mbg"]
+[gd_scene format=3 uid="uid://bqowvsb13lcxk"]
 
 [sub_resource type="BoxShape3D" id="shape_grave_area"]
 size = Vector3(18, 6, 18)

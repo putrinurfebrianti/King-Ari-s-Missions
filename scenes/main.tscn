@@ -359,24 +359,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.12, 0)
 
 [node name="BuildingHospital" parent="CityBuildings" unique_id=1268478556 instance=ExtResource("31_hosp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -24)
+scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingSchool" parent="CityBuildings" unique_id=974491949 instance=ExtResource("10_school_bldg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, -24)
+scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingFastFood" parent="CityBuildings" unique_id=1606358 instance=ExtResource("32_ff")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -14)
+scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingPolice" parent="CityBuildings" unique_id=1967548764 instance=ExtResource("14_police")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 24)
+scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingFireStation" parent="CityBuildings" unique_id=572519537 instance=ExtResource("15_fire")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 24)
+scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingSupermarket" parent="CityBuildings" unique_id=1518192769 instance=ExtResource("33_smkt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 22)
+scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingSPPG" parent="CityBuildings" unique_id=315755139 instance=ExtResource("9_sppg_bldg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 14)
+scale = Vector3(0.85, 0.85, 0.85)
 
 [node name="FlagSPPG" parent="CityBuildings" unique_id=532618677 instance=ExtResource("17_flag")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58, 0, 8)
@@ -649,23 +656,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0.15, 11)
 [node name="NPCGuruSDN" parent="." unique_id=1125325273 instance=ExtResource("25_guru")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.15, -20)
 
-[node name="BuildingHospital" parent="." unique_id=230194670 instance=ExtResource("31_hosp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -24)
-
-[node name="BuildingFastFood" parent="." unique_id=1940613664 instance=ExtResource("32_ff")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -14)
-
-[node name="BuildingSupermarket" parent="." unique_id=795057967 instance=ExtResource("33_smkt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 22)
-
 [node name="ConstructionZone" parent="." unique_id=920331841 instance=ExtResource("34_const")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 24)
 
 [node name="CanalWater" parent="." unique_id=1464484349 instance=ExtResource("35_water")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 0)
-
-[node name="GraveyardArea" parent="." unique_id=1072572974 instance=ExtResource("36_grave")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -26)
 
 [node name="BuildingPlayerHouse" parent="." unique_id=1439531475 instance=ExtResource("37_player_house")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 42)
