@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://cwatr101mbg"]
+
+[sub_resource type="StandardMaterial3D" id="mat_water"]
+transparency = 1
+albedo_color = Color(0.12, 0.42, 0.68, 0.88)
+roughness = 0.15
+metallic = 0.2
+
+[sub_resource type="BoxMesh" id="mesh_water"]
+material = SubResource("mat_water")
+size = Vector3(18, 0.5, 140)
+
+[sub_resource type="StandardMaterial3D" id="mat_wood_pier"]
+albedo_color = Color(0.48, 0.32, 0.18, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="mesh_pier"]
+material = SubResource("mat_wood_pier")
+size = Vector3(8, 0.4, 2.5)
+
+[sub_resource type="CylinderMesh" id="mesh_post"]
+material = SubResource("mat_wood_pier")
+top_radius = 0.2
+bottom_radius = 0.2
+height = 1.6
+
+[node name="CanalWater" type="Node3D"]
+
+[node name="WaterPlane" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+mesh = SubResource("mesh_water")
+
+[node name="Pier1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.2, -35)
+mesh = SubResource("mesh_pier")
+
+[node name="Pier2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.2, 0)
+mesh = SubResource("mesh_pier")
+
+[node name="Pier3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.2, 35)
+mesh = SubResource("mesh_pier")

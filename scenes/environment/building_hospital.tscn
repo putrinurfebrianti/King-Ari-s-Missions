@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://b0mxs1jud2nuu"]
+
+[sub_resource type="BoxShape3D" id="shape_hosp_col"]
+size = Vector3(14, 10, 10)
+
+[sub_resource type="StandardMaterial3D" id="mat_hosp_wall"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.85, 0.94, 0.98, 1)
+roughness = 0.45
+
+[sub_resource type="BoxMesh" id="mesh_hosp_main"]
+material = SubResource("mat_hosp_wall")
+size = Vector3(14, 7.5, 10)
+
+[sub_resource type="StandardMaterial3D" id="mat_hosp_trim"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.35, 0.65, 0.85, 1)
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="mesh_hosp_top"]
+material = SubResource("mat_hosp_trim")
+size = Vector3(9, 3.2, 7)
+
+[sub_resource type="StandardMaterial3D" id="mat_helipad"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.2, 0.22, 0.25, 1)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="mesh_helipad"]
+material = SubResource("mat_helipad")
+top_radius = 2.8
+bottom_radius = 2.8
+height = 0.15
+
+[sub_resource type="StandardMaterial3D" id="mat_red_cross"]
+diffuse_mode = 3
+emission_enabled = true
+emission = Color(0.95, 0.15, 0.15, 1)
+emission_energy_multiplier = 0.5
+albedo_color = Color(0.95, 0.12, 0.12, 1)
+
+[sub_resource type="BoxMesh" id="mesh_cross_v"]
+material = SubResource("mat_red_cross")
+size = Vector3(0.5, 2.2, 0.15)
+
+[sub_resource type="BoxMesh" id="mesh_cross_h"]
+material = SubResource("mat_red_cross")
+size = Vector3(2.2, 0.5, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="mat_glass_blue"]
+diffuse_mode = 3
+albedo_color = Color(0.18, 0.45, 0.75, 0.85)
+roughness = 0.15
+metallic = 0.3
+
+[sub_resource type="BoxMesh" id="mesh_window_row"]
+material = SubResource("mat_glass_blue")
+size = Vector3(12, 1.2, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="mat_canopy_white"]
+albedo_color = Color(0.95, 0.95, 0.95, 1)
+roughness = 0.5
+
+[sub_resource type="BoxMesh" id="mesh_canopy"]
+material = SubResource("mat_canopy_white")
+size = Vector3(5, 0.3, 3)
+
+[sub_resource type="StandardMaterial3D" id="mat_ambulance_body"]
+albedo_color = Color(0.98, 0.98, 0.98, 1)
+
+[sub_resource type="BoxMesh" id="mesh_amb_body"]
+material = SubResource("mat_ambulance_body")
+size = Vector3(1.8, 1.5, 3.4)
+
+[node name="BuildingHospital" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+shape = SubResource("shape_hosp_col")
+
+[node name="MainWing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+mesh = SubResource("mesh_hosp_main")
+
+[node name="UpperTower" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.1, 0)
+mesh = SubResource("mesh_hosp_top")
+
+[node name="Helipad" type="MeshInstance3D" parent="UpperTower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+mesh = SubResource("mesh_helipad")
+
+[node name="RedCrossV" type="MeshInstance3D" parent="MainWing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 5.08)
+mesh = SubResource("mesh_cross_v")
+
+[node name="RedCrossH" type="MeshInstance3D" parent="MainWing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 5.08)
+mesh = SubResource("mesh_cross_h")
+
+[node name="WindowRow1" type="MeshInstance3D" parent="MainWing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 5.06)
+mesh = SubResource("mesh_window_row")
+
+[node name="WindowRow2" type="MeshInstance3D" parent="MainWing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8, 5.06)
+mesh = SubResource("mesh_window_row")
+
+[node name="Canopy" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 6.2)
+mesh = SubResource("mesh_canopy")
+
+[node name="Ambulance" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.75, 6.5)
+mesh = SubResource("mesh_amb_body")
+
+[node name="AmbRedStripe" type="MeshInstance3D" parent="Ambulance"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("mesh_cross_h")

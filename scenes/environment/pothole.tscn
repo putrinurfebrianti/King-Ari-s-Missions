@@ -7,13 +7,79 @@ script/source = "extends Area3D
 @export var speed_threshold: float = 14.0
 
 var can_damage: bool = true
+var is_repaired: bool = false
+var prompt_label: Label3D
+var hole_mesh_node: MeshInstance3D
 
 func _ready() -> void:
+	collision_layer = 1
 	collision_mask = 2
 	body_entered.connect(_on_body_entered)
 
+	hole_mesh_node = get_node_or_null(\"HoleMesh\") as MeshInstance3D
+
+	prompt_label = Label3D.new()
+	prompt_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	prompt_label.font_size = 20
+	prompt_label.outline_size = 6
+	prompt_label.outline_modulate = Color.BLACK
+	prompt_label.position = Vector3(0, 1.8, 0)
+	prompt_label.visible = false
+	add_child(prompt_label)
+
+func _physics_process(_delta: float) -> void:
+	if is_repaired:
+		prompt_label.visible = false
+		return
+
+	var car = get_tree().get_first_node_in_group(\"player\") as Node3D
+	var ped = get_tree().get_first_node_in_group(\"pedestrian\") as Node3D
+	var active_pos = Vector3.ZERO
+	if ped and is_instance_valid(ped) and ped.visible:
+		active_pos = ped.global_position
+	elif car and is_instance_valid(car):
+		active_pos = car.global_position
+	else:
+		return
+
+	var dist = global_position.distance_to(active_pos)
+	if dist <= 6.0:
+		prompt_label.visible = true
+		if GameManager.has_any_repair_tool():
+			prompt_label.text = \"🛠️ [Tekan F] Tambal Jalan Berlubang\"
+			prompt_label.modulate = Color(0.2, 1.0, 0.4)
+			if Input.is_key_pressed(KEY_F):
+				repair_road()
+		else:
+			prompt_label.text = \"⚠️ Jalan Berlubang Bahaya!\\n(Beli Perkakas untuk Menambal)\"
+			prompt_label.modulate = Color(1.0, 0.4, 0.3)
+	else:
+		prompt_label.visible = false
+
+func repair_road() -> void:
+	if is_repaired:
+		return
+	is_repaired = true
+	can_damage = false
+
+	if hole_mesh_node:
+		var mat = StandardMaterial3D.new()
+		mat.albedo_color = Color(0.35, 0.38, 0.42, 1.0)
+		mat.roughness = 0.5
+		hole_mesh_node.material_override = mat
+
+	GameManager.coins += 15
+	GameManager.coins_changed.emit(GameManager.coins)
+	GameManager.pothole_repaired.emit(global_position)
+
+	var hud = get_node_or_null(\"/root/Main/HUD\")
+	if hud and hud.has_method(\"show_toast\"):
+		hud.show_toast(\"🛠️ Jalan Berhasil Ditambal! Rute sekarang mulus (+15 Koin Upah Pemeliharaan)!\", 4.0)
+
 func _on_body_entered(body: Node3D) -> void:
-	if not body.is_in_group(\"player\") or not can_damage:
+	if is_repaired or not can_damage:
+		return
+	if not body.is_in_group(\"player\"):
 		return
 	var speed = 0.0
 	if \"current_speed\" in body:
@@ -45,11 +111,6 @@ material = SubResource("mat_pothole")
 top_radius = 1.2
 bottom_radius = 1.0
 height = 0.06
-
-[sub_resource type="StandardMaterial3D" id="mat_warning_cone"]
-diffuse_mode = 3
-specular_mode = 1
-albedo_color = Color(1, 0.45, 0.1, 1)
 
 [sub_resource type="CylinderShape3D" id="shape_pothole"]
 height = 1.0

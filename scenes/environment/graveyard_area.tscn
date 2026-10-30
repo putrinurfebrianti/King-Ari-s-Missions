@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://cgravyard101mbg"]
+
+[sub_resource type="BoxShape3D" id="shape_grave_area"]
+size = Vector3(18, 6, 18)
+
+[sub_resource type="StandardMaterial3D" id="mat_dark_soil"]
+diffuse_mode = 3
+albedo_color = Color(0.18, 0.16, 0.14, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="mesh_ground_soil"]
+material = SubResource("mat_dark_soil")
+size = Vector3(18, 0.3, 18)
+
+[sub_resource type="StandardMaterial3D" id="mat_stone_tomb"]
+diffuse_mode = 3
+albedo_color = Color(0.48, 0.5, 0.52, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="mesh_tombstone"]
+material = SubResource("mat_stone_tomb")
+size = Vector3(0.9, 1.4, 0.3)
+
+[sub_resource type="CylinderMesh" id="mesh_tomb_top"]
+material = SubResource("mat_stone_tomb")
+top_radius = 0.45
+bottom_radius = 0.45
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="mat_iron_fence"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+metallic = 0.8
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="mesh_fence_bar"]
+material = SubResource("mat_iron_fence")
+size = Vector3(17, 1.8, 0.1)
+
+[sub_resource type="BoxMesh" id="mesh_fence_bar_side"]
+material = SubResource("mat_iron_fence")
+size = Vector3(0.1, 1.8, 17)
+
+[sub_resource type="StandardMaterial3D" id="mat_crypt"]
+diffuse_mode = 3
+albedo_color = Color(0.32, 0.34, 0.36, 1)
+
+[sub_resource type="BoxMesh" id="mesh_crypt_body"]
+material = SubResource("mat_crypt")
+size = Vector3(4.5, 3.5, 5)
+
+[sub_resource type="StandardMaterial3D" id="mat_lantern_green"]
+emission_enabled = true
+emission = Color(0.2, 0.95, 0.65, 1)
+emission_energy_multiplier = 1.8
+albedo_color = Color(0.2, 0.9, 0.6, 1)
+
+[sub_resource type="SphereMesh" id="mesh_lantern"]
+material = SubResource("mat_lantern_green")
+radius = 0.25
+height = 0.5
+
+[node name="GraveyardArea" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+shape = SubResource("shape_grave_area")
+
+[node name="GroundSoil" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("mesh_ground_soil")
+
+[node name="SignTitle" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 8.8)
+billboard = 1
+text = "🪦 KUBURAN LELUHUR TENJO"
+font_size = 24
+outline_size = 6
+outline_modulate = Color(0, 0, 0, 1)
+modulate = Color(0.6, 0.95, 0.8, 1)
+
+[node name="Crypt" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -4.5)
+mesh = SubResource("mesh_crypt_body")
+
+[node name="Tombstone1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.85, -2)
+mesh = SubResource("mesh_tombstone")
+
+[node name="Tombstone2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -5, 0.85, 2.5)
+mesh = SubResource("mesh_tombstone")
+
+[node name="Tombstone3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, 0.984808, -2.5, 0.85, 4.5)
+mesh = SubResource("mesh_tombstone")
+
+[node name="Tombstone4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.85, -2)
+mesh = SubResource("mesh_tombstone")
+
+[node name="Tombstone5" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 5, 0.85, 2.5)
+mesh = SubResource("mesh_tombstone")
+
+[node name="Tombstone6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.85, 4.5)
+mesh = SubResource("mesh_tombstone")
+
+[node name="FenceBack" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, -8.8)
+mesh = SubResource("mesh_fence_bar")
+
+[node name="FenceLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.8, 1.0, 0)
+mesh = SubResource("mesh_fence_bar_side")
+
+[node name="FenceRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.8, 1.0, 0)
+mesh = SubResource("mesh_fence_bar_side")
+
+[node name="EerieLantern1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.2, 8.5)
+mesh = SubResource("mesh_lantern")
+
+[node name="OmniLightGreen1" type="OmniLight3D" parent="EerieLantern1"]
+light_color = Color(0.2, 0.95, 0.65, 1)
+light_energy = 2.2
+omni_range = 8.0
+
+[node name="EerieLantern2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.2, 8.5)
+mesh = SubResource("mesh_lantern")
+
+[node name="OmniLightGreen2" type="OmniLight3D" parent="EerieLantern2"]
+light_color = Color(0.2, 0.95, 0.65, 1)
+light_energy = 2.2
+omni_range = 8.0

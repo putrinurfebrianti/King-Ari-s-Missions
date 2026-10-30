@@ -1,0 +1,185 @@
+[gd_scene format=3 uid="uid://hu0g3xi5mvu7"]
+
+[ext_resource type="Script" path="res://scripts/npc_traffic_car.gd" id="1_traffic"]
+
+[sub_resource type="BoxShape3D" id="shape_car_body"]
+size = Vector3(1.85, 1.4, 3.8)
+
+[sub_resource type="StandardMaterial3D" id="mat_default_body"]
+diffuse_mode = 3
+albedo_color = Color(0.85, 0.2, 0.2, 1)
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="mesh_body"]
+material = SubResource("mat_default_body")
+size = Vector3(1.75, 0.65, 3.6)
+
+[sub_resource type="StandardMaterial3D" id="mat_dark_glass"]
+diffuse_mode = 3
+albedo_color = Color(0.12, 0.16, 0.22, 1)
+metallic = 0.4
+roughness = 0.1
+
+[sub_resource type="BoxMesh" id="mesh_cabin"]
+material = SubResource("mat_dark_glass")
+size = Vector3(1.55, 0.62, 1.95)
+
+[sub_resource type="StandardMaterial3D" id="mat_bumper"]
+diffuse_mode = 3
+albedo_color = Color(0.15, 0.15, 0.18, 1)
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="mesh_bumper"]
+material = SubResource("mat_bumper")
+size = Vector3(1.78, 0.32, 0.28)
+
+[sub_resource type="StandardMaterial3D" id="mat_headlight"]
+emission_enabled = true
+emission = Color(1, 0.95, 0.85, 1)
+emission_energy_multiplier = 2.5
+albedo_color = Color(1, 0.95, 0.85, 1)
+
+[sub_resource type="BoxMesh" id="mesh_headlight"]
+material = SubResource("mat_headlight")
+size = Vector3(0.35, 0.18, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="mat_taillight"]
+emission_enabled = true
+emission = Color(0.95, 0.1, 0.1, 1)
+emission_energy_multiplier = 1.8
+albedo_color = Color(0.95, 0.1, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="mesh_taillight"]
+material = SubResource("mat_taillight")
+size = Vector3(0.35, 0.18, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="mat_tire"]
+diffuse_mode = 3
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="mesh_tire"]
+material = SubResource("mat_tire")
+top_radius = 0.36
+bottom_radius = 0.36
+height = 0.22
+
+[sub_resource type="StandardMaterial3D" id="mat_rim"]
+diffuse_mode = 3
+albedo_color = Color(0.75, 0.78, 0.82, 1)
+metallic = 0.6
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="mesh_rim"]
+material = SubResource("mat_rim")
+top_radius = 0.22
+bottom_radius = 0.22
+height = 0.23
+
+[node name="NPCTrafficCar" type="CharacterBody3D"]
+script = ExtResource("1_traffic")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("shape_car_body")
+
+[node name="FrontRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1.8)
+target_position = Vector3(0, 0, -6.5)
+collision_mask = 3
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48, 0)
+mesh = SubResource("mesh_body")
+
+[node name="Cabin" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.98, 0.15)
+mesh = SubResource("mesh_cabin")
+
+[node name="BumperFront" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, -1.82)
+mesh = SubResource("mesh_bumper")
+
+[node name="BumperRear" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 1.82)
+mesh = SubResource("mesh_bumper")
+
+[node name="HeadlightL" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.55, -1.82)
+mesh = SubResource("mesh_headlight")
+
+[node name="HeadlightR" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.55, -1.82)
+mesh = SubResource("mesh_headlight")
+
+[node name="Taillights" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.55, 1.82)
+mesh = SubResource("mesh_taillight")
+
+[node name="TaillightR" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.55, 1.82)
+mesh = SubResource("mesh_taillight")
+
+[node name="WheelFL" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.88, 0.36, -1.15)
+
+[node name="Tire" type="MeshInstance3D" parent="Visual/WheelFL"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_tire")
+
+[node name="Rim" type="MeshInstance3D" parent="Visual/WheelFL"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_rim")
+
+[node name="WheelFR" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.36, -1.15)
+
+[node name="Tire" type="MeshInstance3D" parent="Visual/WheelFR"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_tire")
+
+[node name="Rim" type="MeshInstance3D" parent="Visual/WheelFR"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_rim")
+
+[node name="WheelRL" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.88, 0.36, 1.15)
+
+[node name="Tire" type="MeshInstance3D" parent="Visual/WheelRL"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_tire")
+
+[node name="Rim" type="MeshInstance3D" parent="Visual/WheelRL"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_rim")
+
+[node name="WheelRR" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.36, 1.15)
+
+[node name="Tire" type="MeshInstance3D" parent="Visual/WheelRR"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_tire")
+
+[node name="Rim" type="MeshInstance3D" parent="Visual/WheelRR"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("mesh_rim")
+
+[node name="Headlights" type="Node3D" parent="."]
+visible = false
+
+[node name="SpotLeft" type="SpotLight3D" parent="Headlights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.55, -1.9)
+light_color = Color(1, 0.95, 0.85, 1)
+light_energy = 2.5
+spot_range = 22.0
+spot_angle = 35.0
+
+[node name="SpotRight" type="SpotLight3D" parent="Headlights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.55, -1.9)
+light_color = Color(1, 0.95, 0.85, 1)
+light_energy = 2.5
+spot_range = 22.0
+spot_angle = 35.0
+
