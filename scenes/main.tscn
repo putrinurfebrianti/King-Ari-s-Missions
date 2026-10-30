@@ -30,21 +30,22 @@
 [ext_resource type="PackedScene" path="res://scenes/environment/building_spbu.tscn" id="28_spbu"]
 [ext_resource type="PackedScene" path="res://scenes/environment/road_blockade.tscn" id="29_blockade"]
 [ext_resource type="Script" path="res://scripts/weather_controller.gd" id="30_weather"]
+[ext_resource type="Script" path="res://scripts/endless_road.gd" id="31_endless_road"]
 
 [sub_resource type="StandardMaterial3D" id="mat_rain"]
 transparency = 1
 shading_mode = 0
-albedo_color = Color(0.75, 0.85, 0.95, 0.5)
+albedo_color = Color(0.66, 0.72, 0.75, 0.5)
 
 [sub_resource type="BoxMesh" id="mesh_raindrop"]
 material = SubResource("mat_rain")
 size = Vector3(0.04, 0.6, 0.04)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
-sky_top_color = Color(0.35, 0.68, 0.95, 1)
-sky_horizon_color = Color(0.78, 0.88, 0.98, 1)
-ground_bottom_color = Color(0.24, 0.52, 0.22, 1)
-ground_horizon_color = Color(0.72, 0.84, 0.74, 1)
+sky_top_color = Color(0.32, 0.48, 0.62, 1)
+sky_horizon_color = Color(0.62, 0.68, 0.69, 1)
+ground_bottom_color = Color(0.25, 0.32, 0.22, 1)
+ground_horizon_color = Color(0.56, 0.59, 0.5, 1)
 
 [sub_resource type="Sky" id="Sky_1"]
 sky_material = SubResource("ProceduralSkyMaterial_1")
@@ -53,51 +54,48 @@ sky_material = SubResource("ProceduralSkyMaterial_1")
 background_mode = 2
 sky = SubResource("Sky_1")
 ambient_light_source = 2
-ambient_light_color = Color(0.85, 0.9, 0.95, 1)
-ambient_light_energy = 0.78
+ambient_light_color = Color(0.72, 0.73, 0.68, 1)
+ambient_light_energy = 0.62
 tonemap_mode = 3
-tonemap_exposure = 1.05
-glow_enabled = true
-glow_intensity = 0.75
-glow_strength = 0.95
-glow_bloom = 0.2
+tonemap_exposure = 0.92
+glow_enabled = false
 
 [sub_resource type="BoxShape3D" id="shape_ground"]
-size = Vector3(180, 1, 140)
+size = Vector3(100000, 1, 100000)
 
 [sub_resource type="StandardMaterial3D" id="mat_grass"]
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.26, 0.56, 0.24, 1)
+albedo_color = Color(0.24, 0.36, 0.2, 1)
 roughness = 0.9
 
 [sub_resource type="BoxMesh" id="mesh_grass"]
 material = SubResource("mat_grass")
-size = Vector3(180, 1, 140)
+size = Vector3(100000, 1, 100000)
 
 [sub_resource type="StandardMaterial3D" id="mat_shoulder"]
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.74, 0.65, 0.5, 1)
+albedo_color = Color(0.58, 0.53, 0.43, 1)
 roughness = 0.95
 
 [sub_resource type="BoxMesh" id="mesh_shoulder_ew"]
 material = SubResource("mat_shoulder")
-size = Vector3(150, 0.22, 24)
+size = Vector3(100000, 0.22, 24)
 
 [sub_resource type="StandardMaterial3D" id="mat_asphalt"]
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.22, 0.24, 0.28, 1)
+albedo_color = Color(0.2, 0.21, 0.22, 1)
 roughness = 0.75
 
 [sub_resource type="BoxMesh" id="mesh_road_ew"]
 material = SubResource("mat_asphalt")
-size = Vector3(145, 0.25, 18)
+size = Vector3(100000, 0.25, 18)
 
 [sub_resource type="BoxMesh" id="mesh_road_ns"]
 material = SubResource("mat_asphalt")
-size = Vector3(18, 0.25, 115)
+size = Vector3(18, 0.25, 100000)
 
 [sub_resource type="CylinderMesh" id="mesh_roundabout_ring"]
 material = SubResource("mat_asphalt")
@@ -108,32 +106,32 @@ height = 0.26
 [sub_resource type="StandardMaterial3D" id="mat_curb"]
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.75, 0.76, 0.78, 1)
+albedo_color = Color(0.58, 0.59, 0.57, 1)
 roughness = 0.6
 
 [sub_resource type="BoxMesh" id="mesh_curb_ew"]
 material = SubResource("mat_curb")
-size = Vector3(145, 0.45, 0.8)
+size = Vector3(100000, 0.45, 0.8)
 
 [sub_resource type="BoxMesh" id="mesh_curb_ns"]
 material = SubResource("mat_curb")
-size = Vector3(0.8, 0.45, 115)
+size = Vector3(0.8, 0.45, 100000)
 
 [sub_resource type="StandardMaterial3D" id="mat_guardrail"]
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.88, 0.9, 0.94, 1)
-metallic = 0.25
-roughness = 0.25
+albedo_color = Color(0.66, 0.67, 0.64, 1)
+metallic = 0.1
+roughness = 0.55
 
 [sub_resource type="BoxMesh" id="mesh_guardrail_ew"]
 material = SubResource("mat_guardrail")
-size = Vector3(145, 0.3, 0.12)
+size = Vector3(100000, 0.3, 0.12)
 
 [sub_resource type="StandardMaterial3D" id="mat_line_white"]
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.94, 0.94, 0.96, 0.9)
+albedo_color = Color(0.82, 0.81, 0.74, 0.9)
 
 [sub_resource type="BoxMesh" id="mesh_zebra_strip"]
 material = SubResource("mat_line_white")
@@ -147,7 +145,7 @@ size = Vector3(10, 2.5, 10)
 
 [sub_resource type="StandardMaterial3D" id="mat_sppg_zone"]
 transparency = 1
-albedo_color = Color(0.1, 0.88, 0.35, 0.35)
+albedo_color = Color(0.28, 0.54, 0.32, 0.25)
 
 [sub_resource type="BoxMesh" id="mesh_sppg_zone"]
 material = SubResource("mat_sppg_zone")
@@ -155,76 +153,86 @@ size = Vector3(10, 0.1, 10)
 
 [sub_resource type="StandardMaterial3D" id="mat_school_zone"]
 transparency = 1
-albedo_color = Color(0.95, 0.55, 0.1, 0.4)
+albedo_color = Color(0.68, 0.48, 0.28, 0.3)
 
 [sub_resource type="BoxMesh" id="mesh_school_zone"]
 material = SubResource("mat_school_zone")
 size = Vector3(10, 0.1, 10)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glass"]
-bg_color = Color(0.06, 0.1, 0.18, 0.85)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.25, 0.5, 0.85, 0.45)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
+bg_color = Color(0.04, 0.04, 0.1, 0.93)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.9, 0, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
-bg_color = Color(0.12, 0.14, 0.18, 0.9)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+bg_color = Color(0.1, 0.1, 0.1, 0.95)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
-bg_color = Color(0.2, 0.9, 0.4, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+bg_color = Color(0.15, 1.0, 0.15, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
-bg_color = Color(0.15, 0.45, 0.85, 0.9)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+bg_color = Color(0.08, 0.2, 0.7, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0.7, 1, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
-bg_color = Color(0.08, 0.22, 0.14, 0.94)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.3, 0.95, 0.5, 0.7)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+bg_color = Color(0.02, 0.12, 0.04, 0.97)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 1, 0.4, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hint"]
-bg_color = Color(0.08, 0.12, 0.18, 0.75)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
-bg_color = Color(0.07, 0.1, 0.16, 0.96)
+bg_color = Color(0.05, 0.05, 0.12, 0.88)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.82, 0.2, 0.85)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_size = 12
+border_color = Color(0.5, 0.5, 1, 0.9)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
+bg_color = Color(0.04, 0.04, 0.1, 0.98)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.85, 0, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+shadow_size = 0
 
 [node name="Main" type="Node3D" unique_id=1702497775]
 
@@ -233,9 +241,9 @@ environment = SubResource("Environment_1")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1554366527]
 transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 32, 0)
-light_color = Color(1, 0.98, 0.94, 1)
-light_energy = 1.15
-shadow_enabled = true
+light_color = Color(0.96, 0.93, 0.84, 1)
+light_energy = 0.95
+shadow_enabled = false
 shadow_blur = 1.6
 directional_shadow_split_1 = 0.2
 directional_shadow_split_2 = 0.5
@@ -249,7 +257,10 @@ shape = SubResource("shape_ground")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=636356273]
 mesh = SubResource("mesh_grass")
 
-[node name="RoadNetwork" type="Node3D" parent="." unique_id=1166592416]
+[node name="RoadNetwork" type="Node3D" parent="." unique_id=1166592416 node_paths=PackedStringArray("follow_target", "ground")]
+script = ExtResource("31_endless_road")
+follow_target = NodePath("../PlayerCar")
+ground = NodePath("../Ground")
 
 [node name="SandShoulderEW" type="MeshInstance3D" parent="RoadNetwork" unique_id=255023825]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
@@ -601,7 +612,7 @@ anchor_right = 0.5
 offset_left = -230.0
 offset_top = 16.0
 offset_right = 230.0
-offset_bottom = 86.0
+offset_bottom = 100.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
 
@@ -614,10 +625,10 @@ offset_bottom = 34.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 20
-text = "⏱️ Waktu: 01:30"
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 22
+text = "⏱️ WAKTU: 05:00"
 horizontal_alignment = 1
 
 [node name="NavGuide" type="Label" parent="HUD/TopCenterCard" unique_id=538419321]
@@ -626,15 +637,15 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -34.0
+offset_top = -40.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.35, 0.9, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 18
 text = "➔ Rute: Menuju SPPG (Zona Hijau)"
 horizontal_alignment = 1
 
@@ -642,7 +653,7 @@ horizontal_alignment = 1
 offset_left = 24.0
 offset_top = 16.0
 offset_right = 274.0
-offset_bottom = 264.0
+offset_bottom = 340.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
 
 [node name="Avatar" type="TextureRect" parent="HUD/LeftDashboard" unique_id=803240693]
@@ -661,7 +672,7 @@ offset_top = 12.0
 offset_right = 240.0
 offset_bottom = 32.0
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 text = "Fatur 'Si Kilat'"
 
 [node name="StatusBadge" type="Label" parent="HUD/LeftDashboard" unique_id=900237084]
@@ -671,7 +682,7 @@ offset_top = 34.0
 offset_right = 240.0
 offset_bottom = 54.0
 theme_override_colors/font_color = Color(0.3, 0.95, 0.5, 1)
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 13
 text = "● Perwira Istana"
 
 [node name="FoodLabel" type="Label" parent="HUD/LeftDashboard" unique_id=1105383115]
@@ -680,7 +691,7 @@ offset_left = 14.0
 offset_top = 68.0
 offset_right = 236.0
 offset_bottom = 88.0
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 14
 text = "🍱 Kondisi Ransum: 100%"
 
 [node name="FoodBar" type="ProgressBar" parent="HUD/LeftDashboard" unique_id=629688159]
@@ -700,7 +711,7 @@ offset_left = 14.0
 offset_top = 114.0
 offset_right = 236.0
 offset_bottom = 132.0
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 13
 text = "Sensitivitas Setir: 1.0x"
 
 [node name="SteerSlider" type="HSlider" parent="HUD/LeftDashboard" unique_id=2062263186]
@@ -720,9 +731,9 @@ offset_left = 14.0
 offset_top = 168.0
 offset_right = 236.0
 offset_bottom = 206.0
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
-text = "🚶 Turun Mobil (Tekan E)"
+text = "[E] NAIK/TURUN MOBIL"
 
 [node name="ToastBanner" type="Panel" parent="HUD" unique_id=297640333]
 visible = false
@@ -744,7 +755,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.9, 1, 0.9, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 15
 text = "🚚 Ransum MBG Dimuat! Kawal makanan sampai tujuan!"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -774,8 +785,10 @@ offset_right = 440.0
 offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_hint")
-text = "🎮 WASD: Arah Gerak (W=Atas, S=Bawah, A=Kiri, D=Kanan) | Spasi: Rem | E: Turun/Naik Mobil | Tab: Ganti Mode Setir | R: Restart"
+text = "[WASD] Gerak  [SPACE] Rem  [E] Naik/Turun Mobil  [ENTER] Pickup/Drop MBG  [R] Restart Misi"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -802,7 +815,7 @@ offset_top = 18.0
 offset_bottom = 50.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 26
 text = "🎉 PENGIRIMAN SUKSES!"
 horizontal_alignment = 1
 
@@ -814,7 +827,7 @@ offset_top = 52.0
 offset_bottom = 86.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.1, 1)
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 32
 text = "★★★"
 horizontal_alignment = 1
 
@@ -828,7 +841,7 @@ offset_right = -20.0
 offset_bottom = 120.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 text = "Skor: 1250 | Hadiah: +450 Koin Kerajaan"
 horizontal_alignment = 1
 
@@ -855,7 +868,7 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.85, 0.95, 0.9, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "👩‍🏫 Ibu Sri (SDN 01): 'Alhamdulillah! Makanannya tepat waktu & sangat higienis!'"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -878,13 +891,13 @@ theme_override_constants/separation = 16
 [node name="RestartButton" type="Button" parent="HUD/MissionModal/ButtonContainer" unique_id=1765115536]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🔄 Kirim Lagi (R)"
 
 [node name="MenuButton" type="Button" parent="HUD/MissionModal/ButtonContainer" unique_id=1955388949]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "🏠 Menu Utama"

@@ -10,39 +10,42 @@
 [ext_resource type="Texture2D" path="res://assets/textures/ui/vehicle_truck.png" id="8_truck"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
-bg_color = Color(0.06, 0.1, 0.16, 0.88)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.18, 0.45, 0.75, 0.8)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+bg_color = Color(0.04, 0.04, 0.1, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0.7, 1, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
-bg_color = Color(0.12, 0.52, 0.88, 0.95)
-border_width_bottom = 3
-border_color = Color(0.06, 0.32, 0.6, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+bg_color = Color(0.08, 0.2, 0.7, 0.98)
+border_width_bottom = 4
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_color = Color(0, 0.6, 1, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_start"]
-bg_color = Color(0.95, 0.55, 0.1, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 4
-border_color = Color(0.75, 0.35, 0.05, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-shadow_color = Color(1, 0.6, 0.1, 0.4)
-shadow_size = 10
+bg_color = Color(0.8, 0.35, 0.0, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 5
+border_color = Color(1, 0.6, 0, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+shadow_color = Color(1, 0.5, 0, 0.5)
+shadow_size = 0
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -87,7 +90,7 @@ offset_top = 8.0
 offset_right = 550.0
 offset_bottom = 44.0
 theme_override_colors/font_color = Color(1, 0.88, 0.25, 1)
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 34
 text = "👑 KING ARI’S MISSIONS"
 
 [node name="SubTitleLabel" type="Label" parent="TopBar"]
@@ -97,7 +100,7 @@ offset_top = 42.0
 offset_right = 650.0
 offset_bottom = 66.0
 theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 16
 text = "🏝️ Tenjo Island — Distribusi Makan Bergizi Gratis (MBG) Generasi Emas"
 
 [node name="CoinPanel" type="Panel" parent="TopBar"]
@@ -120,7 +123,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 18
 text = "💰 Koin MBG: 1500"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -140,7 +143,7 @@ offset_top = 4.0
 offset_right = 450.0
 offset_bottom = 26.0
 theme_override_colors/font_color = Color(0.35, 0.9, 1, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 18
 text = "1. KORPS PENGEMUDI MBG KERAJAAN TENJO (APARATUR RESMI DIGAJI RAJA)"
 
 [node name="DriverContainer" type="HBoxContainer" parent="DriverSection"]
@@ -178,7 +181,7 @@ offset_top = 12.0
 offset_right = 370.0
 offset_bottom = 34.0
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 17
 text = "Fatur 'Si Kilat'"
 
 [node name="Title" type="Label" parent="DriverSection/DriverContainer/CardFatur"]
@@ -188,7 +191,7 @@ offset_top = 34.0
 offset_right = 370.0
 offset_bottom = 54.0
 theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 13
 text = "Perwira Pengemudi MBG Istana"
 
 [node name="Passive" type="Label" parent="DriverSection/DriverContainer/CardFatur"]
@@ -198,7 +201,7 @@ offset_top = 110.0
 offset_right = 370.0
 offset_bottom = 175.0
 theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "⚡ Akselerasi +15% & Top Speed +10%. Diberi mandat khusus oleh Raja untuk rute prioritas darurat berkecepatan tinggi."
 autowrap_mode = 3
 
@@ -214,7 +217,7 @@ offset_right = -12.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "✓ TERPILIH"
 
@@ -240,7 +243,7 @@ offset_top = 12.0
 offset_right = 370.0
 offset_bottom = 34.0
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 17
 text = "Mahdi 'Si Kompas'"
 
 [node name="Title" type="Label" parent="DriverSection/DriverContainer/CardMahdi"]
@@ -250,7 +253,7 @@ offset_top = 34.0
 offset_right = 370.0
 offset_bottom = 54.0
 theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 13
 text = "Inspektur Rute & Taktis Kerajaan"
 
 [node name="Passive" type="Label" parent="DriverSection/DriverContainer/CardMahdi"]
@@ -260,7 +263,7 @@ offset_top = 110.0
 offset_right = 370.0
 offset_bottom = 175.0
 theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "🧭 Handling tikungan tajam sangat stabil (+25%). Ahli taktis istana menembus jalanan sempit dan blokade kota."
 autowrap_mode = 3
 
@@ -276,7 +279,7 @@ offset_right = -12.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "PILIH DRIVER"
 
@@ -302,7 +305,7 @@ offset_top = 12.0
 offset_right = 370.0
 offset_bottom = 34.0
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 17
 text = "Zen 'Si Penjaga Ransum'"
 
 [node name="Title" type="Label" parent="DriverSection/DriverContainer/CardZen"]
@@ -312,7 +315,7 @@ offset_top = 34.0
 offset_right = 370.0
 offset_bottom = 54.0
 theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 13
 text = "Kepala Pengawal Gizi & Logistik Kerajaan"
 
 [node name="Passive" type="Label" parent="DriverSection/DriverContainer/CardZen"]
@@ -322,7 +325,7 @@ offset_top = 110.0
 offset_right = 370.0
 offset_bottom = 175.0
 theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "🛡️ Integritas Protokoler: Kerusakan ransum akibat benturan & jalan berlubang berkurang 25%. Ransum tiba utuh & higienis."
 autowrap_mode = 3
 
@@ -338,7 +341,7 @@ offset_right = -12.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "PILIH DRIVER"
 
@@ -357,7 +360,7 @@ offset_top = 4.0
 offset_right = 650.0
 offset_bottom = 26.0
 theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 18
 text = "2. PILIH ARMADA MOBIL DINAS MBG (2 ARMADA KHUSUS DAPAT DIBELI DENGAN KOIN)"
 
 [node name="VehicleContainer" type="HBoxContainer" parent="VehicleSection"]
@@ -395,7 +398,7 @@ offset_top = 10.0
 offset_right = 370.0
 offset_bottom = 32.0
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 17
 text = "Van MBG Dinas Kerajaan"
 
 [node name="PriceTag" type="Label" parent="VehicleSection/VehicleContainer/CardVan"]
@@ -405,7 +408,7 @@ offset_top = 32.0
 offset_right = 370.0
 offset_bottom = 52.0
 theme_override_colors/font_color = Color(0.3, 0.95, 0.5, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 14
 text = "● STATUS: GRATIS (STARTER)"
 
 [node name="Specs" type="Label" parent="VehicleSection/VehicleContainer/CardVan"]
@@ -415,7 +418,7 @@ offset_top = 106.0
 offset_right = 370.0
 offset_bottom = 165.0
 theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "Kecepatan: 1.0x | Akselerasi: 1.0x | Daya Tahan: 1.0x
 Kendaraan dinas MBG standar berpelat resmi istana. Seimbang dan handal."
 autowrap_mode = 3
@@ -432,7 +435,7 @@ offset_right = -12.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "✓ TERPILIH"
 
@@ -458,7 +461,7 @@ offset_top = 10.0
 offset_right = 370.0
 offset_bottom = 32.0
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 17
 text = "Pick-Up MBG Patroli Cepat"
 
 [node name="PriceTag" type="Label" parent="VehicleSection/VehicleContainer/CardPickup"]
@@ -468,7 +471,7 @@ offset_top = 32.0
 offset_right = 370.0
 offset_bottom = 52.0
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 14
 text = "💰 HARGA: 800 KOIN"
 
 [node name="Specs" type="Label" parent="VehicleSection/VehicleContainer/CardPickup"]
@@ -478,7 +481,7 @@ offset_top = 106.0
 offset_right = 370.0
 offset_bottom = 165.0
 theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "Kecepatan: 1.15x | Akselerasi: 1.25x | Bodi Ramping
 Armada pick-up MBG resmi bertenaga turbo untuk menembus rute terjal!"
 autowrap_mode = 3
@@ -495,7 +498,7 @@ offset_right = -12.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "💰 BELI (800 KOIN)"
 
@@ -521,7 +524,7 @@ offset_top = 10.0
 offset_right = 370.0
 offset_bottom = 32.0
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 17
 text = "Truk MBG Armor Heavy-Duty"
 
 [node name="PriceTag" type="Label" parent="VehicleSection/VehicleContainer/CardTruck"]
@@ -531,7 +534,7 @@ offset_top = 32.0
 offset_right = 370.0
 offset_bottom = 52.0
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 14
 text = "💰 HARGA: 1800 KOIN"
 
 [node name="Specs" type="Label" parent="VehicleSection/VehicleContainer/CardTruck"]
@@ -541,7 +544,7 @@ offset_top = 106.0
 offset_right = 370.0
 offset_bottom = 165.0
 theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "Kecepatan: 1.10x | Daya Tahan: +50% (Anti-Guncang)
 Armada boks berpelindung baja anti-guncangan mandat istana!"
 autowrap_mode = 3
@@ -558,7 +561,7 @@ offset_right = -12.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "💰 BELI (1800 KOIN)"
 
@@ -586,7 +589,7 @@ offset_bottom = 28.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_start")
 text = "🚀 MULAI MISI (START GAME) ➔"
 
@@ -603,6 +606,6 @@ offset_right = 260.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.75, 0.85, 0.95, 0.8)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 15
 text = "Tekan Mulai untuk menyimak Titah Presiden Ari sebelum berangkat!"
 horizontal_alignment = 1

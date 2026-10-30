@@ -9,6 +9,7 @@ script/source = "extends Area3D
 var can_damage: bool = true
 
 func _ready() -> void:
+	collision_mask = 2
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node3D) -> void:
@@ -19,6 +20,8 @@ func _on_body_entered(body: Node3D) -> void:
 		speed = abs(body.current_speed)
 	if speed > 5.0 and body.has_method(\"trigger_pothole_bump\"):
 		body.trigger_pothole_bump()
+		if body.has_method(\"play_collision_sound\"):
+			body.play_collision_sound()
 	if speed > speed_threshold:
 		can_damage = false
 		if GameManager:

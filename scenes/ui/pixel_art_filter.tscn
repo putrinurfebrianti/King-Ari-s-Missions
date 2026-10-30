@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://c4c66s85wtsq4"]
+
+[sub_resource type="Shader" id="Shader_pixel_art"]
+code = "shader_type canvas_item;
+
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+uniform float pixel_scale : hint_range(1.0, 8.0) = 4.0;
+uniform float color_steps : hint_range(4.0, 64.0) = 24.0;
+
+void fragment() {
+	vec2 resolution = 1.0 / SCREEN_PIXEL_SIZE;
+	vec2 pixel_count = max(floor(resolution / pixel_scale), vec2(1.0));
+	vec2 pixel_uv = (floor(SCREEN_UV * pixel_count) + vec2(0.5)) / pixel_count;
+	vec4 source_color = textureLod(screen_texture, pixel_uv, 0.0);
+	COLOR = vec4(floor(source_color.rgb * color_steps) / color_steps, source_color.a);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pixel_art"]
+shader = SubResource("Shader_pixel_art")
+
+[node name="PixelArtFilter" type="CanvasLayer" unique_id=919764593]
+layer = 128
+
+[node name="PixelateWorld" type="ColorRect" parent="." unique_id=838739037]
+material = SubResource("ShaderMaterial_pixel_art")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

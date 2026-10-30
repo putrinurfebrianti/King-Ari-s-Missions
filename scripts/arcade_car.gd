@@ -5,6 +5,15 @@ enum ControlMode {
 	CLASSIC_STEER  # Mode Simulator Klasik (W=Gas, S=Rem/Mundur, A=Kiri, D=Kanan)
 }
 
+const AUDIO_STREAM_PATHS := {
+	"brake": "res://assets/audio/brake.mp3",
+	"collision": "res://assets/audio/collision.mp3",
+	"engine_driving": "res://assets/audio/engine_driving.mp3",
+	"engine_start": "res://assets/audio/engine_start.mp3",
+	"mission_complete": "res://assets/audio/mission_complete.mp3",
+	"reward": "res://assets/audio/reward.mp3",
+}
+
 @export var control_mode: ControlMode = ControlMode.SCREEN_DIRECT
 
 @export_group("Kecepatan & Akselerasi")
@@ -42,6 +51,9 @@ var exhaust_smoke: CPUParticles3D
 var tire_dust_l: CPUParticles3D
 var tire_dust_r: CPUParticles3D
 var impact_sparks: CPUParticles3D
+var vehicle_audio: Dictionary = {}
+var was_braking: bool = false
+var mission_complete_sound_pending: bool = false
 
 var bump_offset_y: float = 0.0
 var bump_pitch: float = 0.0
@@ -50,6 +62,8 @@ var bump_pitch: float = 0.0
 
 func _ready() -> void:
 	add_to_group("player")
+	add_to_group("player_car")
+	_setup_vehicle_audio()
 	
 	# Konfigurasi penempelan lantai yang tenang dan bebas getar (Anti-Jitter)
 	floor_snap_length = 0.3
@@ -94,20 +108,90 @@ func _ready() -> void:
 			driver_sprite.visible = false
 
 func set_controlling(active: bool) -> void:
+	var was_controlling := is_player_controlling
 	is_player_controlling = active
 	if not active:
 		current_speed = 0.0
 		current_steer_val = 0.0
 		velocity = Vector3.ZERO
+		_stop_engine_audio()
+	elif not was_controlling:
+		play_engine_start_sound()
+
+func _setup_vehicle_audio() -> void:
+	for sound_name in AUDIO_STREAM_PATHS:
+		var stream_path: String = AUDIO_STREAM_PATHS[sound_name]
+		var sound_stream := load(stream_path) as AudioStream
+		if not sound_stream:
+			push_error("Audio kendaraan gagal dimuat: %s" % stream_path)
+			continue
+
+		if sound_name == "engine_driving" and sound_stream is AudioStreamMP3:
+			var mp3_stream := sound_stream as AudioStreamMP3
+			mp3_stream.loop = true
+
+		var audio_player := AudioStreamPlayer3D.new()
+		audio_player.name = "%sAudio" % sound_name.capitalize()
+		audio_player.stream = sound_stream
+		audio_player.max_distance = 75.0
+		audio_player.unit_size = 8.0
+		add_child(audio_player)
+		vehicle_audio[sound_name] = audio_player
+
+	var reward_player := _get_audio_player("reward")
+	if reward_player:
+		reward_player.finished.connect(_play_pending_mission_complete_sound)
+
+func _get_audio_player(sound_name: String) -> AudioStreamPlayer3D:
+	return vehicle_audio.get(sound_name) as AudioStreamPlayer3D
+
+func _play_vehicle_sound(sound_name: String) -> void:
+	var audio_player := _get_audio_player(sound_name)
+	if audio_player:
+		audio_player.play()
+
+func play_engine_start_sound() -> void:
+	_play_vehicle_sound("engine_start")
+
+func play_reward_sound() -> void:
+	_play_vehicle_sound("reward")
+
+func play_collision_sound() -> void:
+	_play_vehicle_sound("collision")
+
+func play_mission_complete_sound() -> void:
+	var reward_player := _get_audio_player("reward")
+	if reward_player and reward_player.playing:
+		mission_complete_sound_pending = true
+	else:
+		_play_vehicle_sound("mission_complete")
+
+func _play_pending_mission_complete_sound() -> void:
+	if mission_complete_sound_pending:
+		mission_complete_sound_pending = false
+		_play_vehicle_sound("mission_complete")
+
+func _stop_engine_audio() -> void:
+	var engine_player := _get_audio_player("engine_driving")
+	if engine_player and engine_player.playing:
+		engine_player.stop()
+
+func _update_vehicle_audio() -> void:
+	var engine_player := _get_audio_player("engine_driving")
+	var should_play_engine: bool = is_player_controlling and abs(current_speed) > 0.5
+	if engine_player:
+		if should_play_engine and not engine_player.playing:
+			engine_player.play()
+		elif not should_play_engine and engine_player.playing:
+			engine_player.stop()
+
+	var is_braking: bool = is_braking_active and abs(current_speed) > 1.0
+	if is_braking and not was_braking:
+		_play_vehicle_sound("brake")
+	was_braking = is_braking
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_E and is_player_controlling:
-			var ped = get_tree().get_first_node_in_group("pedestrian")
-			if ped and ped.has_method("exit_car") and abs(current_speed) < 8.0:
-				ped.exit_car()
-				return
-		
 		# Tombol TAB: Tukar Mode Kendali (Arah Layar vs Simulator Klasik)
 		if event.keycode == KEY_TAB and is_player_controlling:
 			toggle_control_mode()
@@ -214,14 +298,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = 0.0 # NOL saat di lantai agar tidak ada osilasi getaran benturan
 		
 	move_and_slide()
-
-	# Pelindung Batas Peta
-	var clamped_x = clamp(global_position.x, -82.0, 82.0)
-	var clamped_z = clamp(global_position.z, -62.0, 62.0)
-	if global_position.x != clamped_x or global_position.z != clamped_z:
-		global_position.x = clamped_x
-		global_position.z = clamped_z
-		current_speed *= 0.4
+	_update_vehicle_audio()
 
 	# Deteksi Benturan Keras
 	if impact_cooldown <= 0.0:
@@ -237,6 +314,7 @@ func _physics_process(delta: float) -> void:
 				if gm and gm.has_method("apply_impact"):
 					gm.apply_impact(abs(current_speed))
 				trigger_impact_vfx()
+				play_collision_sound()
 				current_speed *= 0.5
 				impact_cooldown = 1.5
 				break
@@ -339,17 +417,7 @@ func _is_on_pavement(pos: Vector3) -> bool:
 	var dist_center = Vector2(pos.x, pos.z).length()
 	if dist_center <= 24.8:
 		return true
-	if abs(pos.z) <= 10.8 and abs(pos.x) <= 73.5:
-		return true
-	if abs(pos.x) <= 10.8 and abs(pos.z) <= 58.5:
-		return true
-	if pos.x >= -64.0 and pos.x <= -36.0 and pos.z >= -18.0 and pos.z <= 10.0:
-		return true
-	if pos.x >= 36.0 and pos.x <= 64.0 and pos.z >= -18.0 and pos.z <= 10.0:
-		return true
-	if abs(pos.x) <= 34.0 and abs(pos.z) <= 24.0:
-		return true
-	return false
+	return abs(pos.z) <= 10.8 or abs(pos.x) <= 10.8
 
 func trigger_impact_vfx() -> void:
 	if impact_sparks:

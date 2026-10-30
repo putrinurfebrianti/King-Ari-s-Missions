@@ -26,9 +26,5 @@ func _update_weather(season_int: int) -> void:
 		rain_particles.emitting = is_rain
 		rain_particles.visible = is_rain
 	if sun_light:
-		if is_rain:
-			sun_light.light_energy = 0.75
-			sun_light.light_color = Color(0.78, 0.82, 0.88, 1.0)
-		else:
-			sun_light.light_energy = 1.2
-			sun_light.light_color = Color(1.0, 0.98, 0.94, 1.0)
+		sun_light.light_energy = 0.95
+		sun_light.light_color = Color(0.96, 0.93, 0.84, 1.0)

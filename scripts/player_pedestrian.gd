@@ -52,19 +52,17 @@ func _load_pedestrian_texture() -> void:
 		sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
 		sprite.shaded = false
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_E:
 			toggle_character_mode()
+			get_viewport().set_input_as_handled()
 
 func toggle_character_mode() -> void:
 	if is_active:
-		# Jika sedang jalan kaki, cek apakah berada dalam jangkauan mobil untuk masuk kembali
+		# Tombol E hanya digunakan untuk masuk kembali ke mobil.
 		if car_target and global_position.distance_to(car_target.global_position) <= enter_car_distance:
 			enter_car()
-		else:
-			# Cek interaksi zona serah terima SPPG atau Sekolah
-			_check_zone_interaction()
 	else:
 		# Jika sedang di mobil, turun dari mobil
 		if car_target:
@@ -75,8 +73,15 @@ func toggle_character_mode() -> void:
 				exit_car()
 
 func exit_car() -> void:
-	if not car_target:
+	if not car_target or is_active:
 		return
+
+	var car_speed: float = 0.0
+	if "current_speed" in car_target:
+		car_speed = abs(car_target.current_speed)
+	if car_speed >= 8.0:
+		return
+
 	is_active = true
 	visible = true
 	
@@ -103,7 +108,7 @@ func exit_car() -> void:
 	print("[MBG] Petugas Rama turun dari mobil. Berjalan kaki aktif.")
 
 func enter_car(force_warp: bool = false) -> void:
-	if not car_target:
+	if not car_target or not is_active:
 		return
 		
 	# Jika dipanggil via tombol HUD dari jarak agak jauh, izinkan masuk
@@ -196,16 +201,3 @@ func _update_prompt_label() -> void:
 		prompt_label.visible = true
 	else:
 		prompt_label.visible = false
-
-func _check_zone_interaction() -> void:
-	var gm = get_node_or_null("/root/GameManager")
-	if not gm:
-		return
-	if gm.current_state == gm.State.AT_SPPG:
-		var sppg_pos = Vector3(-50, 0.15, -2)
-		if global_position.distance_to(sppg_pos) < 7.0:
-			gm.start_delivery()
-	elif gm.current_state == gm.State.DELIVERING:
-		var school_pos = Vector3(52, 0.15, -2)
-		if global_position.distance_to(school_pos) < 7.0:
-			gm.reach_school()

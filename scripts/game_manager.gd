@@ -17,8 +17,8 @@ enum Season { KEMARAU, HUJAN }
 var current_season: Season = Season.KEMARAU
 
 var food_condition: float = 100.0
-var time_left: float = 300.0 # 5 Menit sesuai GDD Titah Pertama Raja Ari
 var total_time: float = 300.0
+var time_left: float = total_time # 5 Menit sesuai GDD Titah Pertama Raja Ari
 
 # Sistem Bahan Bakar (GDD Bab 5.4 & 10.2: 40 Liter Kapasitas)
 var max_fuel: float = 40.0
@@ -31,7 +31,60 @@ var selected_driver_id: String = "fatur"
 var selected_vehicle_id: String = "van_standard"
 var owned_vehicles: Array[String] = ["van_standard"]
 
-# Database 5 Sekolah Tujuan Distribusi MBG (GDD Bab 4.2 & 12.2)
+const SCHOOL_NAME_POOL: Array[String] = [
+	"SD Negeri Harapan Bangsa",
+	"SD Cendekia Nusantara",
+	"SD Pelita Generasi",
+	"SD Tunas Pertiwi",
+	"SD Bintang Mulia",
+	"SD Mentari Ceria",
+	"SD Cahaya Insani",
+	"SD Bina Prestasi",
+	"SD Pusaka Bangsa",
+	"SD Tunas Harapan",
+	"SMP Negeri 1 Sukamaju",
+	"SMP Citra Mandiri",
+	"SMP Bina Karya",
+	"SMP Tunas Bangsa",
+	"SMP Dharma Persada",
+	"SMP Generasi Emas",
+	"SMP Pelita Nusantara",
+	"SMP Pertiwi Mandiri",
+	"SMP Cakrawala Ilmu",
+	"SMP Bintang Pendidikan",
+	"SMA Negeri 1 Sukamaju",
+	"SMA Garuda Nusantara",
+	"SMA Cendekia Utama",
+	"SMA Bina Prestasi",
+	"SMA Pelita Bangsa",
+	"SMA Dharma Bakti",
+	"SMA Pusaka Indonesia",
+	"SMA Generasi Mandiri",
+	"SMA Citra Bangsa",
+	"SMA Bintang Persada",
+	"SD Mutiara Ilmu",
+	"SD Angkasa Ceria",
+	"SD Taman Ilmu",
+	"SMP Cakra Buana",
+	"SMP Wijaya Kusuma",
+	"SMP Mutiara Bangsa",
+	"SMA Adi Karya",
+	"SMA Cakrawala Bangsa",
+	"SMA Nusantara Jaya",
+	"SMA Wijaya Mandiri",
+	"SD Karya Gemilang",
+	"SD Bumi Cendekia",
+	"SMP Lentera Pendidikan",
+	"SMP Karya Nusantara",
+	"SMP Bhakti Mulia",
+	"SMA Lentera Harapan",
+	"SMA Karya Gemilang",
+	"SMA Bumi Persada",
+	"SMA Tunas Cendekia",
+	"SMA Mandala Bangsa"
+]
+
+# Lima lokasi tujuan di peta; nama sekolah dipilih acak untuk setiap misi.
 var schools_data: Array[Dictionary] = [
 	{
 		"id": 0,
@@ -145,15 +198,16 @@ var vehicle_catalog: Dictionary = {
 }
 
 func _ready() -> void:
+	randomize()
 	reset_game()
 
 func _process(delta: float) -> void:
 	if current_state == State.DELIVERING:
-		time_left -= delta
+		time_left = maxf(time_left - delta, 0.0)
 		time_changed.emit(time_left)
 		if time_left <= 0.0:
-			time_left = 0.0
 			fail_mission("Waktu habis (05:00)! Bel sekolah telah berbunyi sebelum seluruh makanan terkirim.")
+			return
 			
 		# Konsumsi bahan bakar saat kendaraan berjalan
 		if is_refueling:
@@ -162,11 +216,12 @@ func _process(delta: float) -> void:
 func reset_game() -> void:
 	current_state = State.AT_SPPG
 	food_condition = 100.0
-	time_left = 300.0 # 5 menit
+	time_left = total_time
 	current_fuel = max_fuel
 	is_refueling = false
 	current_school_idx = 0
 	schools_delivered_count = 0
+	_randomize_school_route()
 	
 	for i in range(schools_data.size()):
 		schools_data[i]["delivered"] = false
@@ -174,6 +229,29 @@ func reset_game() -> void:
 	food_changed.emit(food_condition)
 	time_changed.emit(time_left)
 	fuel_changed.emit(current_fuel, max_fuel)
+
+func _randomize_school_route() -> void:
+	var available_names := SCHOOL_NAME_POOL.duplicate()
+	available_names.shuffle()
+	total_schools = schools_data.size()
+
+	for i in range(total_schools):
+		var school_name: String = available_names[i]
+		schools_data[i]["name"] = school_name
+		schools_data[i]["short_name"] = _get_short_school_name(school_name)
+
+func _get_short_school_name(school_name: String) -> String:
+	var short_name := school_name
+	if short_name.begins_with("SD Negeri "):
+		short_name = short_name.replace("SD Negeri ", "SDN ")
+	elif short_name.begins_with("SMP Negeri "):
+		short_name = short_name.replace("SMP Negeri ", "SMPN ")
+	elif short_name.begins_with("SMA Negeri "):
+		short_name = short_name.replace("SMA Negeri ", "SMAN ")
+
+	if short_name.length() > 19:
+		short_name = short_name.substr(0, 18) + ".."
+	return short_name
 
 func set_season(new_season: Season) -> void:
 	current_season = new_season
@@ -219,11 +297,13 @@ func start_delivery() -> void:
 	if current_state == State.AT_SPPG:
 		current_state = State.DELIVERING
 		food_condition = 100.0
-		time_left = 300.0
+		time_left = total_time
 		current_fuel = max_fuel
 		current_school_idx = 0
 		schools_delivered_count = 0
 		food_changed.emit(food_condition)
+		time_changed.emit(time_left)
+		fuel_changed.emit(current_fuel, max_fuel)
 		delivery_started.emit()
 		print("[KingAri] Titah Raja Dimulai! Ransum dimuat di SPPG. Menuju Sekolah 1/5.")
 
@@ -240,6 +320,12 @@ func get_active_target_name() -> String:
 	if current_school_idx < schools_data.size():
 		return "%s (%d/%d)" % [schools_data[current_school_idx]["name"], current_school_idx + 1, total_schools]
 	return "Selesai"
+
+func get_school_route_text() -> String:
+	var route: Array[String] = []
+	for i in range(schools_data.size()):
+		route.append("%d. %s" % [i + 1, schools_data[i]["name"]])
+	return "\n".join(route)
 
 # Konsumsi bahan bakar oleh mobil saat melaju
 func consume_fuel(amount: float) -> void:
@@ -263,6 +349,9 @@ func set_refueling(active: bool) -> void:
 func deliver_to_school(school_idx: int) -> void:
 	if current_state != State.DELIVERING:
 		return
+	if school_idx < 0 or school_idx >= schools_data.size():
+		push_error("Indeks sekolah tidak valid: %d" % school_idx)
+		return
 	if school_idx != current_school_idx:
 		return # Harus sesuai urutan rute atau sekolah aktif
 	
@@ -274,14 +363,14 @@ func deliver_to_school(school_idx: int) -> void:
 	
 	var school_name = schools_data[school_idx]["name"]
 	print("[KingAri] Berhasil menyerahkan MBG ke %s! Upah: +%d Koin." % [school_name, earned])
+	var all_schools_delivered = schools_delivered_count >= total_schools
+	if not all_schools_delivered:
+		current_school_idx += 1
 	school_delivered.emit(school_idx, school_name, schools_delivered_count, total_schools, earned)
 	
-	if schools_delivered_count >= total_schools:
+	if all_schools_delivered:
 		# Seluruh 5 sekolah berhasil dikirimi makanan!
 		finish_level_1()
-	else:
-		# Lanjut ke sekolah berikutnya
-		current_school_idx += 1
 
 func finish_level_1() -> void:
 	current_state = State.FINISHED
@@ -318,6 +407,8 @@ func apply_impact(speed: float) -> void:
 		fail_mission("Makanan hancur dan rusak berantakan! Ransum tidak layak konsumsi.")
 
 func fail_mission(reason: String) -> void:
+	if current_state != State.DELIVERING:
+		return
 	current_state = State.FAILED
 	print("[KingAri] MISI GAGAL: ", reason)
 	mission_failed.emit(reason)

@@ -1,7 +1,6 @@
 extends Camera3D
 
 @export var target: Node3D
-@export var follow_speed: float = 12.0
 @export var mouse_sensitivity: float = 0.005
 
 # Parameter Orbit & Zoom Isometrik
@@ -17,13 +16,12 @@ var default_pitch: float = deg_to_rad(45.0)
 var default_yaw: float = 0.0
 
 var is_dragging: bool = false
-var smooth_target_pos: Vector3 = Vector3.ZERO
-var base_fov: float = 50.0
+var follow_target_pos: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
-	base_fov = fov
+	process_physics_priority = 200
 	if target:
-		smooth_target_pos = target.global_position
+		follow_target_pos = target.global_position
 	yaw = default_yaw
 	pitch = default_pitch
 	distance = default_distance
@@ -58,27 +56,17 @@ func set_target(new_target: Node3D, new_distance: float = -1.0) -> void:
 	if new_distance > 0.0:
 		distance = new_distance
 	if target:
-		smooth_target_pos = target.global_position
+		follow_target_pos = target.global_position
 
-func _process(delta: float) -> void:
+# Gunakan _physics_process agar kamera sinkron dengan CharacterBody3D
+# dan mencegah warning "Interpolated Camera3D triggered from outside physics process"
+func _physics_process(_delta: float) -> void:
 	if not target:
 		return
-	
-	# Ambil posisi terinterpolasi visual (menghilangkan stuttering fisika)
-	var target_pos: Vector3 = target.global_position
-	if target.has_method("get_global_transform_interpolated"):
-		target_pos = target.get_global_transform_interpolated().origin
-	
-	# Smooth follow posisi frame-rate independent
-	var t = 1.0 - exp(-follow_speed * delta)
-	smooth_target_pos = smooth_target_pos.lerp(target_pos, t)
-	
-	# Efek Dynamic FOV halus saat melaju kencang
-	if "current_speed" in target and "max_speed" in target and target.max_speed > 0.0:
-		var spd_ratio = clamp(abs(target.current_speed) / target.max_speed, 0.0, 1.0)
-		var target_fov = base_fov + (spd_ratio * 4.0)
-		fov = lerp(fov, target_fov, 1.0 - exp(-6.0 * delta))
-		
+
+	# Follow target directly; Godot physics interpolation smooths both transforms together.
+	follow_target_pos = target.global_position
+
 	_update_camera_transform(false)
 
 func _update_camera_transform(_immediate: bool) -> void:
@@ -87,6 +75,6 @@ func _update_camera_transform(_immediate: bool) -> void:
 	var offset_y = distance * sin(pitch)
 	var offset_z = distance * cos(pitch) * cos(yaw)
 	var cam_offset = Vector3(offset_x, offset_y, offset_z)
-	
-	global_position = smooth_target_pos + cam_offset
-	look_at(smooth_target_pos + Vector3(0, 0.6, 0), Vector3.UP)
+
+	global_position = follow_target_pos + cam_offset
+	look_at(follow_target_pos + Vector3(0, 0.6, 0), Vector3.UP)
