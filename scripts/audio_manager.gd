@@ -1,9 +1,9 @@
 extends Node
 
-var master_volume: float = 1.0
-var bgm_volume: float = 0.65
-var sfx_volume: float = 0.85
-var is_muted: bool = false
+var master_volume: float = 0.0
+var bgm_volume: float = 0.0
+var sfx_volume: float = 0.0
+var is_muted: bool = true
 
 var bgm_player: AudioStreamPlayer
 var horn_player: AudioStreamPlayer
@@ -16,6 +16,8 @@ var go_player: AudioStreamPlayer
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	# Default: Audio di-MUTE sepenuhnya agar hening dan tidak bising
+	AudioServer.set_bus_mute(0, true)
 	_setup_audio_players()
 
 	var gm = get_node_or_null("/root/GameManager")
@@ -25,8 +27,8 @@ func _ready() -> void:
 		gm.mission_failed.connect(func(_r): play_crash_sfx())
 		gm.time_changed.connect(_on_time_changed)
 
-	# Mulai musik latar belakang (BGM)
-	start_bgm()
+	# BGM tidak diputar otomatis secara default agar senyap
+	# start_bgm()
 
 func _setup_audio_players() -> void:
 	# 1. BGM Player (Musik Latar Melodi Menyetir Berulang / Looping)
@@ -125,6 +127,9 @@ func _on_time_changed(seconds_left: float) -> void:
 # Pengaturan Volume Master, BGM, dan SFX
 func set_master_volume(val: float) -> void:
 	master_volume = clamp(val, 0.0, 1.0)
+	if master_volume > 0.0 and is_muted:
+		is_muted = false
+		AudioServer.set_bus_mute(0, false)
 	_update_bus_volumes()
 
 func set_bgm_volume(val: float) -> void:
@@ -137,6 +142,7 @@ func set_sfx_volume(val: float) -> void:
 
 func set_muted(muted: bool) -> void:
 	is_muted = muted
+	AudioServer.set_bus_mute(0, is_muted)
 	if is_muted:
 		if bgm_player: bgm_player.stop()
 	else:

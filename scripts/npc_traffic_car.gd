@@ -101,13 +101,6 @@ func _physics_process(delta: float) -> void:
 		is_stopped_by_obstacle = true
 		stop_timer += delta
 		current_speed = lerp(current_speed, 0.0, 1.0 - exp(-15.0 * delta))
-		
-		# Jika tertahan cukup lama, bunyikan klakson sesekali
-		if stop_timer > 2.5 and honk_cooldown <= 0.0:
-			honk_cooldown = randf_range(4.0, 7.0)
-			var am = get_node_or_null("/root/AudioManager")
-			if am and am.has_method("play_horn") and randf() < 0.4:
-				am.play_horn()
 	else:
 		is_stopped_by_obstacle = false
 		stop_timer = 0.0
