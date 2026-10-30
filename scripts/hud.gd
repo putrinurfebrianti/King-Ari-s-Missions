@@ -28,6 +28,7 @@ var bengkel_btn: Button
 var perkakas_btn: Button
 var panduan_btn: Button
 var properti_btn: Button
+var pov_cam_btn: Button
 
 # Floating Prompt Interaksi SPBU & Rumah
 var prompt_panel: Panel
@@ -57,6 +58,7 @@ var player_car: CharacterBody3D
 var player_pedestrian: CharacterBody3D
 
 func _ready() -> void:
+	add_to_group("hud")
 	# Hubungkan sinyal dari GameManager
 	GameManager.food_changed.connect(_on_food_changed)
 	GameManager.time_changed.connect(_on_time_changed)
@@ -114,14 +116,19 @@ func _ready() -> void:
 		
 	_on_time_changed(GameManager.time_left)
 	_on_season_changed(int(GameManager.current_season))
+
+	var cam = get_viewport().get_camera_3d()
+	if cam and cam.has_signal("camera_mode_changed"):
+		cam.camera_mode_changed.connect(_on_camera_mode_changed)
+
 	show_toast("👑 Titah Raja: Masuk ke SPPG untuk memuat MBG dan mulai pengiriman ke 5 Sekolah!", 4.5)
 
 func _setup_extra_dashboard_ui() -> void:
 	if not left_dashboard:
 		return
 	
-	left_dashboard.custom_minimum_size = Vector2(250, 480)
-	left_dashboard.size = Vector2(250, 480)
+	left_dashboard.custom_minimum_size = Vector2(250, 510)
+	left_dashboard.size = Vector2(250, 510)
 
 	# 1. Indikator Bahan Bakar (GDD Bab 5.4 & 10.2: 40 Liter)
 	fuel_label = Label.new()
@@ -219,6 +226,15 @@ func _setup_extra_dashboard_ui() -> void:
 	klakson_btn.pressed.connect(_on_honk_pressed)
 	left_dashboard.add_child(klakson_btn)
 
+	# Tombol Ganti POV Kamera (Awal / Dalam Mobil / Chase)
+	pov_cam_btn = Button.new()
+	pov_cam_btn.text = "🎥 POV: Tinjauan Kota [C]"
+	pov_cam_btn.custom_minimum_size = Vector2(222, 30)
+	pov_cam_btn.set_position(Vector2(14, 428))
+	pov_cam_btn.add_theme_font_size_override("font_size", 11)
+	pov_cam_btn.pressed.connect(_on_pov_cam_pressed)
+	left_dashboard.add_child(pov_cam_btn)
+
 	# Tombol Buka Peta Penuh di bawah minimap
 	map_toggle_btn = Button.new()
 	map_toggle_btn.text = "🗺️ Buka Peta Besar [M]"
@@ -303,6 +319,7 @@ func _build_panduan_modal() -> Panel:
 • [W][A][S][D] / Tombol Panah: Menyetir, maju, mundur, dan belok
 • [Spasi]: Rem Tangan
 • [E]: Masuk / Keluar Mobil (Beralih ke mode Pejalan Kaki)
+• [C] / [V]: Ganti Sudut Pandang Kamera (Tinjauan Awal / Dalam Mobil Full / Chase)
 • [H]: Bunyikan Klakson Resmi MBG
 • [F]: Menambal Jalan Berlubang (Syarat: Miliki Sekop / Aspal di Toko Perkakas)
 • [M]: Buka / Tutup Peta Besar Kota Tenjo
@@ -636,6 +653,15 @@ func _on_map_toggle_pressed() -> void:
 	var minimap = get_node_or_null("Minimap")
 	if minimap and minimap.has_method("toggle_map_size"):
 		minimap.toggle_map_size()
+
+func _on_pov_cam_pressed() -> void:
+	var cam = get_viewport().get_camera_3d()
+	if cam and cam.has_method("toggle_camera_mode"):
+		cam.toggle_camera_mode()
+
+func _on_camera_mode_changed(mode_name: String) -> void:
+	if pov_cam_btn:
+		pov_cam_btn.text = "🎥 POV: " + mode_name + " [C]"
 
 func _on_season_toggle_pressed() -> void:
 	GameManager.toggle_season()

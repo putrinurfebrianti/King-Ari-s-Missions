@@ -237,6 +237,7 @@ func _create_panduan_modal() -> Panel:
 • [W][A][S][D] / Tombol Panah: Menyetir, maju, mundur, dan belok
 • [Spasi]: Rem Tangan
 • [E]: Masuk / Keluar Mobil (Beralih ke mode Pejalan Kaki)
+• [C] / [V]: Ganti Sudut Pandang Kamera (Tinjauan Awal / Dalam Mobil Full / Chase)
 • [H]: Bunyikan Klakson Resmi MBG
 • [F]: Menambal Jalan Berlubang (Syarat: Miliki Sekop / Aspal di Toko Perkakas)
 • [M]: Buka / Tutup Peta Besar Kota Tenjo

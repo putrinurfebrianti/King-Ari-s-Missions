@@ -27,26 +27,18 @@
 [ext_resource type="PackedScene" path="res://scenes/characters/npc_guru.tscn" id="25_guru"]
 [ext_resource type="PackedScene" path="res://scenes/entities/waypoint_arrow.tscn" id="26_arrow"]
 [ext_resource type="PackedScene" path="res://scenes/characters/player_pedestrian.tscn" id="27_pedestrian"]
-[ext_resource type="PackedScene" path="res://scenes/environment/building_spbu.tscn" id="28_spbu"]
-[ext_resource type="PackedScene" path="res://scenes/environment/road_blockade.tscn" id="29_blockade"]
-[ext_resource type="Script" path="res://scripts/weather_controller.gd" id="30_weather"]
-[ext_resource type="PackedScene" path="res://scenes/environment/building_hospital.tscn" id="31_hosp"]
-[ext_resource type="PackedScene" path="res://scenes/environment/building_fastfood.tscn" id="32_ff"]
-[ext_resource type="PackedScene" path="res://scenes/environment/building_supermarket.tscn" id="33_smkt"]
-[ext_resource type="PackedScene" path="res://scenes/environment/construction_zone.tscn" id="34_const"]
-[ext_resource type="PackedScene" path="res://scenes/environment/canal_water.tscn" id="35_water"]
-[ext_resource type="PackedScene" path="res://scenes/environment/graveyard_area.tscn" id="36_grave"]
-[ext_resource type="PackedScene" path="res://scenes/environment/building_player_house.tscn" id="37_player_house"]
-[ext_resource type="PackedScene" path="res://scenes/characters/npc_students_group.tscn" id="38_students"]
-
-[sub_resource type="StandardMaterial3D" id="mat_rain"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(0.75, 0.85, 0.95, 0.5)
-
-[sub_resource type="BoxMesh" id="mesh_raindrop"]
-material = SubResource("mat_rain")
-size = Vector3(0.04, 0.6, 0.04)
+[ext_resource type="PackedScene" uid="uid://c7yam3spbu01" path="res://scenes/environment/building_spbu.tscn" id="28_spbu"]
+[ext_resource type="PackedScene" uid="uid://dblockade01" path="res://scenes/environment/road_blockade.tscn" id="29_blockade"]
+[ext_resource type="Script" uid="uid://dvpc0beiyxc3h" path="res://scripts/weather_controller.gd" id="30_weather"]
+[ext_resource type="PackedScene" uid="uid://b0mxs1jud2nuu" path="res://scenes/environment/building_hospital.tscn" id="31_hosp"]
+[ext_resource type="PackedScene" uid="uid://bno6xqoux1dg7" path="res://scenes/environment/building_fastfood.tscn" id="32_ff"]
+[ext_resource type="PackedScene" uid="uid://csmkt101mbg" path="res://scenes/environment/building_supermarket.tscn" id="33_smkt"]
+[ext_resource type="PackedScene" uid="uid://cconst101mbg" path="res://scenes/environment/construction_zone.tscn" id="34_const"]
+[ext_resource type="PackedScene" uid="uid://cwatr101mbg" path="res://scenes/environment/canal_water.tscn" id="35_water"]
+[ext_resource type="PackedScene" uid="uid://bqowvsb13lcxk" path="res://scenes/environment/graveyard_area.tscn" id="36_grave"]
+[ext_resource type="PackedScene" uid="uid://yqkbh2e1s2tw" path="res://scenes/environment/building_player_house.tscn" id="37_player_house"]
+[ext_resource type="PackedScene" uid="uid://bsu7ollilldmm" path="res://scenes/characters/npc_students_group.tscn" id="38_students"]
+[ext_resource type="PackedScene" path="res://scenes/entities/npc_traffic_car.tscn" id="39_traffic"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.35, 0.68, 0.95, 1)
@@ -121,31 +113,6 @@ top_radius = 24.0
 bottom_radius = 24.0
 height = 0.26
 
-[sub_resource type="StandardMaterial3D" id="mat_curb"]
-diffuse_mode = 3
-specular_mode = 1
-albedo_color = Color(0.75, 0.76, 0.78, 1)
-roughness = 0.6
-
-[sub_resource type="BoxMesh" id="mesh_curb_ew"]
-material = SubResource("mat_curb")
-size = Vector3(145, 0.45, 0.8)
-
-[sub_resource type="BoxMesh" id="mesh_curb_ns"]
-material = SubResource("mat_curb")
-size = Vector3(0.8, 0.45, 115)
-
-[sub_resource type="StandardMaterial3D" id="mat_guardrail"]
-diffuse_mode = 3
-specular_mode = 1
-albedo_color = Color(0.88, 0.9, 0.94, 1)
-metallic = 0.25
-roughness = 0.25
-
-[sub_resource type="BoxMesh" id="mesh_guardrail_ew"]
-material = SubResource("mat_guardrail")
-size = Vector3(145, 0.3, 0.12)
-
 [sub_resource type="StandardMaterial3D" id="mat_line_white"]
 diffuse_mode = 3
 specular_mode = 1
@@ -176,6 +143,15 @@ albedo_color = Color(0.95, 0.55, 0.1, 0.4)
 [sub_resource type="BoxMesh" id="mesh_school_zone"]
 material = SubResource("mat_school_zone")
 size = Vector3(10, 0.1, 10)
+
+[sub_resource type="StandardMaterial3D" id="mat_rain"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.75, 0.85, 0.95, 0.5)
+
+[sub_resource type="BoxMesh" id="mesh_raindrop"]
+material = SubResource("mat_rain")
+size = Vector3(0.04, 0.6, 0.04)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glass"]
 bg_color = Color(0.06, 0.1, 0.18, 0.85)
@@ -279,19 +255,19 @@ mesh = SubResource("mesh_road_ew")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
 mesh = SubResource("mesh_road_ns")
 
-[node name="RoadNorthEW" type="MeshInstance3D" parent="RoadNetwork"]
+[node name="RoadNorthEW" type="MeshInstance3D" parent="RoadNetwork" unique_id=903841363]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, -40)
 mesh = SubResource("mesh_outer_road_ew")
 
-[node name="RoadSouthEW" type="MeshInstance3D" parent="RoadNetwork"]
+[node name="RoadSouthEW" type="MeshInstance3D" parent="RoadNetwork" unique_id=2027807238]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 40)
 mesh = SubResource("mesh_outer_road_ew")
 
-[node name="RoadWestNS" type="MeshInstance3D" parent="RoadNetwork"]
+[node name="RoadWestNS" type="MeshInstance3D" parent="RoadNetwork" unique_id=1812461804]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0.12, 0)
 mesh = SubResource("mesh_outer_road_ns")
 
-[node name="RoadEastNS" type="MeshInstance3D" parent="RoadNetwork"]
+[node name="RoadEastNS" type="MeshInstance3D" parent="RoadNetwork" unique_id=872237297]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.12, 0)
 mesh = SubResource("mesh_outer_road_ns")
 
@@ -318,19 +294,19 @@ mesh = SubResource("mesh_zebra_strip")
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.14, 26)
 mesh = SubResource("mesh_zebra_strip")
 
-[node name="ZebraNW" type="MeshInstance3D" parent="RoadNetwork"]
+[node name="ZebraNW" type="MeshInstance3D" parent="RoadNetwork" unique_id=1999056716]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0.14, -32)
 mesh = SubResource("mesh_zebra_strip")
 
-[node name="ZebraNE" type="MeshInstance3D" parent="RoadNetwork"]
+[node name="ZebraNE" type="MeshInstance3D" parent="RoadNetwork" unique_id=1205035191]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.14, -32)
 mesh = SubResource("mesh_zebra_strip")
 
-[node name="ZebraSW" type="MeshInstance3D" parent="RoadNetwork"]
+[node name="ZebraSW" type="MeshInstance3D" parent="RoadNetwork" unique_id=1162879968]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0.14, 32)
 mesh = SubResource("mesh_zebra_strip")
 
-[node name="ZebraSE" type="MeshInstance3D" parent="RoadNetwork"]
+[node name="ZebraSE" type="MeshInstance3D" parent="RoadNetwork" unique_id=1413800083]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.14, 32)
 mesh = SubResource("mesh_zebra_strip")
 
@@ -340,18 +316,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.13, 2.5)
 [node name="Pothole2" parent="RoadNetwork" unique_id=1086158447 instance=ExtResource("11_pothole")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.13, -2.5)
 
-[node name="ConstructionZone" parent="RoadNetwork" instance=ExtResource("34_const")]
+[node name="ConstructionZone" parent="RoadNetwork" unique_id=553844008 instance=ExtResource("34_const")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.12, 0)
 
 [node name="CityBuildings" type="Node3D" parent="." unique_id=1067395580]
 
-[node name="BuildingHospital" parent="CityBuildings" instance=ExtResource("31_hosp")]
+[node name="BuildingHospital" parent="CityBuildings" unique_id=1268478556 instance=ExtResource("31_hosp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -24)
 
 [node name="BuildingSchool" parent="CityBuildings" unique_id=974491949 instance=ExtResource("10_school_bldg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, -24)
 
-[node name="BuildingFastFood" parent="CityBuildings" instance=ExtResource("32_ff")]
+[node name="BuildingFastFood" parent="CityBuildings" unique_id=1606358 instance=ExtResource("32_ff")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -14)
 
 [node name="BuildingPolice" parent="CityBuildings" unique_id=1967548764 instance=ExtResource("14_police")]
@@ -360,7 +336,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 24)
 [node name="BuildingFireStation" parent="CityBuildings" unique_id=572519537 instance=ExtResource("15_fire")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 24)
 
-[node name="BuildingSupermarket" parent="CityBuildings" instance=ExtResource("33_smkt")]
+[node name="BuildingSupermarket" parent="CityBuildings" unique_id=1518192769 instance=ExtResource("33_smkt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 22)
 
 [node name="BuildingSPPG" parent="CityBuildings" unique_id=315755139 instance=ExtResource("9_sppg_bldg")]
@@ -384,19 +360,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0, -24)
 [node name="House2" parent="CityBuildings" unique_id=1215091625 instance=ExtResource("16_house")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -26)
 
-[node name="CanalWater" parent="CityBuildings" instance=ExtResource("35_water")]
+[node name="CanalWater" parent="CityBuildings" unique_id=846309606 instance=ExtResource("35_water")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 0)
 
-[node name="BuildingPlayerHouse" parent="CityBuildings" instance=ExtResource("37_player_house")]
+[node name="BuildingPlayerHouse" parent="CityBuildings" unique_id=1817589097 instance=ExtResource("37_player_house")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0, -14)
 
-[node name="GraveyardArea" parent="CityBuildings" instance=ExtResource("36_grave")]
+[node name="GraveyardArea" parent="CityBuildings" unique_id=301754301 instance=ExtResource("36_grave")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -26)
 
-[node name="StudentsSDN1" parent="." instance=ExtResource("38_students")]
+[node name="StudentsSDN1" parent="." unique_id=1083474075 instance=ExtResource("38_students")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.15, -20)
 
-[node name="StudentsSMP1" parent="." instance=ExtResource("38_students")]
+[node name="StudentsSMP1" parent="." unique_id=1736669469 instance=ExtResource("38_students")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -12)
 
 [node name="TreesAndProps" type="Node3D" parent="." unique_id=1342923249]
@@ -458,7 +434,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0, 35)
 [node name="PlayerCar" type="CharacterBody3D" parent="." unique_id=1312802250 groups=["player"]]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -50, 0.25, -2)
 collision_layer = 2
-collision_mask = 1
 script = ExtResource("1_car")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCar" unique_id=1118121069]
@@ -474,7 +449,6 @@ follow_target = NodePath("../PlayerCar")
 [node name="PlayerPedestrian" parent="." unique_id=1905246171 node_paths=PackedStringArray("car_target", "camera_node") instance=ExtResource("27_pedestrian")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0.25, -2)
 collision_layer = 4
-collision_mask = 1
 car_target = NodePath("../PlayerCar")
 camera_node = NodePath("../Camera3D")
 
@@ -503,7 +477,6 @@ transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.15, -24)
 script = ExtResource("3_zone")
 zone_type = 1
-school_index = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="School_1" unique_id=1137912979]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -512,14 +485,13 @@ shape = SubResource("shape_zone")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="School_1" unique_id=781839458]
 mesh = SubResource("mesh_school_zone")
 
-[node name="Label3D" type="Label3D" parent="School_1"]
+[node name="Label3D" type="Label3D" parent="School_1" unique_id=116995285]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 billboard = 1
+modulate = Color(1, 0.8, 0.1, 1)
 text = "🏫 1. SDN 01 TENJO"
 font_size = 22
 outline_size = 5
-outline_color = Color(0, 0, 0, 1)
-modulate = Color(1, 0.8, 0.1, 1)
 
 [node name="School_2" type="Area3D" parent="." unique_id=1546555064]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.15, -24)
@@ -527,21 +499,20 @@ script = ExtResource("3_zone")
 zone_type = 1
 school_index = 1
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="School_2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="School_2" unique_id=714029577]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("shape_zone")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="School_2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="School_2" unique_id=1335019183]
 mesh = SubResource("mesh_school_zone")
 
-[node name="Label3D" type="Label3D" parent="School_2"]
+[node name="Label3D" type="Label3D" parent="School_2" unique_id=1433862199]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 billboard = 1
+modulate = Color(1, 0.8, 0.1, 1)
 text = "🏫 2. SDN 02 HARAPAN"
 font_size = 22
 outline_size = 5
-outline_color = Color(0, 0, 0, 1)
-modulate = Color(1, 0.8, 0.1, 1)
 
 [node name="School_3" type="Area3D" parent="." unique_id=1546555065]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -16)
@@ -549,21 +520,20 @@ script = ExtResource("3_zone")
 zone_type = 1
 school_index = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="School_3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="School_3" unique_id=100345146]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("shape_zone")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="School_3"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="School_3" unique_id=297169032]
 mesh = SubResource("mesh_school_zone")
 
-[node name="Label3D" type="Label3D" parent="School_3"]
+[node name="Label3D" type="Label3D" parent="School_3" unique_id=1004299952]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 billboard = 1
+modulate = Color(1, 0.8, 0.1, 1)
 text = "🏫 3. SMPN 01 NUSA"
 font_size = 22
 outline_size = 5
-outline_color = Color(0, 0, 0, 1)
-modulate = Color(1, 0.8, 0.1, 1)
 
 [node name="School_4" type="Area3D" parent="." unique_id=1546555066]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.15, 24)
@@ -571,21 +541,20 @@ script = ExtResource("3_zone")
 zone_type = 1
 school_index = 3
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="School_4"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="School_4" unique_id=682762302]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("shape_zone")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="School_4"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="School_4" unique_id=24327514]
 mesh = SubResource("mesh_school_zone")
 
-[node name="Label3D" type="Label3D" parent="School_4"]
+[node name="Label3D" type="Label3D" parent="School_4" unique_id=314868632]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 billboard = 1
+modulate = Color(1, 0.8, 0.1, 1)
 text = "🏫 4. SDN 03 GARUDA"
 font_size = 22
 outline_size = 5
-outline_color = Color(0, 0, 0, 1)
-modulate = Color(1, 0.8, 0.1, 1)
 
 [node name="School_5" type="Area3D" parent="." unique_id=1546555067]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.15, 24)
@@ -593,40 +562,38 @@ script = ExtResource("3_zone")
 zone_type = 1
 school_index = 4
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="School_5"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="School_5" unique_id=949965330]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("shape_zone")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="School_5"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="School_5" unique_id=329111717]
 mesh = SubResource("mesh_school_zone")
 
-[node name="Label3D" type="Label3D" parent="School_5"]
+[node name="Label3D" type="Label3D" parent="School_5" unique_id=1693642445]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 billboard = 1
+modulate = Color(1, 0.8, 0.1, 1)
 text = "🏫 5. MADRASAH TENJO"
 font_size = 22
 outline_size = 5
-outline_color = Color(0, 0, 0, 1)
-modulate = Color(1, 0.8, 0.1, 1)
 
-[node name="BuildingSPBU" parent="." instance=ExtResource("28_spbu")]
+[node name="BuildingSPBU" parent="." unique_id=1051434095 instance=ExtResource("28_spbu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 40)
 
-[node name="RoadBlockade" parent="." instance=ExtResource("29_blockade")]
+[node name="RoadBlockade" parent="." unique_id=1547248846 instance=ExtResource("29_blockade")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 40)
 
-[node name="WeatherController" type="Node3D" parent="." node_paths=PackedStringArray("sun_light", "rain_particles", "target_follow")]
+[node name="WeatherController" type="Node3D" parent="." unique_id=1279642632 node_paths=PackedStringArray("sun_light", "rain_particles", "target_follow")]
 script = ExtResource("30_weather")
 sun_light = NodePath("../DirectionalLight3D")
 rain_particles = NodePath("RainParticles")
 target_follow = NodePath("../PlayerCar")
 
-[node name="RainParticles" type="CPUParticles3D" parent="WeatherController"]
+[node name="RainParticles" type="CPUParticles3D" parent="WeatherController" unique_id=1111448343]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18, 0)
-emitting = false
 visible = false
+emitting = false
 amount = 650
-lifetime = 1.0
 mesh = SubResource("mesh_raindrop")
 emission_shape = 3
 emission_box_extents = Vector3(35, 1, 35)
@@ -646,41 +613,79 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0.15, 11)
 [node name="NPCGuruSDN" parent="." unique_id=1125325273 instance=ExtResource("25_guru")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.15, -20)
 
-[node name="BuildingHospital" parent="." instance=ExtResource("31_hosp")]
+[node name="BuildingHospital" parent="." unique_id=230194670 instance=ExtResource("31_hosp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -24)
 
-[node name="BuildingFastFood" parent="." instance=ExtResource("32_ff")]
+[node name="BuildingFastFood" parent="." unique_id=1940613664 instance=ExtResource("32_ff")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -14)
 
-[node name="BuildingSupermarket" parent="." instance=ExtResource("33_smkt")]
+[node name="BuildingSupermarket" parent="." unique_id=795057967 instance=ExtResource("33_smkt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 22)
 
-[node name="ConstructionZone" parent="." instance=ExtResource("34_const")]
+[node name="ConstructionZone" parent="." unique_id=920331841 instance=ExtResource("34_const")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 24)
 
-[node name="CanalWater" parent="." instance=ExtResource("35_water")]
+[node name="CanalWater" parent="." unique_id=1464484349 instance=ExtResource("35_water")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 0)
 
-[node name="GraveyardArea" parent="." instance=ExtResource("36_grave")]
+[node name="GraveyardArea" parent="." unique_id=1072572974 instance=ExtResource("36_grave")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -26)
 
-[node name="BuildingPlayerHouse" parent="." instance=ExtResource("37_player_house")]
+[node name="BuildingPlayerHouse" parent="." unique_id=1439531475 instance=ExtResource("37_player_house")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 42)
 
-[node name="StudentsSDN1" parent="." instance=ExtResource("38_students")]
+[node name="StudentsSDN2" parent="." unique_id=1926612249 instance=ExtResource("38_students")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.15, -24)
 
-[node name="StudentsSDN2" parent="." instance=ExtResource("38_students")]
+[node name="StudentsSDN3" parent="." unique_id=1742617213 instance=ExtResource("38_students")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 0.15, -24)
 
-[node name="StudentsSMPN1" parent="." instance=ExtResource("38_students")]
+[node name="StudentsSMPN1" parent="." unique_id=1378096296 instance=ExtResource("38_students")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -12)
 
-[node name="StudentsSDN3" parent="." instance=ExtResource("38_students")]
+[node name="StudentsSDN4" parent="." unique_id=167360721 instance=ExtResource("38_students")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.15, 28)
 
-[node name="StudentsMadrasah" parent="." instance=ExtResource("38_students")]
+[node name="StudentsMadrasah" parent="." unique_id=1284316473 instance=ExtResource("38_students")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.15, 28)
+
+[node name="CityTraffic" type="Node3D" parent="."]
+
+[node name="TrafficTaxi1" parent="CityTraffic" instance=ExtResource("39_traffic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 0.15, -40)
+car_type = 1
+base_speed = 10.5
+waypoints = [Vector3(-48, 0.15, -40), Vector3(48, 0.15, -40), Vector3(48, 0.15, 0), Vector3(-48, 0.15, 0)]
+
+[node name="TrafficSedan2" parent="CityTraffic" instance=ExtResource("39_traffic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.15, 0)
+car_type = 0
+base_speed = 11.5
+waypoints = [Vector3(48, 0.15, 0), Vector3(-48, 0.15, 0), Vector3(-48, 0.15, -40), Vector3(48, 0.15, -40)]
+
+[node name="TrafficHatchback3" parent="CityTraffic" instance=ExtResource("39_traffic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, 12)
+car_type = 2
+base_speed = 9.8
+waypoints = [Vector3(48, 0.15, -35), Vector3(48, 0.15, 36), Vector3(15, 0.15, 36), Vector3(0, 0.15, 18), Vector3(0, 0.15, -18), Vector3(0, 0.15, -35)]
+
+[node name="TrafficAngkot4" parent="CityTraffic" instance=ExtResource("39_traffic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -12)
+car_type = 3
+base_speed = 9.2
+waypoints = [Vector3(0, 0.15, -35), Vector3(0, 0.15, 18), Vector3(15, 0.15, 36), Vector3(48, 0.15, 36), Vector3(48, 0.15, -35)]
+
+[node name="TrafficPickup5" parent="CityTraffic" instance=ExtResource("39_traffic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 0.15, 18)
+car_type = 4
+base_speed = 10.0
+waypoints = [Vector3(-48, 0.15, 0), Vector3(-48, 0.15, 35), Vector3(-25, 0.15, 35), Vector3(-25, 0.15, 16), Vector3(-12, 0.15, 0), Vector3(-48, 0.15, 0)]
+
+[node name="TrafficSUV6" parent="CityTraffic" instance=ExtResource("39_traffic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0.15, -3.2)
+car_type = 5
+base_speed = 12.0
+waypoints = [Vector3(-55, 0.15, -3.2), Vector3(-12, 0.15, -3.2), Vector3(0, 0.15, -8), Vector3(12, 0.15, -3.2), Vector3(55, 0.15, -3.2), Vector3(55, 0.15, 3.2), Vector3(12, 0.15, 3.2), Vector3(0, 0.15, 8), Vector3(-12, 0.15, 3.2), Vector3(-55, 0.15, 3.2)]
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1682896991]
 script = ExtResource("4_hud")
@@ -859,14 +864,14 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -440.0
+offset_left = -480.0
 offset_top = -40.0
-offset_right = 440.0
+offset_right = 480.0
 offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_hint")
-text = "🎮 WASD: Arah Gerak (W=Atas, S=Bawah, A=Kiri, D=Kanan) | Spasi: Rem | E: Turun/Naik Mobil | Tab: Ganti Mode Setir | R: Restart"
+text = "🎮 WASD: Kemudi | Spasi: Rem | E: Turun/Naik Mobil | C/V: Ganti POV Kamera (Awal / Dalam Mobil) | H: Klakson | M: Peta | F: Tambal Jalan"
 horizontal_alignment = 1
 vertical_alignment = 1
 

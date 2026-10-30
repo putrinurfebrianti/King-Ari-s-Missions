@@ -165,6 +165,16 @@ func _draw() -> void:
 				draw_circle(s_pos, 4.0, Color(0.65, 0.65, 0.7, 0.75))
 				draw_string(ThemeDB.fallback_font, s_pos + Vector2(6, 3), s_data["short_name"], HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Color(0.75, 0.8, 0.85))
 
+	# 7.5. Marker Mobil-Mobil NPC Lalu Lintas yang Sedang Melintas
+	var npc_cars = get_tree().get_nodes_in_group("npc_traffic")
+	for npc in npc_cars:
+		if is_instance_valid(npc) and npc is Node3D:
+			var npc_pos = world_to_map(npc.global_position)
+			draw_circle(npc_pos, 3.2, Color(1.0, 0.7, 0.15, 0.95))
+			var npc_fwd_angle = -npc.global_rotation.y - PI / 2.0
+			var npc_dir = Vector2(cos(npc_fwd_angle), sin(npc_fwd_angle)) * 5.0
+			draw_line(npc_pos, npc_pos + npc_dir, Color(1.0, 0.9, 0.35, 0.95), 1.5)
+
 	# 8. Posisi & Rotasi Mobil Pemain
 	if player:
 		var p_pos = player.global_position
