@@ -156,3 +156,4 @@ func _update_night_lights(is_night: bool) -> void:
 		var mat = taillights_mesh.get_active_material(0)
 		if mat is StandardMaterial3D:
 			mat.emission_energy_multiplier = 2.0 if is_night else 0.5
+

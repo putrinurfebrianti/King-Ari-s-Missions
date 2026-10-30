@@ -231,9 +231,9 @@ func _process(delta: float) -> void:
 			refuel(delta)
 
 func reset_game() -> void:
-	current_state = State.AT_SPPG
+	current_state = State.DELIVERING
 	food_condition = 100.0
-	time_left = 300.0 # 5 menit (05:00)
+	time_left = 300.0 # 5 menit (05:00) hitung mundur aktif
 	current_fuel = max_fuel
 	is_refueling = false
 	current_school_idx = 0
@@ -246,6 +246,7 @@ func reset_game() -> void:
 	time_changed.emit(time_left)
 	fuel_changed.emit(current_fuel, max_fuel)
 	coins_changed.emit(coins)
+	delivery_started.emit()
 
 func set_season(new_season: Season) -> void:
 	current_season = new_season

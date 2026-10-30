@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cnpctrafficcar101"]
+[gd_scene format=3 uid="uid://hu0g3xi5mvu7"]
 
 [ext_resource type="Script" path="res://scripts/npc_traffic_car.gd" id="1_traffic"]
 
@@ -182,3 +182,4 @@ light_color = Color(1, 0.95, 0.85, 1)
 light_energy = 2.5
 spot_range = 22.0
 spot_angle = 35.0
+

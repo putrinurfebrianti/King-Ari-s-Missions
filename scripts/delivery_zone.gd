@@ -126,6 +126,12 @@ func _trigger_zone_action() -> void:
 			var hud = get_node_or_null("/root/Main/HUD")
 			if hud and hud.has_method("show_toast"):
 				hud.show_toast("🚚 Ransum MBG Dimuat! Kawal ke 5 Sekolah sebelum waktu habis (05:00)!", 4.0)
+		elif gm.current_state == gm.State.DELIVERING:
+			gm.food_condition = 100.0
+			gm.food_changed.emit(gm.food_condition)
+			var hud = get_node_or_null("/root/Main/HUD")
+			if hud and hud.has_method("show_toast"):
+				hud.show_toast("🍱 Dapur Sentral SPPG: Ransum MBG diperiksa dan dipulihkan ke 100%!", 3.5)
 
 	elif zone_type == ZoneType.SCHOOL:
 		if gm.current_state == gm.State.DELIVERING and gm.current_school_idx == school_index:

@@ -154,7 +154,41 @@ func trigger_horn() -> void:
 	var am = get_node_or_null("/root/AudioManager")
 	if am and am.has_method("play_horn"):
 		am.play_horn()
-	_show_hud_toast("📢 KLAKSON: Titah Pengawal MBG lewat!")
+
+	# Efek Balon Suara 3D Melayang di atas mobil
+	_spawn_horn_bubble()
+
+	# Peringatkan mobil NPC di sekitar untuk bereaksi
+	var nearby_npcs = get_tree().get_nodes_in_group("npc_traffic")
+	for npc in nearby_npcs:
+		if is_instance_valid(npc) and npc is Node3D:
+			var d = global_position.distance_to(npc.global_position)
+			if d < 18.0:
+				if randf() < 0.5 and am and am.has_method("play_horn"):
+					# Balas klakson pendek dengan pitch berbeda
+					get_tree().create_timer(randf_range(0.2, 0.5)).timeout.connect(func():
+						if is_instance_valid(npc):
+							am.play_horn()
+					)
+
+	_show_hud_toast("📢 KLAKSON MBG: Jalanan terbuka untuk Pengawal Raja!")
+
+func _spawn_horn_bubble() -> void:
+	var bubble = Label3D.new()
+	bubble.text = "📢 TIIIN TIIIN!"
+	bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	bubble.font_size = 28
+	bubble.outline_size = 6
+	bubble.outline_modulate = Color.BLACK
+	bubble.modulate = Color(1.0, 0.9, 0.2)
+	bubble.position = Vector3(0, 2.6, -0.6)
+	add_child(bubble)
+
+	var tween = create_tween()
+	tween.tween_property(bubble, "position:y", 3.4, 0.8)
+	tween.parallel().tween_property(bubble, "scale", Vector2(1.2, 1.2), 0.3)
+	tween.parallel().tween_property(bubble, "modulate:a", 0.0, 0.8)
+	tween.tween_callback(bubble.queue_free)
 
 func toggle_control_mode() -> void:
 	if control_mode == ControlMode.SCREEN_DIRECT:

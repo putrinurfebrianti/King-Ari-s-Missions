@@ -28,6 +28,8 @@ var bengkel_btn: Button
 var perkakas_btn: Button
 var panduan_btn: Button
 var properti_btn: Button
+var setting_btn: Button
+var klakson_btn: Button
 var pov_cam_btn: Button
 
 # Floating Prompt Interaksi SPBU & Rumah
@@ -53,12 +55,14 @@ var panduan_modal: Panel
 var bengkel_modal: Panel
 var perkakas_modal: Panel
 var properti_modal: Panel
+var setting_modal: Panel
 
 var player_car: CharacterBody3D
 var player_pedestrian: CharacterBody3D
 
 func _ready() -> void:
 	add_to_group("hud")
+
 	# Hubungkan sinyal dari GameManager
 	GameManager.food_changed.connect(_on_food_changed)
 	GameManager.time_changed.connect(_on_time_changed)
@@ -112,7 +116,7 @@ func _ready() -> void:
 			driver_avatar.texture = load(path)
 	
 	if nav_guide:
-		nav_guide.text = "➔ Rute: Muat Ransum MBG di Dapur SPPG (Zona Hijau)"
+		nav_guide.text = "➔ Rute: Menuju Sekolah 1/5: SDN 01 Tenjo"
 		
 	_on_time_changed(GameManager.time_left)
 	_on_season_changed(int(GameManager.current_season))
@@ -121,14 +125,15 @@ func _ready() -> void:
 	if cam and cam.has_signal("camera_mode_changed"):
 		cam.camera_mode_changed.connect(_on_camera_mode_changed)
 
-	show_toast("👑 Titah Raja: Masuk ke SPPG untuk memuat MBG dan mulai pengiriman ke 5 Sekolah!", 4.5)
+	# Mulai Countdown Animasi 3-2-1-GO!
+	_start_race_countdown()
 
 func _setup_extra_dashboard_ui() -> void:
 	if not left_dashboard:
 		return
 	
-	left_dashboard.custom_minimum_size = Vector2(250, 510)
-	left_dashboard.size = Vector2(250, 510)
+	left_dashboard.custom_minimum_size = Vector2(250, 485)
+	left_dashboard.size = Vector2(250, 485)
 
 	# 1. Indikator Bahan Bakar (GDD Bab 5.4 & 10.2: 40 Liter)
 	fuel_label = Label.new()
@@ -169,73 +174,78 @@ func _setup_extra_dashboard_ui() -> void:
 		steer_slider.set_position(Vector2(14, 210))
 	if walk_toggle_btn:
 		walk_toggle_btn.set_position(Vector2(14, 238))
-		walk_toggle_btn.set_size(Vector2(222, 32))
+		walk_toggle_btn.set_size(Vector2(222, 30))
 
 	# 4. Tombol Season (Kemarau / Hujan / Malam)
 	season_btn = Button.new()
 	season_btn.text = "☀️ Musim: Kemarau (Klik Ubah)"
-	season_btn.set_position(Vector2(14, 276))
+	season_btn.set_position(Vector2(14, 274))
 	season_btn.set_size(Vector2(222, 28))
 	season_btn.add_theme_font_size_override("font_size", 11)
 	season_btn.pressed.connect(_on_season_toggle_pressed)
 	left_dashboard.add_child(season_btn)
 
-	# 5. Grid Tombol Menu Cepat (Bengkel, Perkakas, Panduan, Rumah)
+	# 5. Grid Tombol Menu 2 Kolom x 3 Baris (Bengkel, Perkakas, Panduan, Rumah, Setting, Klakson)
 	var btn_grid = GridContainer.new()
 	btn_grid.columns = 2
-	btn_grid.set_position(Vector2(14, 312))
-	btn_grid.set_size(Vector2(222, 155))
+	btn_grid.set_position(Vector2(14, 308))
+	btn_grid.set_size(Vector2(222, 105))
 	btn_grid.add_theme_constant_override("h_separation", 6)
 	btn_grid.add_theme_constant_override("v_separation", 6)
 	left_dashboard.add_child(btn_grid)
 
 	bengkel_btn = Button.new()
 	bengkel_btn.text = "🔧 Bengkel"
-	bengkel_btn.custom_minimum_size = Vector2(108, 34)
+	bengkel_btn.custom_minimum_size = Vector2(108, 30)
 	bengkel_btn.add_theme_font_size_override("font_size", 11)
 	bengkel_btn.pressed.connect(func(): _open_modal(bengkel_modal))
 	btn_grid.add_child(bengkel_btn)
 
 	perkakas_btn = Button.new()
 	perkakas_btn.text = "🛠️ Perkakas"
-	perkakas_btn.custom_minimum_size = Vector2(108, 34)
+	perkakas_btn.custom_minimum_size = Vector2(108, 30)
 	perkakas_btn.add_theme_font_size_override("font_size", 11)
 	perkakas_btn.pressed.connect(func(): _open_modal(perkakas_modal))
 	btn_grid.add_child(perkakas_btn)
 
 	panduan_btn = Button.new()
 	panduan_btn.text = "📖 Panduan [F1]"
-	panduan_btn.custom_minimum_size = Vector2(108, 34)
+	panduan_btn.custom_minimum_size = Vector2(108, 30)
 	panduan_btn.add_theme_font_size_override("font_size", 11)
 	panduan_btn.pressed.connect(func(): _open_modal(panduan_modal))
 	btn_grid.add_child(panduan_btn)
 
 	properti_btn = Button.new()
 	properti_btn.text = "🏠 Rumah"
-	properti_btn.custom_minimum_size = Vector2(108, 34)
+	properti_btn.custom_minimum_size = Vector2(108, 30)
 	properti_btn.add_theme_font_size_override("font_size", 11)
 	properti_btn.pressed.connect(func(): _open_modal(properti_modal))
 	btn_grid.add_child(properti_btn)
 
-	# Tombol Klakson di Dashboard
-	var klakson_btn = Button.new()
+	setting_btn = Button.new()
+	setting_btn.text = "⚙️ Setting [ESC]"
+	setting_btn.custom_minimum_size = Vector2(108, 30)
+	setting_btn.add_theme_font_size_override("font_size", 11)
+	setting_btn.pressed.connect(func(): _open_modal(setting_modal))
+	btn_grid.add_child(setting_btn)
+
+	klakson_btn = Button.new()
 	klakson_btn.text = "📢 Klakson [H]"
-	klakson_btn.custom_minimum_size = Vector2(222, 28)
-	klakson_btn.set_position(Vector2(14, 395))
+	klakson_btn.custom_minimum_size = Vector2(108, 30)
 	klakson_btn.add_theme_font_size_override("font_size", 11)
 	klakson_btn.pressed.connect(_on_honk_pressed)
-	left_dashboard.add_child(klakson_btn)
+	btn_grid.add_child(klakson_btn)
 
-	# Tombol Ganti POV Kamera (Awal / Dalam Mobil / Chase)
+	# 6. Tombol Ganti POV Kamera (Awal / Dalam Mobil / Chase)
 	pov_cam_btn = Button.new()
 	pov_cam_btn.text = "🎥 POV: Tinjauan Kota [C]"
-	pov_cam_btn.custom_minimum_size = Vector2(222, 30)
-	pov_cam_btn.set_position(Vector2(14, 428))
+	pov_cam_btn.set_position(Vector2(14, 420))
+	pov_cam_btn.set_size(Vector2(222, 32))
 	pov_cam_btn.add_theme_font_size_override("font_size", 11)
 	pov_cam_btn.pressed.connect(_on_pov_cam_pressed)
 	left_dashboard.add_child(pov_cam_btn)
 
-	# Tombol Buka Peta Penuh di bawah minimap
+	# 7. Tombol Buka Peta Penuh di bawah minimap
 	map_toggle_btn = Button.new()
 	map_toggle_btn.text = "🗺️ Buka Peta Besar [M]"
 	map_toggle_btn.set_position(Vector2(1040, 184))
@@ -243,6 +253,72 @@ func _setup_extra_dashboard_ui() -> void:
 	map_toggle_btn.add_theme_font_size_override("font_size", 11)
 	map_toggle_btn.pressed.connect(_on_map_toggle_pressed)
 	add_child(map_toggle_btn)
+
+func _start_race_countdown() -> void:
+	var cd_panel = Panel.new()
+	cd_panel.name = "CountdownOverlay"
+	cd_panel.set_anchors_preset(Control.PRESET_CENTER)
+	cd_panel.offset_left = -260
+	cd_panel.offset_top = -135
+	cd_panel.offset_right = 260
+	cd_panel.offset_bottom = 135
+	cd_panel.add_theme_stylebox_override("panel", _create_panel_style(Color(0.04, 0.08, 0.14, 0.94), Color(1.0, 0.8, 0.2, 0.95)))
+	add_child(cd_panel)
+
+	var cd_title = Label.new()
+	cd_title.text = "👑 TITAH PERDANA RAJA ARI"
+	cd_title.set_position(Vector2(10, 16))
+	cd_title.set_size(Vector2(500, 24))
+	cd_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cd_title.add_theme_font_size_override("font_size", 15)
+	cd_title.add_theme_color_override("font_color", Color(1.0, 0.88, 0.25))
+	cd_panel.add_child(cd_title)
+
+	var cd_sub = Label.new()
+	cd_sub.text = "Distribusi MBG ke 5 Sekolah Dimulai Dalam:"
+	cd_sub.set_position(Vector2(10, 42))
+	cd_sub.set_size(Vector2(500, 20))
+	cd_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cd_sub.add_theme_font_size_override("font_size", 12)
+	cd_sub.add_theme_color_override("font_color", Color(0.8, 0.9, 1.0))
+	cd_panel.add_child(cd_sub)
+
+	var num_label = Label.new()
+	num_label.text = "3"
+	num_label.set_position(Vector2(10, 72))
+	num_label.set_size(Vector2(500, 110))
+	num_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	num_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	num_label.add_theme_font_size_override("font_size", 76)
+	num_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.1))
+	cd_panel.add_child(num_label)
+
+	AudioManager.play_countdown_beep(false)
+
+	var t = create_tween()
+	t.tween_interval(1.0)
+	t.tween_callback(func():
+		num_label.text = "2"
+		num_label.add_theme_color_override("font_color", Color(1.0, 0.65, 0.1))
+		AudioManager.play_countdown_beep(false)
+	)
+	t.tween_interval(1.0)
+	t.tween_callback(func():
+		num_label.text = "1"
+		num_label.add_theme_color_override("font_color", Color(1.0, 0.45, 0.1))
+		AudioManager.play_countdown_beep(false)
+	)
+	t.tween_interval(1.0)
+	t.tween_callback(func():
+		num_label.text = "BERANGKAT! 🚀"
+		num_label.add_theme_font_size_override("font_size", 42)
+		num_label.add_theme_color_override("font_color", Color(0.2, 1.0, 0.5))
+		AudioManager.play_countdown_beep(true)
+		show_toast("🚀 TITAH RAJA DIMULAI! Kawal makanan ke 5 Sekolah sebelum waktu habis (05:00)!", 4.0)
+	)
+	t.tween_interval(0.8)
+	t.tween_property(cd_panel, "modulate:a", 0.0, 0.4)
+	t.tween_callback(cd_panel.queue_free)
 
 func _setup_prompt_ui() -> void:
 	prompt_panel = Panel.new()
@@ -269,11 +345,13 @@ func _setup_modals() -> void:
 	bengkel_modal = _build_bengkel_modal()
 	perkakas_modal = _build_perkakas_modal()
 	properti_modal = _build_properti_modal()
+	setting_modal = _build_setting_modal()
 
 	add_child(panduan_modal)
 	add_child(bengkel_modal)
 	add_child(perkakas_modal)
 	add_child(properti_modal)
+	add_child(setting_modal)
 
 func _open_modal(modal: Panel) -> void:
 	_close_all_modals()
@@ -286,6 +364,14 @@ func _close_all_modals() -> void:
 	if bengkel_modal: bengkel_modal.visible = false
 	if perkakas_modal: perkakas_modal.visible = false
 	if properti_modal: properti_modal.visible = false
+	if setting_modal: setting_modal.visible = false
+
+func _has_any_modal_open() -> bool:
+	return (panduan_modal and panduan_modal.visible) or \
+		   (bengkel_modal and bengkel_modal.visible) or \
+		   (perkakas_modal and perkakas_modal.visible) or \
+		   (properti_modal and properti_modal.visible) or \
+		   (setting_modal and setting_modal.visible)
 
 func _build_panduan_modal() -> Panel:
 	var p = Panel.new()
@@ -315,19 +401,20 @@ func _build_panduan_modal() -> Panel:
 	content.custom_minimum_size = Vector2(610, 0)
 	content.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_theme_font_size_override("font_size", 12)
-	content.text = """🎮 KONTROL PERMAINAN:
-• [W][A][S][D] / Tombol Panah: Menyetir, maju, mundur, dan belok
+	content.text = """🎮 KONTROL LENGKAP:
+• [W][A][S][D] / Tombol Panah: Menyetir, akselerasi, mundur, dan belok
 • [Spasi]: Rem Tangan
 • [E]: Masuk / Keluar Mobil (Beralih ke mode Pejalan Kaki)
 • [C] / [V]: Ganti Sudut Pandang Kamera (Tinjauan Awal / Dalam Mobil Full / Chase)
-• [H]: Bunyikan Klakson Resmi MBG
+• [H]: Bunyikan Klakson Resmi MBG (Mobil NPC akan merespons!)
 • [F]: Menambal Jalan Berlubang (Syarat: Miliki Sekop / Aspal di Toko Perkakas)
-• [M]: Buka / Tutup Peta Besar Kota Tenjo
+• [M]: Buka / Tutup Peta Besar Kota Tenjo Island
 • [B]: Isi Bensin di SPBU (2 Koin/L) atau Beli Rumah Pribadi (2.500 Koin)
-• [R]: Mulai Ulang Misi dari Dapur Sentral SPPG
+• [ESC] / [O]: Buka Menu Pengaturan (Volume Audio, Sensitivitas, Mode Setir, Fullscreen)
+• [R]: Mulai Ulang Misi dari Awal
 
-🍱 ATURAN TITAH DISTRIBUSI:
-1. Muat Ransum MBG di Dapur SPPG (Zona Hijau). Timer otomatis berjalan!
+🍱 ATURAN TITAH DISTRIBUSI MBG:
+1. Ransum MBG siap dimuat. Timer 5 MENIT (05:00) aktif menghitung mundur!
 2. Antar ransum ke 5 SEKOLAH berurutan (SDN 01, SDN 02, SMPN 01, SDN 03, Madrasah).
 3. Batas Waktu 5 MENIT (05:00)! Jangan sampai bel istirahat berbunyi.
 4. Jaga Kondisi Ransum > 80% untuk meraih bintang 3 ★★★ kehormatan istana!
@@ -348,6 +435,187 @@ func _build_panduan_modal() -> Panel:
 	var close_btn = Button.new()
 	close_btn.text = "Tutup Panduan [ESC]"
 	close_btn.set_position(Vector2(240, 390))
+	close_btn.set_size(Vector2(200, 36))
+	close_btn.pressed.connect(_close_all_modals)
+	p.add_child(close_btn)
+
+	return p
+
+func _build_setting_modal() -> Panel:
+	var p = Panel.new()
+	p.name = "SettingModal"
+	p.visible = false
+	p.set_anchors_preset(Control.PRESET_CENTER)
+	p.offset_left = -310
+	p.offset_top = -230
+	p.offset_right = 310
+	p.offset_bottom = 230
+	p.add_theme_stylebox_override("panel", _create_panel_style(Color(0.06, 0.1, 0.16, 0.97), Color(0.3, 0.7, 1.0, 0.9)))
+
+	var title = Label.new()
+	title.text = "⚙️ PENGATURAN PERMAINAN (SETTINGS)"
+	title.set_position(Vector2(20, 14))
+	title.set_size(Vector2(580, 26))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 17)
+	title.add_theme_color_override("font_color", Color(1.0, 0.88, 0.25))
+	p.add_child(title)
+
+	# 1. Audio
+	var audio_sec = Label.new()
+	audio_sec.text = "🔊 PENGATURAN AUDIO & SUARA"
+	audio_sec.set_position(Vector2(30, 48))
+	audio_sec.add_theme_font_size_override("font_size", 13)
+	audio_sec.add_theme_color_override("font_color", Color(0.3, 0.9, 1.0))
+	p.add_child(audio_sec)
+
+	var master_lbl = Label.new()
+	master_lbl.text = "Volume Master: %d%%" % int(AudioManager.master_volume * 100)
+	master_lbl.set_position(Vector2(30, 72))
+	master_lbl.add_theme_font_size_override("font_size", 11)
+	p.add_child(master_lbl)
+
+	var master_slider = HSlider.new()
+	master_slider.set_position(Vector2(210, 72))
+	master_slider.set_size(Vector2(240, 20))
+	master_slider.min_value = 0.0
+	master_slider.max_value = 1.0
+	master_slider.step = 0.05
+	master_slider.value = AudioManager.master_volume
+	master_slider.value_changed.connect(func(v):
+		AudioManager.set_master_volume(v)
+		master_lbl.text = "Volume Master: %d%%" % int(v * 100)
+	)
+	p.add_child(master_slider)
+
+	var bgm_lbl = Label.new()
+	bgm_lbl.text = "Volume Musik BGM: %d%%" % int(AudioManager.bgm_volume * 100)
+	bgm_lbl.set_position(Vector2(30, 102))
+	bgm_lbl.add_theme_font_size_override("font_size", 11)
+	p.add_child(bgm_lbl)
+
+	var bgm_slider = HSlider.new()
+	bgm_slider.set_position(Vector2(210, 102))
+	bgm_slider.set_size(Vector2(240, 20))
+	bgm_slider.min_value = 0.0
+	bgm_slider.max_value = 1.0
+	bgm_slider.step = 0.05
+	bgm_slider.value = AudioManager.bgm_volume
+	bgm_slider.value_changed.connect(func(v):
+		AudioManager.set_bgm_volume(v)
+		bgm_lbl.text = "Volume Musik BGM: %d%%" % int(v * 100)
+	)
+	p.add_child(bgm_slider)
+
+	var sfx_lbl = Label.new()
+	sfx_lbl.text = "Volume SFX & Klakson: %d%%" % int(AudioManager.sfx_volume * 100)
+	sfx_lbl.set_position(Vector2(30, 132))
+	sfx_lbl.add_theme_font_size_override("font_size", 11)
+	p.add_child(sfx_lbl)
+
+	var sfx_slider = HSlider.new()
+	sfx_slider.set_position(Vector2(210, 132))
+	sfx_slider.set_size(Vector2(240, 20))
+	sfx_slider.min_value = 0.0
+	sfx_slider.max_value = 1.0
+	sfx_slider.step = 0.05
+	sfx_slider.value = AudioManager.sfx_volume
+	sfx_slider.value_changed.connect(func(v):
+		AudioManager.set_sfx_volume(v)
+		sfx_lbl.text = "Volume SFX & Klakson: %d%%" % int(v * 100)
+	)
+	p.add_child(sfx_slider)
+
+	var mute_btn = Button.new()
+	mute_btn.text = "🔊 Mute: OFF" if not AudioManager.is_muted else "🔇 Mute: ON"
+	mute_btn.set_position(Vector2(465, 84))
+	mute_btn.set_size(Vector2(130, 36))
+	mute_btn.add_theme_font_size_override("font_size", 10)
+	mute_btn.pressed.connect(func():
+		AudioManager.set_muted(!AudioManager.is_muted)
+		mute_btn.text = "🔊 Mute: OFF" if not AudioManager.is_muted else "🔇 Mute: ON"
+	)
+	p.add_child(mute_btn)
+
+	# 2. Kemudi
+	var ctrl_sec = Label.new()
+	ctrl_sec.text = "🏎️ PENGATURAN KEMUDI & KENDALI"
+	ctrl_sec.set_position(Vector2(30, 172))
+	ctrl_sec.add_theme_font_size_override("font_size", 13)
+	ctrl_sec.add_theme_color_override("font_color", Color(0.3, 0.9, 1.0))
+	p.add_child(ctrl_sec)
+
+	var steer_lbl = Label.new()
+	var cur_steer = 1.0
+	if player_car: cur_steer = player_car.steer_sensitivity
+	steer_lbl.text = "Sensitivitas Setir: %.1fx" % cur_steer
+	steer_lbl.set_position(Vector2(30, 198))
+	steer_lbl.add_theme_font_size_override("font_size", 11)
+	p.add_child(steer_lbl)
+
+	var steer_sld = HSlider.new()
+	steer_sld.set_position(Vector2(210, 198))
+	steer_sld.set_size(Vector2(240, 20))
+	steer_sld.min_value = 0.4
+	steer_sld.max_value = 2.2
+	steer_sld.step = 0.1
+	steer_sld.value = cur_steer
+	steer_sld.value_changed.connect(func(v):
+		if player_car:
+			player_car.steer_sensitivity = v
+		steer_lbl.text = "Sensitivitas Setir: %.1fx" % v
+	)
+	p.add_child(steer_sld)
+
+	var mode_btn = Button.new()
+	mode_btn.text = "🏎️ Ganti Mode Setir (TAB)"
+	mode_btn.set_position(Vector2(465, 190))
+	mode_btn.set_size(Vector2(130, 36))
+	mode_btn.add_theme_font_size_override("font_size", 10)
+	mode_btn.pressed.connect(func():
+		if player_car and player_car.has_method("toggle_control_mode"):
+			player_car.toggle_control_mode()
+	)
+	p.add_child(mode_btn)
+
+	# 3. Tampilan Layar
+	var disp_sec = Label.new()
+	disp_sec.text = "🖥️ TAMPILAN & GRAFIS"
+	disp_sec.set_position(Vector2(30, 240))
+	disp_sec.add_theme_font_size_override("font_size", 13)
+	disp_sec.add_theme_color_override("font_color", Color(0.3, 0.9, 1.0))
+	p.add_child(disp_sec)
+
+	var fs_btn = Button.new()
+	var is_fs = (DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN)
+	fs_btn.text = "🖥️ Layar Penuh (Fullscreen)" if not is_fs else "🪟 Mode Jendela (Windowed)"
+	fs_btn.set_position(Vector2(30, 266))
+	fs_btn.set_size(Vector2(250, 34))
+	fs_btn.add_theme_font_size_override("font_size", 11)
+	fs_btn.pressed.connect(func():
+		var cur_mode = DisplayServer.window_get_mode()
+		if cur_mode == DisplayServer.WINDOW_MODE_FULLSCREEN:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			fs_btn.text = "🖥️ Layar Penuh (Fullscreen)"
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			fs_btn.text = "🪟 Mode Jendela (Windowed)"
+	)
+	p.add_child(fs_btn)
+
+	var test_horn_btn = Button.new()
+	test_horn_btn.text = "📢 Uji Coba Klakson [H]"
+	test_horn_btn.set_position(Vector2(320, 266))
+	test_horn_btn.set_size(Vector2(250, 34))
+	test_horn_btn.add_theme_font_size_override("font_size", 11)
+	test_horn_btn.pressed.connect(func():
+		AudioManager.play_horn()
+	)
+	p.add_child(test_horn_btn)
+
+	var close_btn = Button.new()
+	close_btn.text = "✓ Simpan & Tutup [ESC]"
+	close_btn.set_position(Vector2(210, 375))
 	close_btn.set_size(Vector2(200, 36))
 	close_btn.pressed.connect(_close_all_modals)
 	p.add_child(close_btn)
@@ -644,10 +912,13 @@ func _on_vehicle_upgraded(_part_name: String, _new_lvl: int) -> void:
 	_refresh_modal_data()
 
 func _on_honk_pressed() -> void:
-	var am = get_node_or_null("/root/AudioManager")
-	if am and am.has_method("play_horn"):
-		am.play_horn()
-	show_toast("📢 KLAKSON MBG DIBUNYIKAN!", 1.5)
+	if player_car and player_car.has_method("trigger_horn"):
+		player_car.trigger_horn()
+	else:
+		var am = get_node_or_null("/root/AudioManager")
+		if am and am.has_method("play_horn"):
+			am.play_horn()
+		show_toast("📢 KLAKSON MBG DIBUNYIKAN!", 1.5)
 
 func _on_map_toggle_pressed() -> void:
 	var minimap = get_node_or_null("Minimap")
@@ -661,7 +932,7 @@ func _on_pov_cam_pressed() -> void:
 
 func _on_camera_mode_changed(mode_name: String) -> void:
 	if pov_cam_btn:
-		pov_cam_btn.text = "🎥 POV: " + mode_name + " [C]"
+		pov_cam_btn.text = "🎥 " + mode_name + " [C]"
 
 func _on_season_toggle_pressed() -> void:
 	GameManager.toggle_season()
@@ -673,7 +944,7 @@ func _on_season_changed(season_int: int) -> void:
 			show_toast("🌧️ Cuaca: Musim Hujan! Jalanan basah dan licin, rem lebih hati-hati.", 3.5)
 		elif season_int == GameManager.Season.MALAM:
 			season_btn.text = "🌙 Musim: Malam (Klik Ubah)"
-			show_toast("🌙 Cuaca: Musim Malam! Lampu sorot mobil aktif, area Kuburan Keramat bercahaya.", 3.5)
+			show_toast("🌙 Cuaca: Musim Malam! Lampu sorot mobil aktif, area Kuburan Keramat bercahaya gaib.", 3.5)
 		else:
 			season_btn.text = "☀️ Musim: Kemarau (Klik Ubah)"
 			show_toast("☀️ Cuaca: Musim Kemarau! Jalanan kering dan cerah.", 3.0)
@@ -765,7 +1036,6 @@ func _on_delivery_started() -> void:
 		driver_status.modulate = Color(0.25, 0.85, 1.0)
 	if nav_guide:
 		nav_guide.text = "➔ Rute: Menuju Sekolah 1/5: SDN 01 Tenjo"
-	show_toast("🚚 MBG Dimuat! Raja Ari: 'Kawal makanan untuk Generasi Emas Tenjo!'", 4.0)
 
 # Penyerahan ke sekolah dengan perincian upah kotor & potongan pajak 11%
 func _on_school_delivered(school_idx: int, school_name: String, delivered_count: int, total_count: int, earned_coins: int) -> void:
@@ -844,8 +1114,11 @@ func _unhandled_input(event: InputEvent) -> void:
 				_close_all_modals()
 			else:
 				_open_modal(panduan_modal)
-		elif event.keycode == KEY_ESCAPE:
-			_close_all_modals()
+		elif event.keycode == KEY_ESCAPE or event.keycode == KEY_O:
+			if _has_any_modal_open():
+				_close_all_modals()
+			else:
+				_open_modal(setting_modal)
 		elif event.keycode == KEY_H:
 			_on_honk_pressed()
 

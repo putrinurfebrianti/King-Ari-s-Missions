@@ -29,6 +29,7 @@ var dynamic_vehicle_cards: Dictionary = {}
 var panduan_modal: Panel
 var bengkel_modal: Panel
 var perkakas_modal: Panel
+var setting_modal: Panel
 
 func _ready() -> void:
 	GameManager.coins_changed.connect(_on_coins_changed)
@@ -151,48 +152,58 @@ func _setup_menu_extra_buttons() -> void:
 		return
 
 	var menu_btn_container = HBoxContainer.new()
-	menu_btn_container.set_position(Vector2(440, 16))
-	menu_btn_container.set_size(Vector2(540, 44))
-	menu_btn_container.add_theme_constant_override("separation", 10)
+	menu_btn_container.set_position(Vector2(370, 16))
+	menu_btn_container.set_size(Vector2(620, 44))
+	menu_btn_container.add_theme_constant_override("separation", 8)
 	top_bar.add_child(menu_btn_container)
 
 	var btn_guide = Button.new()
-	btn_guide.text = "📖 PANDUAN MAIN"
-	btn_guide.custom_minimum_size = Vector2(130, 40)
+	btn_guide.text = "📖 PANDUAN"
+	btn_guide.custom_minimum_size = Vector2(110, 40)
 	btn_guide.add_theme_font_size_override("font_size", 12)
 	btn_guide.pressed.connect(func(): _open_menu_modal(panduan_modal))
 	menu_btn_container.add_child(btn_guide)
 
 	var btn_bengkel = Button.new()
 	btn_bengkel.text = "🔧 BENGKEL"
-	btn_bengkel.custom_minimum_size = Vector2(110, 40)
+	btn_bengkel.custom_minimum_size = Vector2(95, 40)
 	btn_bengkel.add_theme_font_size_override("font_size", 12)
 	btn_bengkel.pressed.connect(func(): _open_menu_modal(bengkel_modal))
 	menu_btn_container.add_child(btn_bengkel)
 
 	var btn_perkakas = Button.new()
 	btn_perkakas.text = "🛠️ PERKAKAS"
-	btn_perkakas.custom_minimum_size = Vector2(110, 40)
+	btn_perkakas.custom_minimum_size = Vector2(100, 40)
 	btn_perkakas.add_theme_font_size_override("font_size", 12)
 	btn_perkakas.pressed.connect(func(): _open_menu_modal(perkakas_modal))
 	menu_btn_container.add_child(btn_perkakas)
 
 	var btn_story = Button.new()
-	btn_story.text = "📜 KISAH TITAH RAJA"
-	btn_story.custom_minimum_size = Vector2(150, 40)
+	btn_story.text = "📜 KISAH TITAH"
+	btn_story.custom_minimum_size = Vector2(120, 40)
 	btn_story.add_theme_font_size_override("font_size", 12)
 	btn_story.modulate = Color(1.0, 0.85, 0.3)
 	btn_story.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/ui/story_cutscene.tscn"))
 	menu_btn_container.add_child(btn_story)
 
+	var btn_setting = Button.new()
+	btn_setting.text = "⚙️ PENGATURAN"
+	btn_setting.custom_minimum_size = Vector2(125, 40)
+	btn_setting.add_theme_font_size_override("font_size", 12)
+	btn_setting.modulate = Color(0.4, 0.9, 1.0)
+	btn_setting.pressed.connect(func(): _open_menu_modal(setting_modal))
+	menu_btn_container.add_child(btn_setting)
+
 func _setup_menu_modals() -> void:
 	panduan_modal = _create_panduan_modal()
 	bengkel_modal = _create_bengkel_modal()
 	perkakas_modal = _create_perkakas_modal()
+	setting_modal = _create_setting_modal()
 
 	add_child(panduan_modal)
 	add_child(bengkel_modal)
 	add_child(perkakas_modal)
+	add_child(setting_modal)
 
 func _open_menu_modal(modal: Panel) -> void:
 	_close_all_modals()
@@ -204,6 +215,7 @@ func _close_all_modals() -> void:
 	if panduan_modal: panduan_modal.visible = false
 	if bengkel_modal: bengkel_modal.visible = false
 	if perkakas_modal: perkakas_modal.visible = false
+	if setting_modal: setting_modal.visible = false
 
 func _create_panduan_modal() -> Panel:
 	var p = Panel.new()
@@ -398,6 +410,146 @@ func _create_perkakas_modal() -> Panel:
 
 	return p
 
+func _create_setting_modal() -> Panel:
+	var p = Panel.new()
+	p.name = "MenuSettingModal"
+	p.visible = false
+	p.set_anchors_preset(Control.PRESET_CENTER)
+	p.offset_left = -310
+	p.offset_top = -230
+	p.offset_right = 310
+	p.offset_bottom = 230
+	p.add_theme_stylebox_override("panel", _create_modal_style(Color(0.06, 0.1, 0.16, 0.97), Color(0.3, 0.7, 1.0, 0.9)))
+
+	var title = Label.new()
+	title.text = "⚙️ PENGATURAN PERMAINAN (SETTINGS)"
+	title.set_position(Vector2(20, 14))
+	title.set_size(Vector2(580, 26))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 17)
+	title.add_theme_color_override("font_color", Color(1.0, 0.88, 0.25))
+	p.add_child(title)
+
+	# 1. Audio
+	var audio_sec = Label.new()
+	audio_sec.text = "🔊 PENGATURAN AUDIO & SUARA"
+	audio_sec.set_position(Vector2(30, 48))
+	audio_sec.add_theme_font_size_override("font_size", 13)
+	audio_sec.add_theme_color_override("font_color", Color(0.3, 0.9, 1.0))
+	p.add_child(audio_sec)
+
+	var master_lbl = Label.new()
+	master_lbl.text = "Volume Master: %d%%" % int(AudioManager.master_volume * 100)
+	master_lbl.set_position(Vector2(30, 74))
+	master_lbl.add_theme_font_size_override("font_size", 11)
+	p.add_child(master_lbl)
+
+	var master_slider = HSlider.new()
+	master_slider.set_position(Vector2(210, 74))
+	master_slider.set_size(Vector2(240, 20))
+	master_slider.min_value = 0.0
+	master_slider.max_value = 1.0
+	master_slider.step = 0.05
+	master_slider.value = AudioManager.master_volume
+	master_slider.value_changed.connect(func(v):
+		AudioManager.set_master_volume(v)
+		master_lbl.text = "Volume Master: %d%%" % int(v * 100)
+	)
+	p.add_child(master_slider)
+
+	var bgm_lbl = Label.new()
+	bgm_lbl.text = "Volume Musik BGM: %d%%" % int(AudioManager.bgm_volume * 100)
+	bgm_lbl.set_position(Vector2(30, 106))
+	bgm_lbl.add_theme_font_size_override("font_size", 11)
+	p.add_child(bgm_lbl)
+
+	var bgm_slider = HSlider.new()
+	bgm_slider.set_position(Vector2(210, 106))
+	bgm_slider.set_size(Vector2(240, 20))
+	bgm_slider.min_value = 0.0
+	bgm_slider.max_value = 1.0
+	bgm_slider.step = 0.05
+	bgm_slider.value = AudioManager.bgm_volume
+	bgm_slider.value_changed.connect(func(v):
+		AudioManager.set_bgm_volume(v)
+		bgm_lbl.text = "Volume Musik BGM: %d%%" % int(v * 100)
+	)
+	p.add_child(bgm_slider)
+
+	var sfx_lbl = Label.new()
+	sfx_lbl.text = "Volume SFX & Klakson: %d%%" % int(AudioManager.sfx_volume * 100)
+	sfx_lbl.set_position(Vector2(30, 138))
+	sfx_lbl.add_theme_font_size_override("font_size", 11)
+	p.add_child(sfx_lbl)
+
+	var sfx_slider = HSlider.new()
+	sfx_slider.set_position(Vector2(210, 138))
+	sfx_slider.set_size(Vector2(240, 20))
+	sfx_slider.min_value = 0.0
+	sfx_slider.max_value = 1.0
+	sfx_slider.step = 0.05
+	sfx_slider.value = AudioManager.sfx_volume
+	sfx_slider.value_changed.connect(func(v):
+		AudioManager.set_sfx_volume(v)
+		sfx_lbl.text = "Volume SFX & Klakson: %d%%" % int(v * 100)
+	)
+	p.add_child(sfx_slider)
+
+	var mute_btn = Button.new()
+	mute_btn.text = "🔊 Mute: OFF" if not AudioManager.is_muted else "🔇 Mute: ON"
+	mute_btn.set_position(Vector2(465, 88))
+	mute_btn.set_size(Vector2(130, 36))
+	mute_btn.add_theme_font_size_override("font_size", 10)
+	mute_btn.pressed.connect(func():
+		AudioManager.set_muted(!AudioManager.is_muted)
+		mute_btn.text = "🔊 Mute: OFF" if not AudioManager.is_muted else "🔇 Mute: ON"
+	)
+	p.add_child(mute_btn)
+
+	# 2. Tampilan Layar & Audio Test
+	var disp_sec = Label.new()
+	disp_sec.text = "🖥️ TAMPILAN & PENGUJIAN AUDIO"
+	disp_sec.set_position(Vector2(30, 185))
+	disp_sec.add_theme_font_size_override("font_size", 13)
+	disp_sec.add_theme_color_override("font_color", Color(0.3, 0.9, 1.0))
+	p.add_child(disp_sec)
+
+	var fs_btn = Button.new()
+	var is_fs = (DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN)
+	fs_btn.text = "🖥️ Layar Penuh (Fullscreen)" if not is_fs else "🪟 Mode Jendela (Windowed)"
+	fs_btn.set_position(Vector2(30, 215))
+	fs_btn.set_size(Vector2(250, 34))
+	fs_btn.add_theme_font_size_override("font_size", 11)
+	fs_btn.pressed.connect(func():
+		var cur_mode = DisplayServer.window_get_mode()
+		if cur_mode == DisplayServer.WINDOW_MODE_FULLSCREEN:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			fs_btn.text = "🖥️ Layar Penuh (Fullscreen)"
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			fs_btn.text = "🪟 Mode Jendela (Windowed)"
+	)
+	p.add_child(fs_btn)
+
+	var test_horn_btn = Button.new()
+	test_horn_btn.text = "📢 Uji Coba Klakson [H]"
+	test_horn_btn.set_position(Vector2(320, 215))
+	test_horn_btn.set_size(Vector2(250, 34))
+	test_horn_btn.add_theme_font_size_override("font_size", 11)
+	test_horn_btn.pressed.connect(func():
+		AudioManager.play_horn()
+	)
+	p.add_child(test_horn_btn)
+
+	var close_btn = Button.new()
+	close_btn.text = "✓ Simpan & Tutup [ESC]"
+	close_btn.set_position(Vector2(210, 375))
+	close_btn.set_size(Vector2(200, 36))
+	close_btn.pressed.connect(_close_all_modals)
+	p.add_child(close_btn)
+
+	return p
+
 func _create_card_style() -> StyleBoxFlat:
 	var sb = StyleBoxFlat.new()
 	sb.bg_color = Color(0.06, 0.1, 0.16, 0.88)
@@ -569,6 +721,11 @@ func _unhandled_input(event: InputEvent) -> void:
 				_close_all_modals()
 			else:
 				_open_menu_modal(panduan_modal)
+		elif event.keycode == KEY_O:
+			if setting_modal and setting_modal.visible:
+				_close_all_modals()
+			else:
+				_open_menu_modal(setting_modal)
 
 func _on_start_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/ui/story_cutscene.tscn")
