@@ -29,7 +29,7 @@ sprite_y_offset = 0.86
 bob_amplitude = 0.025
 bob_speed = 3.0
 character_name = "Ibu Guru Sri"
-dialog_text = "Selamat datang Pak Rama! Anak-anak siap menyantap makan siang!"
+dialog_text = "Selamat datang, Pengawal MBG! Anak-anak siap menyantap makan siang!"
 
 [node name="Sprite3D" type="Sprite3D" parent="GuruStanding"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.86, 0)

@@ -120,7 +120,7 @@ func _physics_process(delta: float) -> void:
 	if not target or not is_instance_valid(target):
 		return
 
-	# Jika target adalah pejalan kaki (Rama turun mobil), otomatis gunakan mode tinjauan agar navigasi orang nyaman
+	# Jika target adalah pejalan kaki, gunakan mode tinjauan agar navigasi nyaman
 	var is_pedestrian: bool = target.is_in_group("pedestrian")
 	var active_mode: CameraMode = camera_mode
 	if is_pedestrian and active_mode == CameraMode.IN_CAR_HOOD:

@@ -26,7 +26,7 @@ func _process(_delta: float) -> void:
 
 func _on_food_changed(current_food: float) -> void:
 	if current_food >= 99.0 and speech_label:
-		say_dialog("Hati-hati di jalan! Antar sebelum jam 12!", 3.5)
+		say_dialog("Hati-hati di jalan! Antar sebelum bel sekolah berbunyi!", 3.5)
 
 func say_dialog(text: String, duration: float = 3.0) -> void:
 	if not speech_label:

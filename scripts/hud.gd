@@ -117,7 +117,7 @@ func _ready() -> void:
 	if driver_avatar and drv:
 		var path = drv.get("portrait_path", "")
 		if path != "" and ResourceLoader.exists(path):
-			driver_avatar.texture = load(path)
+			driver_avatar.texture = load(path) as Texture2D
 
 	_on_food_changed(GameManager.food_condition)
 	_on_time_changed(GameManager.time_left)

@@ -102,6 +102,7 @@ offset_right = 390.0
 offset_bottom = -220.0
 grow_vertical = 0
 pivot_offset = Vector2(160, 160)
+texture_filter = 1
 expand_mode = 1
 stretch_mode = 5
 
@@ -121,11 +122,12 @@ grow_vertical = 0
 theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_nametag")
-text = "🇮🇩 Presiden Ari"
+text = "🇮🇩 Raja Ari"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="DriverPortrait" type="TextureRect" parent="Portraits"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -140,7 +142,7 @@ grow_horizontal = 0
 grow_vertical = 0
 pivot_offset = Vector2(160, 160)
 expand_mode = 1
-stretch_mode = 5
+stretch_mode = 4
 
 [node name="NameTag" type="Label" parent="Portraits/DriverPortrait"]
 layout_mode = 1
@@ -185,7 +187,7 @@ offset_right = 600.0
 offset_bottom = 40.0
 theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
 theme_override_font_sizes/font_size = 18
-text = "🇮🇩 Presiden Ari (Kepala Negara Tenjo)"
+text = "🇮🇩 Raja Ari (Pemimpin Tenjo)"
 
 [node name="ContentLabel" type="Label" parent="DialogueBox"]
 layout_mode = 0
@@ -195,7 +197,7 @@ offset_right = 940.0
 offset_bottom = 165.0
 theme_override_colors/font_color = Color(0.95, 0.97, 1, 1)
 theme_override_font_sizes/font_size = 17
-text = "Teks cerita titah Presiden Ari berjalan di sini..."
+text = "Teks cerita titah Raja Ari berjalan di sini..."
 autowrap_mode = 3
 
 [node name="NextButton" type="Button" parent="DialogueBox"]

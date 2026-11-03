@@ -40,6 +40,7 @@
 [ext_resource type="PackedScene" uid="uid://bsu7ollilldmm" path="res://scenes/characters/npc_students_group.tscn" id="38_students"]
 [ext_resource type="PackedScene" path="res://scenes/entities/npc_traffic_car.tscn" id="39_traffic"]
 [ext_resource type="Script" path="res://scripts/endless_road.gd" id="40_endless_road"]
+[ext_resource type="Script" path="res://scripts/tenjo_island_environment.gd" id="41_island_environment"]
 
 [sub_resource type="StandardMaterial3D" id="mat_rain"]
 transparency = 1
@@ -70,7 +71,7 @@ tonemap_exposure = 0.92
 glow_enabled = false
 
 [sub_resource type="BoxShape3D" id="shape_ground"]
-size = Vector3(100000, 1, 100000)
+size = Vector3(150, 1, 110)
 
 [sub_resource type="StandardMaterial3D" id="mat_grass"]
 diffuse_mode = 3
@@ -80,7 +81,7 @@ roughness = 0.9
 
 [sub_resource type="BoxMesh" id="mesh_grass"]
 material = SubResource("mat_grass")
-size = Vector3(100000, 1, 100000)
+size = Vector3(150, 1, 110)
 
 [sub_resource type="StandardMaterial3D" id="mat_shoulder"]
 diffuse_mode = 3
@@ -90,7 +91,7 @@ roughness = 0.95
 
 [sub_resource type="BoxMesh" id="mesh_shoulder_ew"]
 material = SubResource("mat_shoulder")
-size = Vector3(100000, 0.22, 24)
+size = Vector3(136, 0.22, 24)
 
 [sub_resource type="StandardMaterial3D" id="mat_asphalt"]
 diffuse_mode = 3
@@ -100,11 +101,11 @@ roughness = 0.75
 
 [sub_resource type="BoxMesh" id="mesh_road_ew"]
 material = SubResource("mat_asphalt")
-size = Vector3(100000, 0.25, 18)
+size = Vector3(136, 0.25, 18)
 
 [sub_resource type="BoxMesh" id="mesh_road_ns"]
 material = SubResource("mat_asphalt")
-size = Vector3(18, 0.25, 100000)
+size = Vector3(18, 0.25, 104)
 
 [sub_resource type="BoxMesh" id="mesh_outer_road_ew"]
 material = SubResource("mat_asphalt")
@@ -128,11 +129,11 @@ roughness = 0.6
 
 [sub_resource type="BoxMesh" id="mesh_curb_ew"]
 material = SubResource("mat_curb")
-size = Vector3(100000, 0.45, 0.8)
+size = Vector3(136, 0.45, 0.8)
 
 [sub_resource type="BoxMesh" id="mesh_curb_ns"]
 material = SubResource("mat_curb")
-size = Vector3(0.8, 0.45, 100000)
+size = Vector3(0.8, 0.45, 104)
 
 [sub_resource type="StandardMaterial3D" id="mat_guardrail"]
 diffuse_mode = 3
@@ -143,7 +144,7 @@ roughness = 0.55
 
 [sub_resource type="BoxMesh" id="mesh_guardrail_ew"]
 material = SubResource("mat_guardrail")
-size = Vector3(100000, 0.3, 0.12)
+size = Vector3(136, 0.3, 0.12)
 
 [sub_resource type="StandardMaterial3D" id="mat_line_white"]
 diffuse_mode = 3
@@ -266,13 +267,17 @@ directional_shadow_split_1 = 0.2
 directional_shadow_split_2 = 0.5
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=1881186636]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.5, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1681436097]
 shape = SubResource("shape_ground")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=636356273]
+visible = false
 mesh = SubResource("mesh_grass")
+
+[node name="TenjoIslandEnvironment" type="Node3D" parent="." unique_id=1736027104]
+script = ExtResource("41_island_environment")
 
 [node name="RoadNetwork" type="Node3D" parent="." unique_id=1166592416 node_paths=PackedStringArray("follow_target", "ground")]
 script = ExtResource("40_endless_road")
@@ -280,143 +285,185 @@ follow_target = NodePath("../PlayerCar")
 ground = NodePath("../Ground")
 
 [node name="SandShoulderEW" type="MeshInstance3D" parent="RoadNetwork" unique_id=255023825]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
 mesh = SubResource("mesh_shoulder_ew")
 
 [node name="RoadEW" type="MeshInstance3D" parent="RoadNetwork" unique_id=1594645282]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
 mesh = SubResource("mesh_road_ew")
 
 [node name="RoadNS" type="MeshInstance3D" parent="RoadNetwork" unique_id=1618850538]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
 mesh = SubResource("mesh_road_ns")
 
 [node name="RoadNorthEW" type="MeshInstance3D" parent="RoadNetwork" unique_id=903841363]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, -40)
 mesh = SubResource("mesh_outer_road_ew")
 
 [node name="RoadSouthEW" type="MeshInstance3D" parent="RoadNetwork" unique_id=2027807238]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 40)
 mesh = SubResource("mesh_outer_road_ew")
 
 [node name="RoadWestNS" type="MeshInstance3D" parent="RoadNetwork" unique_id=1812461804]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0.12, 0)
 mesh = SubResource("mesh_outer_road_ns")
 
 [node name="RoadEastNS" type="MeshInstance3D" parent="RoadNetwork" unique_id=872237297]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.12, 0)
 mesh = SubResource("mesh_outer_road_ns")
 
 [node name="RoundaboutRing" type="MeshInstance3D" parent="RoadNetwork" unique_id=1365470298]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
 mesh = SubResource("mesh_roundabout_ring")
 
 [node name="CentralFountain" parent="RoadNetwork" unique_id=116295904 instance=ExtResource("13_fountain")]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.66829216, -0.5543134, 0.7101543)
 
 [node name="ZebraWest" type="MeshInstance3D" parent="RoadNetwork" unique_id=2123366890]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0.14, 0)
 mesh = SubResource("mesh_zebra_strip")
 
 [node name="ZebraEast" type="MeshInstance3D" parent="RoadNetwork" unique_id=751783531]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0.14, 0)
 mesh = SubResource("mesh_zebra_strip")
 
 [node name="ZebraNorth" type="MeshInstance3D" parent="RoadNetwork" unique_id=56801528]
+visible = false
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.14, -26)
 mesh = SubResource("mesh_zebra_strip")
 
 [node name="ZebraSouth" type="MeshInstance3D" parent="RoadNetwork" unique_id=1517454296]
+visible = false
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.14, 26)
 mesh = SubResource("mesh_zebra_strip")
 
 [node name="ZebraNW" type="MeshInstance3D" parent="RoadNetwork" unique_id=1999056716]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0.14, -32)
 mesh = SubResource("mesh_zebra_strip")
 
 [node name="ZebraNE" type="MeshInstance3D" parent="RoadNetwork" unique_id=1205035191]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.14, -32)
 mesh = SubResource("mesh_zebra_strip")
 
 [node name="ZebraSW" type="MeshInstance3D" parent="RoadNetwork" unique_id=1162879968]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0.14, 32)
 mesh = SubResource("mesh_zebra_strip")
 
 [node name="ZebraSE" type="MeshInstance3D" parent="RoadNetwork" unique_id=1413800083]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.14, 32)
 mesh = SubResource("mesh_zebra_strip")
 
 [node name="Pothole1" parent="RoadNetwork" unique_id=1113965825 instance=ExtResource("11_pothole")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.13, 2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0.16, 48)
 
 [node name="Pothole2" parent="RoadNetwork" unique_id=1086158447 instance=ExtResource("11_pothole")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.13, -2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.16, 34)
 
 [node name="ConstructionZone" parent="RoadNetwork" unique_id=553844008 instance=ExtResource("34_const")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.12, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.16, 12)
 
 [node name="CityBuildings" type="Node3D" parent="." unique_id=1067395580]
 
 [node name="BuildingHospital" parent="CityBuildings" unique_id=1268478556 instance=ExtResource("31_hosp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -14)
 scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingSchool" parent="CityBuildings" unique_id=974491949 instance=ExtResource("10_school_bldg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, -24)
-scale = Vector3(0.75, 0.75, 0.75)
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, -10, -24)
+scale = Vector3(0.62, 0.62, 0.62)
+
+[node name="SchoolCampus2" parent="CityBuildings" instance=ExtResource("10_school_bldg")]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, -10, -24)
+scale = Vector3(0.62, 0.62, 0.62)
+
+[node name="SchoolCampus3" parent="CityBuildings" instance=ExtResource("10_school_bldg")]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, -10, 20)
+scale = Vector3(0.62, 0.62, 0.62)
+
+[node name="SchoolCampus4" parent="CityBuildings" instance=ExtResource("10_school_bldg")]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, -10, 20)
+scale = Vector3(0.62, 0.62, 0.62)
+
+[node name="SchoolCampus5" parent="CityBuildings" instance=ExtResource("10_school_bldg")]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, -10, -2)
+scale = Vector3(0.62, 0.62, 0.62)
 
 [node name="BuildingFastFood" parent="CityBuildings" unique_id=1606358 instance=ExtResource("32_ff")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 14)
 scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingPolice" parent="CityBuildings" unique_id=1967548764 instance=ExtResource("14_police")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 18)
 scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingFireStation" parent="CityBuildings" unique_id=572519537 instance=ExtResource("15_fire")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -18)
 scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingSupermarket" parent="CityBuildings" unique_id=1518192769 instance=ExtResource("33_smkt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, -10)
 scale = Vector3(0.75, 0.75, 0.75)
 
 [node name="BuildingSPPG" parent="CityBuildings" unique_id=315755139 instance=ExtResource("9_sppg_bldg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 14)
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, -10, 14)
 scale = Vector3(0.85, 0.85, 0.85)
 
 [node name="FlagSPPG" parent="CityBuildings" unique_id=532618677 instance=ExtResource("17_flag")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58, 0, 8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 0, 4)
 
 [node name="FlagSchool" parent="CityBuildings" unique_id=63848990 instance=ExtResource("17_flag")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, -20)
 
 [node name="WarungWest" parent="CityBuildings" unique_id=1994890596 instance=ExtResource("18_warung")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 14)
 
 [node name="WarungEast" parent="CityBuildings" unique_id=497453038 instance=ExtResource("18_warung")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 14)
 
 [node name="House1" parent="CityBuildings" unique_id=2045131750 instance=ExtResource("16_house")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0, -24)
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, -10, -24)
 
 [node name="House2" parent="CityBuildings" unique_id=1215091625 instance=ExtResource("16_house")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -26)
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62, -10, -18)
 
 [node name="CanalWater" parent="CityBuildings" unique_id=846309606 instance=ExtResource("35_water")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 0)
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67, -10, 0)
 
 [node name="BuildingPlayerHouse" parent="CityBuildings" unique_id=1817589097 instance=ExtResource("37_player_house")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0, -14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 24)
 
 [node name="GraveyardArea" parent="CityBuildings" unique_id=301754301 instance=ExtResource("36_grave")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -26)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 32)
 
 [node name="StudentsSDN1" parent="." unique_id=1083474075 instance=ExtResource("38_students")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.15, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.15, -19)
 
 [node name="StudentsSMP1" parent="." unique_id=1736669469 instance=ExtResource("38_students")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -18)
 
 [node name="TreesAndProps" type="Node3D" parent="." unique_id=1342923249]
 
@@ -475,7 +522,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0, -35)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0, 35)
 
 [node name="PlayerCar" type="CharacterBody3D" parent="." unique_id=1312802250 groups=["player"]]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -50, 0.25, -2)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -50, 0.25, 2)
 collision_layer = 2
 script = ExtResource("1_car")
 
@@ -486,17 +533,17 @@ shape = SubResource("shape_car_collider")
 [node name="CarMBGVisual" parent="PlayerCar" unique_id=564137087 instance=ExtResource("6_car_visual")]
 
 [node name="WaypointArrow" parent="." unique_id=873788340 node_paths=PackedStringArray("follow_target") instance=ExtResource("26_arrow")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0.25, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0.25, 2)
 follow_target = NodePath("../PlayerCar")
 
 [node name="PlayerPedestrian" parent="." unique_id=1905246171 node_paths=PackedStringArray("car_target", "camera_node") instance=ExtResource("27_pedestrian")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0.25, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0.25, 2)
 collision_layer = 4
 car_target = NodePath("../PlayerCar")
 camera_node = NodePath("../Camera3D")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=318160541 node_paths=PackedStringArray("target")]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -50, 17, 15)
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -50, 17, 19)
 current = true
 fov = 50.0
 script = ExtResource("2_cam")
@@ -514,10 +561,10 @@ shape = SubResource("shape_zone")
 mesh = SubResource("mesh_sppg_zone")
 
 [node name="PetugasSPPG" parent="." unique_id=1782867329 instance=ExtResource("5_petugas")]
-transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, -44, 0.15, -6.5)
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, -45, 0.15, -2)
 
 [node name="School_1" type="Area3D" parent="." unique_id=1546555063]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.15, -24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.15, -24)
 script = ExtResource("3_zone")
 zone_type = 1
 
@@ -537,7 +584,7 @@ font_size = 22
 outline_size = 5
 
 [node name="School_2" type="Area3D" parent="." unique_id=1546555064]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.15, -24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.15, -24)
 script = ExtResource("3_zone")
 zone_type = 1
 school_index = 1
@@ -558,7 +605,7 @@ font_size = 22
 outline_size = 5
 
 [node name="School_3" type="Area3D" parent="." unique_id=1546555065]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.15, 20)
 script = ExtResource("3_zone")
 zone_type = 1
 school_index = 2
@@ -579,7 +626,7 @@ font_size = 22
 outline_size = 5
 
 [node name="School_4" type="Area3D" parent="." unique_id=1546555066]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.15, 24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.15, 20)
 script = ExtResource("3_zone")
 zone_type = 1
 school_index = 3
@@ -600,7 +647,7 @@ font_size = 22
 outline_size = 5
 
 [node name="School_5" type="Area3D" parent="." unique_id=1546555067]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.15, 24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.15, -2)
 script = ExtResource("3_zone")
 zone_type = 1
 school_index = 4
@@ -621,10 +668,10 @@ font_size = 22
 outline_size = 5
 
 [node name="BuildingSPBU" parent="." unique_id=1051434095 instance=ExtResource("28_spbu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 10)
 
 [node name="RoadBlockade" parent="." unique_id=1547248846 instance=ExtResource("29_blockade")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 8)
 
 [node name="WeatherController" type="Node3D" parent="." unique_id=1279642632 node_paths=PackedStringArray("sun_light", "rain_particles", "target_follow")]
 script = ExtResource("30_weather")
@@ -648,75 +695,66 @@ initial_velocity_max = 34.0
 [node name="WargaGroup" parent="." unique_id=1411904466 instance=ExtResource("22_warga")]
 
 [node name="DemonstranCrowd" parent="." unique_id=977557956 instance=ExtResource("23_demonstran")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.15, 43)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.15, 10)
 
 [node name="SPPGKitchenStaff" parent="." unique_id=1615406060 instance=ExtResource("24_sppg_kitchen")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0.15, 11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54, 0.15, -2)
 
 [node name="NPCGuruSDN" parent="." unique_id=1125325273 instance=ExtResource("25_guru")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.15, -20)
-
-[node name="ConstructionZone" parent="." unique_id=920331841 instance=ExtResource("34_const")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 24)
-
-[node name="CanalWater" parent="." unique_id=1464484349 instance=ExtResource("35_water")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 0)
-
-[node name="BuildingPlayerHouse" parent="." unique_id=1439531475 instance=ExtResource("37_player_house")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 42)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.15, -20)
 
 [node name="StudentsSDN2" parent="." unique_id=1926612249 instance=ExtResource("38_students")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0.15, -24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.15, -20)
 
 [node name="StudentsSDN3" parent="." unique_id=1742617213 instance=ExtResource("38_students")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 0.15, -24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0.15, 24)
 
 [node name="StudentsSMPN1" parent="." unique_id=1378096296 instance=ExtResource("38_students")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, -12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.15, 24)
 
 [node name="StudentsSDN4" parent="." unique_id=167360721 instance=ExtResource("38_students")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.15, 28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.15, 24)
 
 [node name="StudentsMadrasah" parent="." unique_id=1284316473 instance=ExtResource("38_students")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.15, 28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.15, 2)
 
 [node name="CityTraffic" type="Node3D" parent="."]
 
 [node name="TrafficTaxi1" parent="CityTraffic" instance=ExtResource("39_traffic")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 0.15, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 0.15, 0)
 car_type = 1
 base_speed = 10.5
-waypoints = [Vector3(-48, 0.15, -40), Vector3(48, 0.15, -40), Vector3(48, 0.15, 0), Vector3(-48, 0.15, 0)]
+waypoints = [Vector3(-55, 0.15, 0), Vector3(0, 0.15, 0), Vector3(55, 0.15, 0), Vector3(55, 0.15, -22), Vector3(20, 0.15, -22), Vector3(0, 0.15, -24), Vector3(-22, 0.15, -24), Vector3(-55, 0.15, 0)]
 
 [node name="TrafficSedan2" parent="CityTraffic" instance=ExtResource("39_traffic")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.15, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0.15, 0)
 car_type = 0
 base_speed = 11.5
-waypoints = [Vector3(48, 0.15, 0), Vector3(-48, 0.15, 0), Vector3(-48, 0.15, -40), Vector3(48, 0.15, -40)]
+waypoints = [Vector3(55, 0.15, 0), Vector3(20, 0.15, 0), Vector3(-20, 0.15, 0), Vector3(-55, 0.15, 0), Vector3(-55, 0.15, 26), Vector3(-36, 0.15, 26), Vector3(0, 0.15, 0), Vector3(55, 0.15, 0)]
 
 [node name="TrafficHatchback3" parent="CityTraffic" instance=ExtResource("39_traffic")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.15, 12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.15, -22)
 car_type = 2
 base_speed = 9.8
-waypoints = [Vector3(48, 0.15, -35), Vector3(48, 0.15, 36), Vector3(15, 0.15, 36), Vector3(0, 0.15, 18), Vector3(0, 0.15, -18), Vector3(0, 0.15, -35)]
+waypoints = [Vector3(20, 0.15, -22), Vector3(68, 0.15, -22), Vector3(68, 0.15, 20), Vector3(20, 0.15, 20)]
 
 [node name="TrafficAngkot4" parent="CityTraffic" instance=ExtResource("39_traffic")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.15, 0)
 car_type = 3
 base_speed = 9.2
-waypoints = [Vector3(0, 0.15, -35), Vector3(0, 0.15, 18), Vector3(15, 0.15, 36), Vector3(48, 0.15, 36), Vector3(48, 0.15, -35)]
+waypoints = [Vector3(-34, 0.15, 0), Vector3(0, 0.15, 0), Vector3(16, 0.15, 10), Vector3(0, 0.15, 14), Vector3(-34, 0.15, 0)]
 
 [node name="TrafficPickup5" parent="CityTraffic" instance=ExtResource("39_traffic")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 0.15, 18)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0.15, -18)
 car_type = 4
 base_speed = 10.0
-waypoints = [Vector3(-48, 0.15, 0), Vector3(-48, 0.15, 35), Vector3(-25, 0.15, 35), Vector3(-25, 0.15, 16), Vector3(-12, 0.15, 0), Vector3(-48, 0.15, 0)]
+waypoints = [Vector3(-36, 0.15, -18), Vector3(-72, 0.15, -18), Vector3(-72, 0.15, 26), Vector3(-36, 0.15, 26)]
 
 [node name="TrafficSUV6" parent="CityTraffic" instance=ExtResource("39_traffic")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0.15, -3.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 0.15, -2.5)
 car_type = 5
 base_speed = 12.0
-waypoints = [Vector3(-55, 0.15, -3.2), Vector3(-12, 0.15, -3.2), Vector3(0, 0.15, -8), Vector3(12, 0.15, -3.2), Vector3(55, 0.15, -3.2), Vector3(55, 0.15, 3.2), Vector3(12, 0.15, 3.2), Vector3(0, 0.15, 8), Vector3(-12, 0.15, 3.2), Vector3(-55, 0.15, 3.2)]
+waypoints = [Vector3(-55, 0.15, -2.5), Vector3(0, 0.15, -2.5), Vector3(55, 0.15, -2.5), Vector3(55, 0.15, 2.5), Vector3(0, 0.15, 2.5), Vector3(-55, 0.15, 2.5)]
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1682896991]
 script = ExtResource("4_hud")
@@ -773,13 +811,14 @@ offset_bottom = 340.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
 
 [node name="Avatar" type="TextureRect" parent="HUD/LeftDashboard" unique_id=803240693]
+texture_filter = 1
 layout_mode = 0
 offset_left = 12.0
 offset_top = 12.0
 offset_right = 62.0
 offset_bottom = 62.0
 expand_mode = 1
-stretch_mode = 5
+stretch_mode = 4
 
 [node name="NameLabel" type="Label" parent="HUD/LeftDashboard" unique_id=1603558323]
 layout_mode = 0

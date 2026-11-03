@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cy5kxlubdcf03"
-path="res://.godot/imported/driver_mahdi_portrait.png-5d7ade8b2597de1494ac95369f1cbedc.ctex"
+uid="uid://cl6kp2up5bx5k"
+path="res://.godot/imported/mahdi_side_right_2.png-5b3e5d7a839f2f766c5287f123b7f5e6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/characters/driver_mahdi_portrait.png"
-dest_files=["res://.godot/imported/driver_mahdi_portrait.png-5d7ade8b2597de1494ac95369f1cbedc.ctex"]
+source_file="res://assets/textures/characters/mahdi_frames/mahdi_side_right_2.png"
+dest_files=["res://.godot/imported/mahdi_side_right_2.png-5b3e5d7a839f2f766c5287f123b7f5e6.ctex"]
 
 [params]
 

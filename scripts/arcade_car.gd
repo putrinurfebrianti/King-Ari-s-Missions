@@ -17,8 +17,9 @@ const AUDIO_STREAM_PATHS := {
 @export var control_mode: ControlMode = ControlMode.SCREEN_DIRECT
 
 @export_group("Kecepatan & Akselerasi")
-@export var max_speed: float = 23.0
-@export var acceleration: float = 20.0
+@export var max_speed: float = 12.0 # Kecepatan maksimum dasar (m/s)
+@export var max_effective_speed: float = 20.0 # Batas kecepatan setelah bonus (m/s)
+@export var acceleration: float = 7.0 # Akselerasi dasar (m/s^2)
 @export var brake_force: float = 48.0
 @export var reverse_max_speed: float = 9.5
 @export var reverse_acceleration: float = 12.0
@@ -30,7 +31,7 @@ const AUDIO_STREAM_PATHS := {
 @export var grass_max_speed: float = 7.5
 
 @export_group("Kemudi Presisi (Arcade Steering)")
-@export var turn_speed: float = 7.5          # Kecepatan rotasi mobil menuju arah input (Screen Direct)
+@export var turn_speed: float = 3.5          # Kecepatan rotasi arah input (Screen Direct)
 @export var classic_turn_speed: float = 3.0  # Kecepatan putar di mode klasik
 @export var steer_sensitivity: float = 1.0
 
@@ -54,6 +55,7 @@ var impact_sparks: CPUParticles3D
 var vehicle_audio: Dictionary = {}
 var was_braking: bool = false
 var mission_complete_sound_pending: bool = false
+var _last_fuel_position: Vector3
 
 var bump_offset_y: float = 0.0
 var bump_pitch: float = 0.0
@@ -63,6 +65,7 @@ var bump_pitch: float = 0.0
 func _ready() -> void:
 	add_to_group("player")
 	add_to_group("player_car")
+	_last_fuel_position = global_position
 	_setup_vehicle_audio()
 	
 	# Konfigurasi penempelan lantai yang tenang dan bebas getar (Anti-Jitter)
@@ -94,6 +97,7 @@ func _ready() -> void:
 		max_speed *= (drv_spd * veh_spd * engine_bonus)
 		acceleration *= (drv_acc * veh_acc * turbo_bonus)
 		turn_speed *= (drv_steer * handling_bonus)
+		max_speed = min(max_speed, max_effective_speed)
 		print("[Car] Stats Aktif -> MaxSpeed: %.1f | Accel: %.1f | Steer: %.2f | Driver: %s | Mobil: %s" % [
 			max_speed, acceleration, turn_speed, drv.get("name", "Driver"), veh.get("name", "Mobil")
 		])
@@ -117,6 +121,8 @@ func _ready() -> void:
 		hl.add_child(spot_r)
 		hl.visible = (gm.current_season == gm.Season.MALAM)
 		add_child(hl)
+
+	max_speed = min(max_speed, max_effective_speed)
 
 	if visual_root:
 		wheel_fl = visual_root.get_node_or_null("WheelFrontLeft")
@@ -289,6 +295,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = 0.0
 		velocity.y = 0.0 if is_on_floor() else -9.8 * delta
 		move_and_slide()
+		_last_fuel_position = global_position
 		return
 
 	if impact_cooldown > 0.0:
@@ -312,13 +319,6 @@ func _physics_process(delta: float) -> void:
 		_process_screen_direct_driving(fwd, back, left, right, handbrake, top_speed, eff_friction, delta)
 	else:
 		_process_classic_steer_driving(fwd, back, left, right, handbrake, top_speed, eff_friction, delta)
-
-	# Konsumsi Bahan Bakar saat mobil berjalan (GDD Bab 5.4 & 10.2)
-	if abs(current_speed) > 1.0:
-		var gm = get_node_or_null("/root/GameManager")
-		if gm and gm.has_method("consume_fuel"):
-			var fuel_burn_rate = 0.035 * (abs(current_speed) / max_speed)
-			gm.consume_fuel(fuel_burn_rate * delta)
 
 	# Suspensi & Body Roll Halus
 	bump_offset_y = lerp(bump_offset_y, 0.0, 1.0 - exp(-12.0 * delta))
@@ -358,6 +358,11 @@ func _physics_process(delta: float) -> void:
 		velocity.y = 0.0 # NOL saat di lantai agar tidak ada osilasi getaran benturan
 		
 	move_and_slide()
+	var traveled_distance_m = global_position.distance_to(_last_fuel_position)
+	_last_fuel_position = global_position
+	if traveled_distance_m > 0.0:
+		var fuel_used = traveled_distance_m * GameManager.fuel_distance_scale / GameManager.BASE_FUEL_DISTANCE_METERS_PER_LITER
+		GameManager.consume_fuel(fuel_used)
 	_update_vehicle_audio()
 
 	# Deteksi Benturan Keras
@@ -477,7 +482,20 @@ func _is_on_pavement(pos: Vector3) -> bool:
 	var dist_center = Vector2(pos.x, pos.z).length()
 	if dist_center <= 24.8:
 		return true
-	return abs(pos.z) <= 10.8 or abs(pos.x) <= 10.8
+	if abs(pos.z) <= 9.0 or abs(pos.x) <= 9.0:
+		return true
+
+	var road_position = Vector2(pos.x, pos.z)
+	var ring_road_rects: Array[Rect2] = [
+		Rect2(-62.0, -47.0, 124.0, 14.0),
+		Rect2(-62.0, 33.0, 124.0, 14.0),
+		Rect2(-59.0, -47.0, 14.0, 94.0),
+		Rect2(45.0, -47.0, 14.0, 94.0)
+	]
+	for road_rect in ring_road_rects:
+		if road_rect.has_point(road_position):
+			return true
+	return false
 
 func trigger_impact_vfx() -> void:
 	if impact_sparks:

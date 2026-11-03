@@ -193,8 +193,11 @@ func can_interact(actor: Node3D) -> bool:
 	if zone_type == ZoneType.SPPG:
 		return (
 			gm.current_state == gm.State.AT_SPPG
-			and actor.is_in_group("pedestrian")
-			and actor.get("is_active") == true
+			and (
+				actor.is_in_group("player")
+				or actor.is_in_group("player_car")
+				or (actor.is_in_group("pedestrian") and actor.get("is_active") == true)
+			)
 		)
 	if zone_type == ZoneType.SCHOOL:
 		return (

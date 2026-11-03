@@ -1,5 +1,7 @@
 extends Control
 
+const KING_ARI_IMAGE_PATH := "res://assets/textures/characters/king_ari_command.png"
+
 @onready var bg_rect: TextureRect = $Background
 @onready var speaker_label: Label = $DialogueBox/SpeakerLabel
 @onready var dialogue_label: Label = $DialogueBox/ContentLabel
@@ -13,13 +15,18 @@ extends Control
 var dialogues: Array[Dictionary] = []
 var current_step: int = 0
 var typing_tween: Tween
+var ari_command_tween: Tween
 var active_driver: Dictionary = {}
+var ari_resting_x: float = 0.0
 
 func _ready() -> void:
 	active_driver = GameManager.get_active_driver()
 	
 	_setup_portraits()
+	if ari_portrait:
+		ari_resting_x = ari_portrait.position.x
 	_setup_dialogues()
+	_start_ari_idle_animation()
 	
 	if next_button:
 		next_button.pressed.connect(_on_next_pressed)
@@ -29,18 +36,55 @@ func _ready() -> void:
 	_display_current_step()
 
 func _setup_portraits() -> void:
-	# Load Presiden Ari
-	var ari_path = "res://assets/textures/characters/presiden_ari_portrait.png"
-	if ResourceLoader.exists(ari_path) and ari_portrait:
-		ari_portrait.texture = load(ari_path) as Texture2D
+	if ari_portrait:
+		var king_portrait := load(KING_ARI_IMAGE_PATH) as Texture2D
+		if not king_portrait:
+			push_error("Could not load King Ari portrait: " + KING_ARI_IMAGE_PATH)
+		else:
+			ari_portrait.texture = king_portrait
 		
 	# Load Driver yang dipilih
-	var drv_path = active_driver.get("portrait_path", "")
+	var drv_path = active_driver.get("full_portrait_path", active_driver.get("portrait_path", ""))
 	if ResourceLoader.exists(drv_path) and driver_portrait:
 		driver_portrait.texture = load(drv_path) as Texture2D
 		
 	if driver_name_tag:
 		driver_name_tag.text = active_driver.get("name", "Driver MBG")
+
+func _start_ari_idle_animation() -> void:
+	if not ari_portrait:
+		return
+
+	var resting_y := ari_portrait.position.y
+	var idle_tween := create_tween().set_loops()
+	idle_tween.tween_property(ari_portrait, "position:y", resting_y - 2.0, 1.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	idle_tween.tween_property(ari_portrait, "position:y", resting_y, 1.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+func _start_ari_command_animation() -> void:
+	if not ari_portrait:
+		return
+
+	_stop_ari_command_animation()
+	var resting_x := ari_resting_x
+	ari_command_tween = create_tween().set_loops()
+	ari_command_tween.tween_property(ari_portrait, "position:x", resting_x + 3.0, 0.22).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	ari_command_tween.parallel().tween_property(ari_portrait, "rotation_degrees", 1.5, 0.22).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	ari_command_tween.tween_interval(0.42)
+	ari_command_tween.tween_property(ari_portrait, "position:x", resting_x, 0.18).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	ari_command_tween.parallel().tween_property(ari_portrait, "rotation_degrees", 0.0, 0.18).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	ari_command_tween.tween_interval(0.25)
+	ari_command_tween.tween_property(ari_portrait, "position:x", resting_x - 2.0, 0.18).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	ari_command_tween.parallel().tween_property(ari_portrait, "rotation_degrees", -1.0, 0.18).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	ari_command_tween.tween_interval(0.35)
+	ari_command_tween.tween_property(ari_portrait, "position:x", resting_x, 0.18).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	ari_command_tween.parallel().tween_property(ari_portrait, "rotation_degrees", 0.0, 0.18).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+func _stop_ari_command_animation() -> void:
+	if ari_command_tween and ari_command_tween.is_running():
+		ari_command_tween.kill()
+	if ari_portrait:
+		ari_portrait.position.x = ari_resting_x
+		ari_portrait.rotation_degrees = 0.0
 
 func _setup_dialogues() -> void:
 	var drv_name = active_driver.get("name", "Pengawal")
@@ -100,6 +144,10 @@ func _display_current_step() -> void:
 	
 	# Efek fokus potret karakter
 	var focus = d.get("focus", "both")
+	if focus == "ari":
+		_start_ari_command_animation()
+	else:
+		_stop_ari_command_animation()
 	if ari_portrait and driver_portrait:
 		if focus == "ari":
 			ari_portrait.modulate = Color.WHITE

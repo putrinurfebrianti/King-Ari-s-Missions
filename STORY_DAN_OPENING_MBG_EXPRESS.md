@@ -5,7 +5,7 @@
 
 ## 1. INFORMASI & SETTING CERITA
 * **Judul Game**: MBG Express Mobile
-* **Latar Dunia**: **Tenjo Island** — Sebuah negara kepulauan berkembang yang dipimpin oleh **Presiden Ari**, dengan cita-cita besar mencetak *"Generasi Emas 2045"* melalui program nasional **Makan Bergizi Gratis (MBG)**.
+* **Latar Dunia**: **Tenjo Island** — Sebuah negara kepulauan berkembang yang dipimpin oleh **Raja Ari**, dengan cita-cita besar mencetak *"Generasi Emas 2045"* melalui program nasional **Makan Bergizi Gratis (MBG)**.
 * **Fokus Narasi**: Perjalanan penuh komedi, dinamika sosial lokal, dan perjuangan heroik para driver pengantar makanan bergizi menghadapi macet, jalanan rusak, cuaca ekstrem, hingga sabotase para penolak program MBG.
 
 ---
@@ -21,7 +21,7 @@ Setiap driver memiliki latar belakang, kepribadian, serta atribut *gameplay* (pa
 
 ---
 
-## 3. NASKAH SCENE OPENING: "TITAH PRESIDEN ARI"
+## 3. NASKAH SCENE OPENING: "TITAH RAJA ARI"
 *Scene ini muncul tepat setelah pemain memilih salah satu karakter di menu awal dan menekan tombol **Start Game**.*
 
 ```text
@@ -37,20 +37,20 @@ NARATOR:
 "Setiap fajar menyingsing, dapur pusat SPPG mengepulkan aroma 4 Sehat 5 Sempurna. 
 Namun, jalanan Tenjo Island bukanlah lintasan balap biasa..."
 
-[TRANSISI: CUTSCENE ISTANA KEPRESIDENAN TENJO]
-[VISUAL: Ruang sidang megah. Presiden Ari berdiri tegak di depan meja kerjanya memakai jas kepresidenan berwibawa, memegang sendok dan garpu emas raksasa]
+[TRANSISI: CUTSCENE ISTANA KERAJAAN TENJO]
+[VISUAL: Ruang sidang megah. Raja Ari berdiri tegak di depan meja kerjanya memakai pakaian kerajaan, memegang sendok dan garpu emas raksasa]
 [VISUAL: Karakter pemain (Fatur / Mahdi / Zen) berdiri tegak di hadapannya memberi hormat]
 
-PRESIDEN ARI:
+RAJA ARI:
 "Dengarkan aku, wahai rakyatku! Tenjo Island tidak akan pernah menjadi macan dunia jika anak-anak sekolah kita kekurangan gizi dan terkantuk-kantuk saat belajar matematika!"
 
-[PRESIDEN ARI MENGHAMPIRI DRIVER DENGAN WAJAH SERIUS TAPI JENAKA]
+[RAJA ARI MENGHAMPIRI DRIVER DENGAN WAJAH SERIUS TAPI JENAKA]
 
-PRESIDEN ARI:
+RAJA ARI:
 "Maka dari itu, aku secara khusus memilihmu, [NAMA_KARAKTER]! 
 Intelijen istana baru saja melaporkan bahwa pagi ini jalanan kota sedang kacau balau: kemacetan horor, jalanan berlubang peninggalan proyek mangkrak, hingga komplotan demonstran bayaran yang mencoba menghadang distribusi makanan!"
 
-PRESIDEN ARI:
+RAJA ARI:
 "Di dalam bagasi mobil box itu, bukan sekadar nasi, ayam kecap, tumis bayam, dan susu kotak. 
 Di sana terletak 'MASA DEPAN GENERASI EMAS TENJO ISLAND'!"
 
@@ -59,7 +59,7 @@ PRESIDEN ARI:
 Berangkat sekarang juga!"
 
 [NAMA_KARAKTER]:
-"Siap laksanakan, Pak Presiden! Makanan aman, anak-anak kenyang, Tenjo Island maju!"
+"Siap laksanakan, Paduka Raja! Makanan aman, anak-anak kenyang, Tenjo Island maju!"
 
 [AUDIO: SFX Klakson Kencang "TET-TOOT!!"]
 [VISUAL: Mobil Box MBG melesat kencang keluar dari gerbang istana menuju Dapur SPPG]
@@ -75,14 +75,14 @@ Agar alur cerita dari level ke level tidak repetitif, permainan dibagi menjadi *
 flowchart TD
     Arc1["Arc 1: Ujian Sopir Baru (Distrik Pinggiran)"] -->|Misi Selesai| Arc2["Arc 2: Konspirasi Sindikat Jajanan (Pusat Kota)"]
     Arc2 -->|Musim Hujan Datang| Arc3["Arc 3: Badai Tropis Tenjo (Jalur Pegunungan)"]
-    Arc3 -->|Hari Ujian Nasional| Arc4["Arc 4: Konvoi Terakhir Presiden (Grand Finale)"]
+    Arc3 -->|Hari Ujian Nasional| Arc4["Arc 4: Konvoi Terakhir Raja (Grand Finale)"]
 ```
 
 ### Arc 1: "Ujian Pengemudi Baru" (Distrik Pinggiran & Perkampungan)
 * **Latar Wilayah**: Pesisir dan perkampungan Tenjo Island.
 * **Konflik Narasi**: Hari-hari pertama pembagian MBG. Penduduk masih adaptasi; jalanan sempit penuh dengan ayam kampung menyeberang, jemuran warga, dan polisi tidur liar.
 * **Tantangan Gameplay**: Membiasakan diri dengan kontrol mobil, menjaga Food HP di jalan sempit, dan membunyikan klakson menyapa anak-anak di pinggir jalan (*"Om Klakson Om"*).
-* **Ending Arc**: Presiden Ari memberi ucapan selamat via radio: *"Bagus! SD Tenjo 01 sudah makan telur rebusnya tanpa ada yang pecah!"*
+* **Ending Arc**: Raja Ari memberi ucapan selamat via radio: *"Bagus! SD Tenjo 01 sudah makan telur rebusnya tanpa ada yang pecah!"*
 
 ### Arc 2: "Konspirasi Sindikat Jajanan Micin" (Distrik Perkotaan Padat)
 * **Latar Wilayah**: Pusat Kota Tenjo, area perkantoran, dan pasar tumpah.
@@ -102,9 +102,9 @@ flowchart TD
 
 ### Arc 4 (Grand Finale): "Hari Ujian Nasional Serentak"
 * **Latar Wilayah**: Seluruh distrik (Pesisir, Kota, hingga Pegunungan).
-* **Konflik Narasi**: Hari penentuan! Seluruh murid Tenjo Island menghadapi ujian kelulusan serentak. Presiden Ari sendiri turun langsung memantau konvoi dengan mobil dinas kepresidenan di belakang pemain.
+* **Konflik Narasi**: Hari penentuan! Seluruh murid Tenjo Island menghadapi ujian kelulusan serentak. Raja Ari sendiri turun langsung memantau konvoi dengan mobil dinas kerajaan di belakang pemain.
 * **Tantangan Gameplay**: *Multi-Drop Run* (mengantar makanan ke 3 sekolah sekaligus dalam satu batas waktu estafet).
-* **Epilog Kemenangan**: Cutscene perayaan akbar di Istana Tenjo Island. Presiden Ari mengalungkan medali *"Supir MBG Legendaris"* kepada karakter pemain, diiringi sorak gembira anak-anak sekolah yang memamerkan nilai rapor terbaik mereka.
+* **Epilog Kemenangan**: Cutscene perayaan akbar di Istana Tenjo Island. Raja Ari mengalungkan medali *"Supir MBG Legendaris"* kepada karakter pemain, diiringi sorak gembira anak-anak sekolah yang memamerkan nilai rapor terbaik mereka.
 
 ---
 
@@ -112,7 +112,7 @@ flowchart TD
 
 ### 5.1 Breaking News Radio Istana (Muncul di Banner HUD saat Menyetir)
 * *"Radio Tenjo: Peringatan bagi seluruh warga, kemacetan di Jl. Mangga diakibatkan oleh rombongan bebek yang menyeberang dengan tertib."*
-* *"Radio Tenjo: Presiden Ari menegaskan, driver yang ketahuan mencolek sambal di bagasi akan disanksi push-up 50 kali!"*
+* *"Radio Tenjo: Raja Ari menegaskan, driver yang ketahuan mencolek sambal di bagasi akan disanksi push-up 50 kali!"*
 * *"Radio Tenjo: Cuaca hari ini diprediksi mendung berawan, cocok untuk makan nasi kotak MBG bersama gebetan."*
 
 ### 5.2 Reaksi Guru di Sekolah (Berdasarkan Sisa Food HP):
@@ -127,8 +127,8 @@ flowchart TD
 
 ## 6. PANDUAN TEKNIS IMPLEMENTASI DI GODOT 4.X
 1. **Scene Cutscene Opening (`OpeningCutscene.tscn`)**:
-   * Gunakan node `CanvasLayer` dengan `TextureRect` untuk menampilkan latar Istana dan portrait Presiden Ari.
+   * Gunakan node `CanvasLayer` dengan `TextureRect` untuk menampilkan latar Istana dan portrait Raja Ari.
    * Gunakan node `Label` dengan properti `visible_characters` yang dianimasikan menggunakan `AnimationPlayer` atau `Tween` untuk menciptakan efek mesin tik (*typewriter effect*).
 2. **Audio Controller (`AudioManager.gd`)**:
-   * Putar background music bertema kepresidenan jenaka (`res://audio/bgm_palace.mp3`).
+   * Putar background music bertema kerajaan jenaka (`res://audio/bgm_palace.mp3`).
    * Mainkan SFX klakson dan deru mesin di akhir dialog sebelum berganti ke `res://scenes/MainLevel.tscn`.

@@ -13,6 +13,8 @@ signal house_purchased()
 signal pothole_repaired(pothole_pos: Vector3)
 signal vehicle_upgraded(part_name: String, new_level: int)
 
+const BASE_FUEL_DISTANCE_METERS_PER_LITER: float = 8000.0 # Acuan GDD: 1 L per 8 km
+
 enum State { AT_SPPG, DELIVERING, FINISHED, FAILED }
 var current_state: State = State.AT_SPPG
 
@@ -26,6 +28,8 @@ var time_left: float = total_time # 5 Menit sesuai GDD Titah Pertama Raja Ari
 # Sistem Bahan Bakar (GDD Bab 5.4 & 10.2: 40 Liter Kapasitas)
 var max_fuel: float = 40.0
 var current_fuel: float = 40.0
+# Skala 200 berarti 1 L per 40 m; rute 20 sekolah diperkirakan memakai sekitar 34,35 L.
+@export_range(1.0, 1000.0, 1.0) var fuel_distance_scale: float = 200.0
 var is_refueling: bool = false
 var fuel_price_per_liter: float = 2.0 # 2 Koin per Liter di SPBU Tenjo
 var fuel_buy_accumulator: float = 0.0
@@ -142,35 +146,35 @@ var schools_data: Array[Dictionary] = [
 		"id": 0,
 		"name": "SDN 01 Tenjo",
 		"short_name": "SDN 01",
-		"pos": Vector3(32.0, 0.15, -24.0),
+		"pos": Vector3(30.0, 0.15, -24.0),
 		"delivered": false
 	},
 	{
 		"id": 1,
 		"name": "SDN 02 Harapan",
 		"short_name": "SDN 02",
-		"pos": Vector3(-32.0, 0.15, -24.0),
+		"pos": Vector3(56.0, 0.15, -24.0),
 		"delivered": false
 	},
 	{
 		"id": 2,
 		"name": "SMPN 01 Nusa",
 		"short_name": "SMPN 01",
-		"pos": Vector3(48.0, 0.15, -16.0),
+		"pos": Vector3(30.0, 0.15, 20.0),
 		"delivered": false
 	},
 	{
 		"id": 3,
 		"name": "SDN 03 Garuda",
 		"short_name": "SDN 03",
-		"pos": Vector3(44.0, 0.15, 24.0),
+		"pos": Vector3(56.0, 0.15, 20.0),
 		"delivered": false
 	},
 	{
 		"id": 4,
 		"name": "Madrasah Tenjo",
 		"short_name": "Madrasah",
-		"pos": Vector3(-30.0, 0.15, 24.0),
+		"pos": Vector3(44.0, 0.15, -2.0),
 		"delivered": false
 	}
 ]
@@ -184,7 +188,7 @@ var driver_profiles: Dictionary = {
 		"id": "fatur",
 		"name": "Fatur 'Si Kilat'",
 		"title": "Pengawal Kepercayaan Raja Ari",
-		"portrait_path": "res://assets/textures/characters/driver_fatur_portrait.png",
+		"portrait_path": "res://assets/textures/characters/driver_fatur_royal_portrait.png",
 		"passive": "⚡ Akselerasi +15% & Kecepatan +10%. Pengawal gesit pembuka jalan titah raja.",
 		"accel_mult": 1.15,
 		"speed_mult": 1.10,
@@ -194,9 +198,10 @@ var driver_profiles: Dictionary = {
 	"mahdi": {
 		"id": "mahdi",
 		"name": "Mahdi 'Si Kompas'",
-		"title": "Pengawal Kepercayaan Raja Ari",
-		"portrait_path": "res://assets/textures/characters/driver_mahdi_portrait.png",
-		"passive": "🧭 Kemudi Tajam (+25%). Ahli navigasi menembus jalanan sempit dan blokade demonstrasi warga.",
+		"title": "Pengemudi Taktis Kerajaan",
+		"portrait_path": "res://assets/textures/characters/driver_mahdi_pixel_face.png",
+		"full_portrait_path": "res://assets/textures/characters/driver_mahdi_pixel_standing.png",
+		"passive": "🧭 Kemudi Tajam (+25%). Driver istana yang hafal jalur rahasia kerajaan.",
 		"accel_mult": 1.0,
 		"speed_mult": 1.0,
 		"decay_mult": 1.0,
@@ -206,7 +211,8 @@ var driver_profiles: Dictionary = {
 		"id": "zen",
 		"name": "Zen 'Si Penjaga Ransum'",
 		"title": "Pengawal Kepercayaan Raja Ari",
-		"portrait_path": "res://assets/textures/characters/driver_zen_portrait.png",
+		"portrait_path": "res://assets/textures/characters/driver_zen_pixel_face.png",
+		"full_portrait_path": "res://assets/textures/characters/driver_zen_pixel_standing.png",
 		"passive": "🛡️ Pelindung Ransum: Kerusakan makanan akibat benturan & jalan berlubang berkurang 25%. Makanan tetap higienis.",
 		"accel_mult": 0.95,
 		"speed_mult": 0.98,

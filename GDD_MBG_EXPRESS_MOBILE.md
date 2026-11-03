@@ -22,7 +22,7 @@
 * **Perspektif Kamera:** Top-Down / High-Angle Isometric (sudut elevasi 50°–55°) mengikuti kendaraan dengan *smooth damping & dynamic framing*.
 
 ### 1.2 Ringkasan Konsep (High Concept)
-Pemain bertindak sebagai pengemudi armada distribusi **Makanan Bergizi Gratis (MBG)**. Misi utama pemain adalah mengambil ransum makanan bergizi dari **SPPG (Satuan Pelayanan Pemenuhan Gizi / Dapur Sentral)** dan mendistribusikannya ke beberapa sekolah tujuan tepat sebelum bel istirahat makan siang berbunyi pada pukul **12:00 Siang**.
+Pemain bertindak sebagai pengemudi armada distribusi **Makanan Bergizi Gratis (MBG)**. Misi utama pemain adalah mengambil ransum makanan bergizi dari **SPPG (Satuan Pelayanan Pemenuhan Gizi / Dapur Sentral)** dan mendistribusikannya ke beberapa sekolah tujuan sebelum bel sekolah berbunyi.
 
 Tantangan utamanya bukan sekadar memacu kecepatan (*speedrun*), melainkan mengelola **Dual-Constraint Dynamic**: menyeimbangkan kecepatan hitung mundur waktu (*Time Limit*) dengan menjaga keutuhan ransum (*Food Condition meter*) agar makanan tidak hancur atau tumpah akibat guncangan jalan rusak dan benturan lalu lintas perkotaan.
 
@@ -121,13 +121,12 @@ Klakson bukan sekadar efek audio kosmetik, melainkan **alat kendali lingkungan (
 * **Membelah Kerumunan Warga & Demonstran:**
   * Membunyikan klakson saat mendekati kerumunan massa atau warga yang menyeberang jalan akan memicu NPC bereaksi mundur 1.5 meter, membuka koridor sempit agar mobil MBG bisa melintas tanpa menabrak warga.
 
-### 4.3 Sistem Bahan Bakar: Redesain Menjadi "Tactical Nitro / Boost Bar"
-* **Kritik Desain Lama:** Mampir mengantre di SPBU di tengah misi berdurasi 90 detik merusak aliran keseruan dan memicu kekalahan yang tidak adil.
-* **Desain Baru (Fuel as Tactical Nitro):**
-  * Bahan bakar mobil berfungsi sebagai **Stamina / Nitro Bar**.
-  * Dalam kondisi menyetir normal, bensin tidak akan habis selama durasi misi standar.
-  * **Tombol Boost (Space / Pedal Nitro):** Pemain dapat menekan tombol Nitro untuk mendapatkan lonjakan kecepatan instan (*Top Speed* +35% selama 3 detik). Menggunakan Nitro akan menguras bar bahan bakar.
-  * **Drive-Thru Refill (Jerry Can Pickups):** Pemain dapat mengisi ulang nitro bar secara instan dengan melindas jerigen bensin mengambang di dekat pom bensin pinggir jalan tanpa perlu berhenti total.
+### 4.3 Sistem Bahan Bakar Berbasis Jarak
+* Kapasitas tangki awal: **40 L**.
+* Konsumsi dihitung dari jarak tempuh kendaraan, bukan durasi mesin menyala.
+* Acuan dasar: **1 L per 8.000 m**. Skala permainan saat ini **200x**, sehingga konsumsi efektif sekitar **1 L per 40 m**.
+* Berdasarkan koordinat rute saat ini, perjalanan lurus berurutan dari SPPG ke lima sekolah sekitar **343,5 m**. Empat putaran (20 sekolah) sekitar **1.374 m**, atau **34,35 L** pada skala tersebut. Jarak aktual di jalan dapat lebih panjang.
+* Bahan bakar dapat dibeli di SPBU selama misi.
 
 ### 4.4 Sistem Kondisi Makanan (Food Condition System)
 * Nilai awal: **100%**.

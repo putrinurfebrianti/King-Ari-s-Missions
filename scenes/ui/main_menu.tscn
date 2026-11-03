@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" path="res://assets/textures/ui/tenjo_main_bg.png" id="2_bg"]
-[ext_resource type="Texture2D" path="res://assets/textures/characters/driver_fatur_portrait.png" id="3_fatur"]
-[ext_resource type="Texture2D" path="res://assets/textures/characters/driver_mahdi_portrait.png" id="4_mahdi"]
-[ext_resource type="Texture2D" path="res://assets/textures/characters/driver_zen_portrait.png" id="5_zen"]
+[ext_resource type="Texture2D" path="res://assets/textures/characters/driver_fatur_pixel_face.png" id="3_fatur"]
+[ext_resource type="Texture2D" path="res://assets/textures/characters/driver_mahdi_pixel_face.png" id="4_mahdi"]
+[ext_resource type="Texture2D" path="res://assets/textures/characters/driver_zen_pixel_face.png" id="5_zen"]
 [ext_resource type="Texture2D" path="res://assets/textures/ui/vehicle_van.png" id="6_van"]
 [ext_resource type="Texture2D" path="res://assets/textures/ui/vehicle_pickup.png" id="7_pickup"]
 [ext_resource type="Texture2D" path="res://assets/textures/ui/vehicle_truck.png" id="8_truck"]
@@ -165,6 +165,7 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
 [node name="Avatar" type="TextureRect" parent="DriverSection/DriverContainer/CardFatur"]
+texture_filter = 1
 layout_mode = 0
 offset_left = 12.0
 offset_top = 10.0
@@ -172,7 +173,7 @@ offset_right = 102.0
 offset_bottom = 100.0
 texture = ExtResource("3_fatur")
 expand_mode = 1
-stretch_mode = 5
+stretch_mode = 4
 
 [node name="Name" type="Label" parent="DriverSection/DriverContainer/CardFatur"]
 layout_mode = 0
@@ -232,6 +233,7 @@ offset_left = 12.0
 offset_top = 10.0
 offset_right = 102.0
 offset_bottom = 100.0
+texture_filter = 1
 texture = ExtResource("4_mahdi")
 expand_mode = 1
 stretch_mode = 5
@@ -254,7 +256,7 @@ offset_right = 370.0
 offset_bottom = 54.0
 theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 1)
 theme_override_font_sizes/font_size = 13
-text = "Inspektur Rute & Taktis Kerajaan"
+text = "Driver Istana - Ahli Navigasi"
 
 [node name="Passive" type="Label" parent="DriverSection/DriverContainer/CardMahdi"]
 layout_mode = 0
@@ -264,7 +266,7 @@ offset_right = 370.0
 offset_bottom = 175.0
 theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
 theme_override_font_sizes/font_size = 14
-text = "🧭 Handling tikungan tajam sangat stabil (+25%). Ahli taktis istana menembus jalanan sempit dan blokade kota."
+text = "🧭 Kemudi tajam (+25%). Driver istana yang hafal jalur rahasia kerajaan."
 autowrap_mode = 3
 
 [node name="SelectBtn" type="Button" parent="DriverSection/DriverContainer/CardMahdi"]
@@ -289,6 +291,7 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
 [node name="Avatar" type="TextureRect" parent="DriverSection/DriverContainer/CardZen"]
+texture_filter = 1
 layout_mode = 0
 offset_left = 12.0
 offset_top = 10.0
@@ -607,5 +610,5 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.75, 0.85, 0.95, 0.8)
 theme_override_font_sizes/font_size = 15
-text = "Tekan Mulai untuk menyimak Titah Presiden Ari sebelum berangkat!"
+text = "Tekan Mulai untuk menyimak Titah Raja Ari sebelum berangkat!"
 horizontal_alignment = 1
