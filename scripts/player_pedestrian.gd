@@ -104,6 +104,8 @@ var is_zen_pixel_character: bool = false
 
 func _ready() -> void:
 	add_to_group("pedestrian")
+	floor_snap_length = 0.45
+	floor_max_angle = deg_to_rad(50.0)
 	
 	visible = false
 	is_active = false
@@ -140,13 +142,14 @@ func _load_pedestrian_texture() -> void:
 		return
 
 	if driver_id == "fatur":
+		is_fatur_pixel_character = true
 		_load_directional_pixel_character(
 			"res://assets/textures/characters/driver_fatur_pixel_views.png",
 			FATUR_DIRECTION_FRAMES
 		)
 		return
 
-	if GameManager.selected_driver_id == "zen":
+	if driver_id == "zen":
 		is_zen_pixel_character = true
 		_load_directional_pixel_character(
 			"res://assets/textures/characters/driver_zen_pixel_views.png",
@@ -173,8 +176,8 @@ func _load_directional_pixel_character(sheet_path: String, direction_frames: Dic
 		return
 
 	var sprite_frames := SpriteFrames.new()
-	sprite.pixel_size = 0.0016
-	sprite_resting_y = 0.67
+	sprite.pixel_size = 1.65 / 768.0
+	sprite_resting_y = 0.85
 	sprite.position.y = sprite_resting_y
 	for animation_name in direction_frames:
 		sprite_frames.add_animation(animation_name)
@@ -305,11 +308,13 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, speed * 12.0 * delta)
 		velocity.z = move_toward(velocity.z, 0.0, speed * 12.0 * delta)
 
-	velocity.y = -9.8 * delta if not is_on_floor() else 0.0
+	if is_on_floor():
+		velocity.y = 0.0
+	else:
+		velocity.y -= 24.0 * delta
 	move_and_slide()
-	var is_animating = Vector2(velocity.x, velocity.z).length() > 0.2
-	if is_mahdi_pixel_character or is_fatur_pixel_character or is_zen_pixel_character:
-		is_animating = move_input.length() > 0.01
+	var actual_velocity := get_real_velocity()
+	var is_animating := Vector2(actual_velocity.x, actual_velocity.z).length() > 0.2
 	if is_animating:
 		if is_mahdi_pixel_character or is_fatur_pixel_character or is_zen_pixel_character:
 			_update_pixel_character_animation(move_input)

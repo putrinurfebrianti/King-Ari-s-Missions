@@ -482,15 +482,24 @@ func _is_on_pavement(pos: Vector3) -> bool:
 	var dist_center = Vector2(pos.x, pos.z).length()
 	if dist_center <= 24.8:
 		return true
-	if abs(pos.z) <= 9.0 or abs(pos.x) <= 9.0:
-		return true
 
 	var road_position = Vector2(pos.x, pos.z)
 	var ring_road_rects: Array[Rect2] = [
-		Rect2(-62.0, -47.0, 124.0, 14.0),
-		Rect2(-62.0, 33.0, 124.0, 14.0),
-		Rect2(-59.0, -47.0, 14.0, 94.0),
-		Rect2(45.0, -47.0, 14.0, 94.0)
+		Rect2(-69.0, -4.5, 138.0, 9.0),
+		Rect2(-4.5, -35.0, 9.0, 70.0),
+		Rect2(-75.0, -21.75, 42.0, 7.5),
+		Rect2(-75.0, 24.25, 42.0, 7.5),
+		Rect2(-75.75, -19.0, 7.5, 48.0),
+		Rect2(-38.75, -19.0, 7.5, 48.0),
+		Rect2(-24.0, -27.5, 48.0, 7.0),
+		Rect2(-25.5, -49.0, 7.0, 26.0),
+		Rect2(18.5, -49.0, 7.0, 26.0),
+		Rect2(-18.0, -48.25, 36.0, 8.5),
+		Rect2(18.0, -25.75, 56.0, 7.5),
+		Rect2(18.0, 17.25, 56.0, 7.5),
+		Rect2(16.25, -26.0, 7.5, 52.0),
+		Rect2(40.25, -26.0, 7.5, 52.0),
+		Rect2(66.25, -26.0, 7.5, 52.0)
 	]
 	for road_rect in ring_road_rects:
 		if road_rect.has_point(road_position):

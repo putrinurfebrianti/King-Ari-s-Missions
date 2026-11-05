@@ -24,16 +24,16 @@ func toggle_map_size() -> void:
 	is_fullscreen_map = not is_fullscreen_map
 	if is_fullscreen_map:
 		set_anchors_preset(Control.PRESET_CENTER)
-		offset_left = -380
-		offset_top = -260
-		offset_right = 380
-		offset_bottom = 260
+		offset_left = -520
+		offset_top = -310
+		offset_right = 520
+		offset_bottom = 310
 	else:
 		set_anchors_preset(Control.PRESET_TOP_RIGHT)
-		offset_left = -250
+		offset_left = -340
 		offset_top = 16
 		offset_right = -20
-		offset_bottom = 186
+		offset_bottom = 256
 	queue_redraw()
 
 func _process(delta: float) -> void:

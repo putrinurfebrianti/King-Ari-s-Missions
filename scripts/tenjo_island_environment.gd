@@ -148,78 +148,78 @@ func _build_island_terrain() -> void:
 
 	# 2. Regional Plateau Blocks (Building the 5 distinct geographical regions)
 	# Region 1 (North - Royal Palace Highland):
-	_add_solid_box("NorthPalaceHighland", Vector3(66.0, 0.8, 38.0), Vector3(0.0, 0.4, -44.0), mat_grass)
-	_add_solid_box("NorthPalaceUpperTier", Vector3(44.0, 1.2, 22.0), Vector3(0.0, 1.0, -50.0), mat_castle_stone)
+	_add_solid_box("NorthPalaceHighland", Vector3(66.0, 0.04, 38.0), Vector3(0.0, 0.02, -44.0), mat_grass)
+	_add_solid_box("NorthPalaceUpperTier", Vector3(44.0, 0.04, 22.0), Vector3(0.0, 0.04, -50.0), mat_castle_stone)
 
 	# Region 2 (West - Industrial Logistics Plateau):
-	_add_solid_box("WestLogisticsPlateau", Vector3(42.0, 0.35, 48.0), Vector3(-55.0, 0.17, 6.0), mat_soil)
-	_add_solid_box("WestSPPGConcreteApron", Vector3(36.0, 0.12, 42.0), Vector3(-55.0, 0.23, 6.0), mat_asphalt)
+	_add_solid_box("WestLogisticsPlateau", Vector3(42.0, 0.04, 48.0), Vector3(-55.0, 0.02, 6.0), mat_soil)
+	_add_solid_box("WestSPPGConcreteApron", Vector3(36.0, 0.04, 42.0), Vector3(-55.0, 0.06, 6.0), mat_asphalt)
 
 	# Region 3 (Central - Station & Trade Valley):
-	_add_solid_box("CentralUrbanDistrict", Vector3(56.0, 0.2, 36.0), Vector3(-8.0, 0.1, -4.0), mat_asphalt)
+	_add_solid_box("CentralUrbanDistrict", Vector3(56.0, 0.04, 36.0), Vector3(-8.0, 0.02, -4.0), mat_asphalt)
 
 	# Region 4 (East - Modern Residential & School Plain):
-	_add_solid_box("EastHousingDistrict", Vector3(58.0, 0.25, 68.0), Vector3(45.0, 0.12, 0.0), mat_grass)
+	_add_solid_box("EastHousingDistrict", Vector3(58.0, 0.04, 68.0), Vector3(45.0, 0.02, 0.0), mat_grass)
 
 	# Region 5 (South - Outskirts, Wetlands & Sawah):
-	_add_solid_box("SouthWetlandBasin", Vector3(72.0, 0.15, 36.0), Vector3(-12.0, 0.07, 38.0), mat_soil)
+	_add_solid_box("SouthWetlandBasin", Vector3(72.0, 0.04, 36.0), Vector3(-12.0, 0.02, 38.0), mat_soil)
 
 # ------------------------------------------------------------------------------
 # 4. ROAD NETWORK & BRIDGES (CONNECTED ARTERIALS)
 # ------------------------------------------------------------------------------
 func _build_road_network() -> void:
 	# A. MAIN EAST-WEST ARTERIAL (The primary highway connecting West -> Central -> East)
-	_add_solid_box("MainRoad_EW", Vector3(138.0, 0.18, 9.0), Vector3(0.0, 0.2, 0.0), mat_asphalt)
-	_add_box("MainRoad_Markings", Vector3(136.0, 0.03, 0.22), Vector3(0.0, 0.3, 0.0), mat_marking)
+	_add_solid_box("MainRoad_EW", Vector3(138.0, 0.08, 9.0), Vector3(0.0, 0.06, 0.0), mat_asphalt)
+	_add_box("MainRoad_Markings", Vector3(136.0, 0.02, 0.22), Vector3(0.0, 0.11, 0.0), mat_marking)
 
 	# B. NORTH-SOUTH CENTRAL ARTERIAL (Connecting Central to North & South)
-	_add_solid_box("CentralRoad_NS", Vector3(9.0, 0.18, 70.0), Vector3(0.0, 0.2, 0.0), mat_asphalt)
-	_add_box("CentralRoad_Markings", Vector3(0.22, 0.03, 68.0), Vector3(0.0, 0.3, 0.0), mat_marking)
+	_add_solid_box("CentralRoad_NS", Vector3(9.0, 0.08, 70.0), Vector3(0.0, 0.06, 0.0), mat_asphalt)
+	_add_box("CentralRoad_Markings", Vector3(0.22, 0.02, 68.0), Vector3(0.0, 0.11, 0.0), mat_marking)
 
 	# C. WESTERN INDUSTRIAL PERIMETER ROAD (Ring road surrounding SPPG compound)
-	_add_solid_box("WestRingRoad_North", Vector3(42.0, 0.18, 7.5), Vector3(-54.0, 0.2, -18.0), mat_asphalt)
-	_add_solid_box("WestRingRoad_South", Vector3(42.0, 0.18, 7.5), Vector3(-54.0, 0.2, 28.0), mat_asphalt)
-	_add_solid_box("WestRingRoad_West", Vector3(7.5, 0.18, 48.0), Vector3(-72.0, 0.2, 5.0), mat_asphalt)
-	_add_solid_box("WestRingRoad_East", Vector3(7.5, 0.18, 48.0), Vector3(-35.0, 0.2, 5.0), mat_asphalt)
+	_add_solid_box("WestRingRoad_North", Vector3(42.0, 0.08, 7.5), Vector3(-54.0, 0.06, -18.0), mat_asphalt)
+	_add_solid_box("WestRingRoad_South", Vector3(42.0, 0.08, 7.5), Vector3(-54.0, 0.06, 28.0), mat_asphalt)
+	_add_solid_box("WestRingRoad_West", Vector3(7.5, 0.08, 48.0), Vector3(-72.0, 0.06, 5.0), mat_asphalt)
+	_add_solid_box("WestRingRoad_East", Vector3(7.5, 0.08, 48.0), Vector3(-35.0, 0.06, 5.0), mat_asphalt)
 
 	# D. NORTHERN ROYAL PALACE LOOP (Winding route looping around Palace Lake up to the castle)
-	_add_solid_box("NorthLakeRoad_South", Vector3(48.0, 0.2, 7.0), Vector3(0.0, 0.25, -24.0), mat_asphalt)
-	_add_solid_box("NorthLakeRoad_West", Vector3(7.0, 0.25, 26.0), Vector3(-22.0, 0.35, -36.0), mat_asphalt)
-	_add_solid_box("NorthLakeRoad_East", Vector3(7.0, 0.25, 26.0), Vector3(22.0, 0.35, -36.0), mat_asphalt)
-	_add_solid_box("PalaceCourtAvenue", Vector3(36.0, 0.3, 8.5), Vector3(0.0, 0.65, -44.0), mat_castle_stone)
+	_add_solid_box("NorthLakeRoad_South", Vector3(48.0, 0.08, 7.0), Vector3(0.0, 0.06, -24.0), mat_asphalt)
+	_add_solid_box("NorthLakeRoad_West", Vector3(7.0, 0.08, 26.0), Vector3(-22.0, 0.06, -36.0), mat_asphalt)
+	_add_solid_box("NorthLakeRoad_East", Vector3(7.0, 0.08, 26.0), Vector3(22.0, 0.06, -36.0), mat_asphalt)
+	_add_solid_box("PalaceCourtAvenue", Vector3(36.0, 0.08, 8.5), Vector3(0.0, 0.06, -44.0), mat_castle_stone)
 
 	# E. EASTERN RESIDENTIAL & SCHOOL GRID ROADS
-	_add_solid_box("EastGrid_NorthAvenue", Vector3(56.0, 0.18, 7.5), Vector3(46.0, 0.2, -22.0), mat_asphalt)
-	_add_solid_box("EastGrid_SouthAvenue", Vector3(56.0, 0.18, 7.5), Vector3(46.0, 0.2, 21.0), mat_asphalt)
-	_add_solid_box("EastGrid_OuterEast", Vector3(7.5, 0.18, 52.0), Vector3(70.0, 0.2, 0.0), mat_asphalt)
-	_add_solid_box("EastGrid_MidAvenue_NS", Vector3(7.5, 0.18, 52.0), Vector3(44.0, 0.2, 0.0), mat_asphalt)
-	_add_solid_box("EastGrid_WestAvenue_NS", Vector3(7.5, 0.18, 52.0), Vector3(20.0, 0.2, 0.0), mat_asphalt)
+	_add_solid_box("EastGrid_NorthAvenue", Vector3(56.0, 0.08, 7.5), Vector3(46.0, 0.06, -22.0), mat_asphalt)
+	_add_solid_box("EastGrid_SouthAvenue", Vector3(56.0, 0.08, 7.5), Vector3(46.0, 0.06, 21.0), mat_asphalt)
+	_add_solid_box("EastGrid_OuterEast", Vector3(7.5, 0.08, 52.0), Vector3(70.0, 0.06, 0.0), mat_asphalt)
+	_add_solid_box("EastGrid_MidAvenue_NS", Vector3(7.5, 0.08, 52.0), Vector3(44.0, 0.06, 0.0), mat_asphalt)
+	_add_solid_box("EastGrid_WestAvenue_NS", Vector3(7.5, 0.08, 52.0), Vector3(20.0, 0.06, 0.0), mat_asphalt)
 
 	# F. SOUTHERN SCENIC DIRT ROAD (Winding trail through the wetlands & sawah)
-	_add_solid_box("SouthDirtRoad_Sec1", Vector3(24.0, 0.14, 6.0), Vector3(-42.0, 0.18, 30.0), mat_dirt_road)
-	_add_solid_box("SouthDirtRoad_Sec2", Vector3(6.0, 0.14, 18.0), Vector3(-32.0, 0.18, 38.0), mat_dirt_road)
-	_add_solid_box("SouthDirtRoad_Sec3", Vector3(30.0, 0.14, 6.0), Vector3(-18.0, 0.18, 48.0), mat_dirt_road)
-	_add_solid_box("SouthDirtRoad_Sec4", Vector3(6.0, 0.14, 16.0), Vector3(-2.0, 0.18, 42.0), mat_dirt_road)
-	_add_solid_box("SouthDirtRoad_Sec5", Vector3(26.0, 0.14, 6.0), Vector3(10.0, 0.18, 34.0), mat_dirt_road)
-	_add_solid_box("SouthDirtRoad_Sec6", Vector3(6.0, 0.14, 16.0), Vector3(22.0, 0.18, 28.0), mat_dirt_road)
+	_add_solid_box("SouthDirtRoad_Sec1", Vector3(24.0, 0.06, 6.0), Vector3(-42.0, 0.04, 30.0), mat_dirt_road)
+	_add_solid_box("SouthDirtRoad_Sec2", Vector3(6.0, 0.06, 18.0), Vector3(-32.0, 0.04, 38.0), mat_dirt_road)
+	_add_solid_box("SouthDirtRoad_Sec3", Vector3(30.0, 0.06, 6.0), Vector3(-18.0, 0.04, 48.0), mat_dirt_road)
+	_add_solid_box("SouthDirtRoad_Sec4", Vector3(6.0, 0.06, 16.0), Vector3(-2.0, 0.04, 42.0), mat_dirt_road)
+	_add_solid_box("SouthDirtRoad_Sec5", Vector3(26.0, 0.06, 6.0), Vector3(10.0, 0.04, 34.0), mat_dirt_road)
+	_add_solid_box("SouthDirtRoad_Sec6", Vector3(6.0, 0.06, 16.0), Vector3(22.0, 0.04, 28.0), mat_dirt_road)
 
 	# G. BRIDGES (Wooden & Concrete Timber Bridges crossing water)
 	# 1. West-to-South Timber Bridge
-	_build_wooden_bridge("Bridge_WestToSouth", Vector3(-48.0, 0.25, 27.0), Vector3(8.0, 0.35, 12.0), 0.0)
+	_build_wooden_bridge("Bridge_WestToSouth", Vector3(-48.0, 0.08, 27.0), Vector3(8.0, 0.12, 12.0), 0.0)
 	# 2. Central Wetland Wooden Bridge
-	_build_wooden_bridge("Bridge_CentralWetland", Vector3(-12.0, 0.25, 48.0), Vector3(14.0, 0.35, 6.5), 0.0)
+	_build_wooden_bridge("Bridge_CentralWetland", Vector3(-12.0, 0.08, 48.0), Vector3(14.0, 0.12, 6.5), 0.0)
 	# 3. South-to-East Wetland Bridge
-	_build_wooden_bridge("Bridge_SouthToEast", Vector3(22.0, 0.25, 24.0), Vector3(6.5, 0.35, 12.0), 0.0)
+	_build_wooden_bridge("Bridge_SouthToEast", Vector3(22.0, 0.08, 24.0), Vector3(6.5, 0.12, 12.0), 0.0)
 
 	# H. PEDESTRIAN CROSSINGS (Zebra Crossings)
 	var zebra_locs: Array[Vector3] = [
-		Vector3(-28.0, 0.21, 0.0), Vector3(14.0, 0.21, 0.0), Vector3(30.0, 0.21, 0.0),
-		Vector3(0.0, 0.21, -16.0), Vector3(0.0, 0.21, 14.0),
-		Vector3(30.0, 0.21, -16.0), Vector3(56.0, 0.21, -16.0),
-		Vector3(30.0, 0.21, 16.0), Vector3(56.0, 0.21, 16.0)
+		Vector3(-28.0, 0.11, 0.0), Vector3(14.0, 0.11, 0.0), Vector3(30.0, 0.11, 0.0),
+		Vector3(0.0, 0.11, -16.0), Vector3(0.0, 0.11, 14.0),
+		Vector3(30.0, 0.11, -16.0), Vector3(56.0, 0.11, -16.0),
+		Vector3(30.0, 0.11, 16.0), Vector3(56.0, 0.11, 16.0)
 	]
 	for z_pos in zebra_locs:
-		_add_box("ZebraCrossing", Vector3(6.5, 0.04, 3.5), z_pos, mat_crosswalk)
+		_add_box("ZebraCrossing", Vector3(6.5, 0.02, 3.5), z_pos, mat_crosswalk)
 
 # ------------------------------------------------------------------------------
 # 5. REGION 1 – NORTHERN REGION (ROYAL PALACE OF KING ARI)
